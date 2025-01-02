@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
+		/>
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="assets/fontawesome/all.min.css" />
+		<link
+			href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+			rel="stylesheet"
+		/>
+		<script src="assets/fontawesome/all.min.js"></script>
+		<title>To Do</title>
+	</head>
+	<body>
+		<!-- Header -->
+		<div class="overlay input-blur-overlay"></div>
+		<header>
+			<h1 class="title"><a href="index.html">To Do</a></h1>
+			<div class="search-bar">
+				<div class="search-icon">
+					<!-- <img src="assets/svgs/search.svg" alt="" /> -->
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="var(--main-color)"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						class="feather feather-search"
+					>
+						<circle cx="11" cy="11" r="8"></circle>
+						<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+					</svg>
+				</div>
+				<input
+					type="text"
+					autocomplete="off"
+					spellcheck="false"
+					id="search-input"
+					placeholder="Search"
+				/>
+				<div class="close-icon">
+					<img src="assets/svgs/close.svg" alt="" />
+				</div>
+			</div>
+			<div>
+				<div class="settings settings-btn">
+					<img src="assets/svgs/settings.svg" alt="" />
+				</div>
+				<div class="profile-photo" style="width: 40px; height: 40px">
+					<img
+						src="assets/imgs/spider.jpg"
+						width="40px"
+						height="40px"
+						loading="lazy"
+						alt=""
+						id="profile-img"
+					/>
+				</div>
+			</div>
+		</header>
+
+		<!-- Navigation Bar :) -->
+
+		<div class="overlay" id="nav-overlay"></div>
+		<nav>
+			<header>
+				<div class="icon" id="close-nav">
+					<img src="assets/svgs/add-small.svg" alt="" />
+				</div>
+				<footer>
+					<div class="add-list-input">
+						<!-- <div class="icon">
+							<img src="assets/svgs/add-blue.svg" alt="" />
+						</div> -->
+						<input
+							type="text"
+							id="list-input"
+							autocomplete="off"
+							spellcheck="false"
+							inputmode="text"
+							value="New List"
+							placeholder="New List"
+						/>
+					</div>
+				</footer>
+			</header>
+			<ul id="main-lists"></ul>
+			<ul id="lists"></ul>
+		</nav>
+
+		<!-- Tasks Container :) -->
+
+		<div class="tasks-main-container">
+			<header>
+				<div class="icon" id="open-nav">
+					<i class="bx bx-menu bx-sm" style="color: #ffffff"></i>
+				</div>
+				<h1 class="title" id="listTitle"></h1>
+				<input
+					type="text"
+					value="My Day"
+					id="renameListInput"
+					placeholder="Untitled List"
+					inputmode="text"
+					autocomplete="off"
+					spellcheck="false"
+				/>
+				<div class="icon" id="list-options-menu">
+					<i class="bx bx-dots-horizontal-rounded bx-sm"></i>
+				</div>
+			</header>
+			<div class="task-input-container">
+				<div class="tasksInput">
+					<div class="icon">
+						<i class="bx bx-plus bx-sm"></i>
+					</div>
+					<input
+						type="text"
+						autocomplete="off"
+						spellcheck="false"
+						id="tasks-input"
+						placeholder="Add a task"
+						value="Add a task"
+						inputmode="text"
+					/>
+				</div>
+				<div class="tasksInputOptions">
+					<button class="add-btn">Add</button>
+				</div>
+			</div>
+
+			<ul id="tasks-list"></ul>
+		</div>
+
+		<!-- Settings Bar :) -->
+
+		<div class="aside-overlay"></div>
+		<aside class="settings-bar">
+			<header>
+				<h1>Settings</h1>
+				<div class="icon close-btn-settings">
+					<img src="assets/svgs/close.svg" alt="" />
+				</div>
+			</header>
+
+			<h2>General</h2>
+
+			<div class="toggle-container">
+				<label for="a" class="h3">Turn on light mode</label>
+				<div class="switch-container">
+					<label for="a" class="switch" data-settings="light">
+						<div class="switch-circle"></div>
+					</label>
+					<input
+						type="checkbox"
+						data-settings="light"
+						class="toggler"
+						id="a"
+					/>
+					<div class="onOff" data-settings="light">On</div>
+				</div>
+			</div>
+			<div class="toggle-container">
+				<label for="b" class="h3">Confirm before deleting</label>
+				<div class="switch-container">
+					<label
+						for="b"
+						class="switch"
+						data-settings="confirmBeforeDeletion"
+					>
+						<div class="switch-circle"></div>
+					</label>
+					<input
+						type="checkbox"
+						data-settings="confirmBeforeDeletion"
+						class="toggler"
+						id="b"
+					/>
+					<div class="onOff" data-settings="confirmBeforeDeletion">
+						On
+					</div>
+				</div>
+			</div>
+			<div class="toggle-container">
+				<label for="c" class="h3">Move starred tasks to top</label>
+				<div class="switch-container">
+					<label for="c" data-settings="starToTop" class="switch"
+						><div class="switch-circle"></div
+					></label>
+					<input
+						type="checkbox"
+						data-settings="starToTop"
+						class="toggler"
+						id="c"
+					/>
+					<div class="onOff" data-settings="starToTop">On</div>
+				</div>
+			</div>
+			<div class="toggle-container">
+				<label for="d" class="h3">Add new tasks on top</label>
+				<div class="switch-container">
+					<label for="d" data-settings="addToTop" class="switch"
+						><div class="switch-circle"></div>
+					</label>
+					<input
+						type="checkbox"
+						data-settings="addToTop"
+						class="toggler"
+						id="d"
+					/>
+					<div class="onOff" data-settings="addToTop">On</div>
+				</div>
+			</div>
+			<div class="toggle-container">
+				<label for="x" class="h3">Play Completetion Sound</label>
+				<div class="switch-container">
+					<label for="x" data-settings="playSound" class="switch">
+						<div class="switch-circle"></div>
+					</label>
+					<input
+						type="checkbox"
+						data-settings="playSound"
+						class="toggler"
+						id="x"
+					/>
+					<div class="onOff" data-settings="playSound">On</div>
+				</div>
+			</div>
+
+			<h2>Smart Lists</h2>
+
+			<div class="toggle-container">
+				<label for="e" class="h3">Important</label>
+				<div class="switch-container">
+					<label for="e" data-settings="showImportant" class="switch"
+						><div class="switch-circle"></div
+					></label>
+					<input
+						type="checkbox"
+						data-settings="showImportant"
+						class="toggler"
+						id="e"
+					/>
+					<div class="onOff" data-settings="showImportant">On</div>
+				</div>
+			</div>
+			<div class="toggle-container">
+				<label for="f" class="h3">All</label>
+				<div class="switch-container">
+					<label for="f" data-settings="showAll" class="switch"
+						><div class="switch-circle"></div
+					></label>
+					<input
+						type="checkbox"
+						data-settings="showAll"
+						class="toggler"
+						id="f"
+					/>
+					<div class="onOff" data-settings="showAll">On</div>
+				</div>
+			</div>
+			<div class="toggle-container">
+				<label for="g" class="h3">Completed</label>
+				<div class="switch-container">
+					<label for="g" data-settings="showCompleted" class="switch"
+						><div class="switch-circle"></div
+					></label>
+					<input
+						type="checkbox"
+						data-settings="showCompleted"
+						class="toggler"
+						id="g"
+					/>
+					<div class="onOff" data-settings="showCompleted">On</div>
+				</div>
+			</div>
+			<div class="toggle-container">
+				<label for="h" class="h3">Planned</label>
+				<div class="switch-container">
+					<label for="h" data-settings="showPlanned" class="switch"
+						><div class="switch-circle"></div
+					></label>
+					<input
+						type="checkbox"
+						data-settings="showPlanned"
+						class="toggler"
+						id="h"
+					/>
+					<div class="onOff" data-settings="showPlanned">On</div>
+				</div>
+			</div>
+
+			<h2>Connect</h2>
+
+			<div class="links">
+				<p>
+					<img src="assets/svgs/sun.svg" alt="" />
+					<a href="https://instagram.com/">Follow Me On Instagram</a>
+				</p>
+				<p>
+					<img src="assets/svgs/sun.svg" alt="" />
+					<a href="https://github.com/AliAdel78-Sa"
+						>Follow Me On Github</a
+					>
+				</p>
+			</div>
+		</aside>
+
+		<!-- Add Task Btn :) -->
+
+		<div class="add-task-btn">
+			<img src="assets/svgs/add.svg" alt="" />
+		</div>
+
+		<!-- Context Menus -->
+
+		<div class="context-menu-overlay"></div>
+		<div class="context-menu" id="list-options">
+			<header>
+				<h1 class="title">Options</h1>
+			</header>
+			<section>
+				<div class="option" id="rename-list">
+					<div class="icon">
+						<img src="assets/svgs/rename.svg" alt="" />
+					</div>
+					<div class="text">Rename list</div>
+				</div>
+				<div class="option" id="change-theme">
+					<div class="icon">
+						<img
+							src="assets/svgs/color-palette-outline.svg"
+							alt=""
+						/>
+					</div>
+					<div class="text">Change theme</div>
+					<div class="submenu-icon">
+						<img src="assets/svgs/arrow-right.svg" alt="" />
+					</div>
+				</div>
+			</section>
+			<footer>
+				<div class="option red" id="delete-list">
+					<div class="icon">
+						<img src="assets/svgs/trash-outline.svg" alt="" />
+					</div>
+					<div class="text">Delete list</div>
+				</div>
+			</footer>
+		</div>
+		<div class="sub-context-menu-overlay"></div>
+		<div class="sub-context-menu">
+			<div
+				class="theme"
+				data-settings="red"
+				style="--color: #e56b68; --light-color: #f5c4c3"
+			>
+				<img src="assets/svgs/check.svg" alt="" class="checked" />
+			</div>
+			<div
+				class="theme"
+				data-settings="pink"
+				style="--color: #e46d8d; --light-color: #f4c5d1"
+			>
+				<img src="assets/svgs/check.svg" alt="" class="checked" />
+			</div>
+			<div
+				class="theme"
+				data-settings="blue"
+				style="--color: #78b9fd; --light-color: #aed5ff"
+			>
+				<img src="assets/svgs/check.svg" alt="" class="checked" />
+			</div>
+			<div
+				class="theme"
+				data-settings="ocean"
+				style="--color: #097bb9; --light-color: #a5d1e6"
+			>
+				<img src="assets/svgs/check.svg" alt="" class="checked" />
+			</div>
+			<div
+				class="theme"
+				data-settings="green"
+				style="--color: #21c784; --light-color: #a6e9ce"
+			>
+				<img src="assets/svgs/check.svg" alt="" class="checked" />
+			</div>
+			<div
+				class="theme"
+				data-settings="green-hyphe"
+				style="--color: #479e98; --light-color: #b5d8d6"
+			>
+				<img src="assets/svgs/check.svg" alt="" class="checked" />
+			</div>
+		</div>
+
+		<!-- Confirmation Messeges -->
+
+		<div class="overlay" id="delete-list-overlay"></div>
+		<div class="modal">
+			<h2>Delete List</h2>
+			<p id="delete-list-title">
+				Are You Sure You Want To Delete "Test" ?
+			</p>
+			<div class="btns">
+				<button class="delete-btn" id="delete-list-btn">Delete</button>
+				<button class="cancel-btn" id="cancel-list-btn">Cancel</button>
+			</div>
+		</div>
+
+		<script type="module" src="js/app.js"></script>
+		<script src="js/modules/test.js" type="module"></script>
+	</body>
+</html>
+
+<!--
+<li class="task-item" id="${task.id}">
+   <div class="icon">
+      <div class="circle">
+         <img src="assets/svgs/check.svg" alt="" />
+      </div>
+   </div>
+   <div class="text">${task.title</div>
+   <div class="star">
+      <img src="assets/svgs/star-blue.svg" alt="" />
+		<div class="filled">
+			<img src="assets/svgs/star-blue.svg" alt="" />
+		</div>
+   </div>
+</li>
+-->
+
+<!--
+<div class="high-priority-list">
+	<header></header>
+	<ul></ul>
+</div>
+<div class="medium-priority-list">
+	<header></header>
+	<ul></ul>
+</div>
+<div class="low-priority-list">
+	<header></header>
+	<ul></ul>
+</div>
+<div class="no-priority-list">
+	<header></header>
+	<ul></ul>
+</div>
+<div class="completed-list">
+	<header></header>
+	<ul></ul>
+</div>
+-->

@@ -1,0 +1,16 @@
+<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="ionicon"
+							viewBox="0 0 512 512"
+							width="30px"
+							height="30px"
+						>
+							<path
+								fill="none"
+								stroke="#78b9fd"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="24"
+								d="M256 112v288M400 256H112"
+							/>
+						</svg>

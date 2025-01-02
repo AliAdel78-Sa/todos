@@ -1,0 +1,17 @@
+@use "../themes" as *;
+
+.add-task-btn {
+	position: absolute;
+	bottom: 30px;
+	right: 20px;
+	border-radius: 50%;
+	width: 55px;
+	aspect-ratio: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--main-color);
+	* {
+		color: #fff;
+	}
+}

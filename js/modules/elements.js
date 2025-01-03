@@ -72,4 +72,5 @@ export const elements = {
 	themeMenu: $(".sub-context-menu"),
 	themeMenuOverlay: $(".sub-context-menu-overlay"),
 	themes: $(".theme", true),
+	loader: $("#preloader"),
 };

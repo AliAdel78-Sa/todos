@@ -5,10 +5,14 @@ import { storage } from "./modules/storage.js";
 import { elements } from "./modules/elements.js";
 import { initialLists, initialSettings } from "./modules/default.js";
 import { handleThemes } from "./modules/themes.js";
+import { user } from "./modules/userData.js";
 
 // Variables
-let lists = storage.get("lists", initialLists);
+
 const SMART_LISTS_IDS = [1, 2, 3, 4, 5, 6];
+const userToken = storage.get("token");
+let lists = initialLists;
+let userData = {};
 
 // Events
 elements.deleteListBtn.addEventListener("click", deleteCurrentList);
@@ -34,7 +38,7 @@ elements.renameListInput.addEventListener("keydown", (e) => {
 });
 
 // Functions
-function renameList(e) {
+async function renameList(e) {
 	const value = elements.renameListInput.value.trim();
 	let changedValue = "";
 
@@ -58,7 +62,6 @@ function renameList(e) {
 				list.settings.title = changedValue;
 			}
 		});
-		storage.set("lists", lists);
 
 		// Change The Title Of The List Item In The Nav Bar
 		const listItems = document.querySelectorAll(".list-item");
@@ -67,6 +70,9 @@ function renameList(e) {
 				listItem.lastChild.textContent = changedValue;
 			}
 		});
+
+		userData.lists = lists;
+		console.log(await user.save(userToken, userData));
 	}
 }
 function isValid(text) {
@@ -81,14 +87,13 @@ function showModal() {
 	elements.listDeleteOverlay.classList.add("show");
 	elements.deleteListTitle.textContent = `Are You Sure You Want To Delete "${elements.listTitle.textContent}"`;
 }
-function deleteCurrentList() {
+async function deleteCurrentList() {
 	// Create A List Without The Current List And Saving It
 	lists = lists.filter((list) => {
 		return (
 			Number(list.settings.id) !== Number(storage.get("currentListId"))
 		);
 	});
-	storage.set("lists", lists);
 
 	// Going To The Previous List and Removing The List Item From The DOM
 	const listItems = document.querySelectorAll(".list-item");
@@ -101,6 +106,8 @@ function deleteCurrentList() {
 			listItem.remove();
 		}
 	});
+	userData.lists = lists;
+	console.log(await user.save(userToken, userData));
 }
 function handleListClick(listItem) {
 	// Change Id Of Page
@@ -126,7 +133,7 @@ function handleListClick(listItem) {
 
 	// renderAllTasks(listItem);
 }
-function addNewList(listTitle) {
+async function addNewList(listTitle) {
 	// Create List
 	const list = {
 		settings: {
@@ -142,10 +149,6 @@ function addNewList(listTitle) {
 		importantTasks: [],
 	};
 
-	// Saving List In The Storage
-	lists.push(list);
-	storage.set("lists", lists);
-
 	// Build The List UI
 	const listItem = buildList(list, elements.listsContainer);
 	handleListClick(listItem); //  Trigger A Click On That List
@@ -153,6 +156,9 @@ function addNewList(listTitle) {
 	listItem.addEventListener("click", () => {
 		handleListClick(listItem);
 	});
+	// Saving List In The Storage
+	userData.lists.push(list);
+	console.log(await user.save(userToken, userData));
 }
 function renderAllLists() {
 	// Emptying The Lists Containers
@@ -175,6 +181,11 @@ function renderAllLists() {
 		} else {
 			elements.deleteList.style.display = "flex";
 			elements.renameList.style.display = "flex";
+		}
+
+		// Trigger A handleListClick On The Current List
+		if (Number(storage.get("currentListId", 1)) === Number(listItem.id)) {
+			handleListClick(listItem);
 		}
 
 		// Click Event For The List
@@ -208,8 +219,27 @@ function buildList(list, container) {
 	return listItem;
 }
 
-// Initial Functions
-renderAllLists();
-handleUI();
-handleSettings();
-handleThemes();
+// For User
+async function initialUserData() {
+	if (userToken === null) return window.location.assign("/pages/login.html");
+	const data = await user.get(userToken);
+	userData = data.userData;
+	userData.settings.empty === true
+		? (userData.settings = initialSettings)
+		: userData.settings;
+	userData.lists.length === 0
+		? (userData.lists = lists)
+		: (lists = userData.lists);
+	console.log(await user.save(userToken, userData));
+	renderAllLists();
+	handleUI();
+	handleSettings();
+	handleThemes();
+	setTimeout(() => elements.loader.classList.add("hide"), 500);
+}
+
+// Initial
+initialUserData();
+
+// userData.lists = lists
+// console.log(await user.save(userToken, userData));

@@ -73,4 +73,5 @@ export const elements = {
 	themeMenuOverlay: $(".sub-context-menu-overlay"),
 	themes: $(".theme", true),
 	loader: $("#preloader"),
+	profilePhoto: $(".profile-photo"),
 };

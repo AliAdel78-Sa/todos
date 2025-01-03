@@ -1,6 +1,22 @@
 const loginBtn = document.getElementById("login-btn");
 const email = document.getElementById("email-input");
 const password = document.getElementById("password-input");
+const showPassword = document.getElementById("showPassword");
+const hidePassword = document.getElementById("hidePassword");
+
+hidePassword.addEventListener("click", hidePass);
+showPassword.addEventListener("click", showPass);
+
+function hidePass() {
+	hidePassword.style.display = "none";
+	showPassword.style.display = "block";
+	password.type = "password";
+}
+function showPass() {
+	hidePassword.style.display = "block";
+	showPassword.style.display = "none";
+	password.type = "text";
+}
 
 loginBtn.addEventListener("click", () => {
 	if (email.value.trim().length > 0 && password.value.trim().length > 0) {

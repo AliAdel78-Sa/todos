@@ -38,10 +38,13 @@ body > header {
   background-color: #1b1a18;
 }
 body > header h1 a {
-  color: #fff;
+  color: var(--main-color);
   font-weight: 500;
   font-size: 1.25rem;
   display: block;
+}
+body > header h1 a:visited {
+  color: var(--main-color);
 }
 body > header > * {
   display: flex;
@@ -49,8 +52,16 @@ body > header > * {
   align-items: center;
   gap: 10px;
 }
-body > header #profile-img {
-  border: 1px solid rgba(255, 255, 255, 0.5);
+body > header .profile-photo {
+  width: 40px;
+  height: 40px;
+  background-color: var(--main-color);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 50%;
 }
 body > header .search-bar {

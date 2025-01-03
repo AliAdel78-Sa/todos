@@ -224,18 +224,16 @@ async function initialUserData() {
 	if (userToken === null) return window.location.assign("/pages/login.html");
 	const data = await user.get(userToken);
 	userData = data.userData;
-	userData.settings.empty === true
-		? (userData.settings = initialSettings)
-		: userData.settings;
 	userData.lists.length === 0
 		? (userData.lists = lists)
 		: (lists = userData.lists);
 	console.log(await user.save(userToken, userData));
+	elements.profilePhoto.innerHTML = data.firstName[0] + data.lastName[0];
 	renderAllLists();
 	handleUI();
 	handleSettings();
 	handleThemes();
-	setTimeout(() => elements.loader.classList.add("hide"), 500);
+	setTimeout(() => elements.loader.classList.add("hide"));
 }
 
 // Initial

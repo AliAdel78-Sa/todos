@@ -15,19 +15,6 @@ export const initialLists = [
 	{
 		settings: {
 			id: 2,
-			title: "Important",
-			isMain: true,
-			pinned: false,
-			theme: null,
-			icon: "assets/svgs/star.svg",
-		},
-		tasks: [],
-		completedTasks: [],
-		importantTasks: [],
-	},
-	{
-		settings: {
-			id: 3,
 			title: "All",
 			isMain: true,
 			pinned: false,

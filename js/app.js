@@ -233,11 +233,19 @@ async function initialUserData() {
 	handleUI();
 	handleSettings();
 	handleThemes();
-	setTimeout(() => elements.loader.classList.add("hide"));
+	setTimeout(() => elements.loader.classList.add("hide"), 100);
 }
 
 // Initial
 initialUserData();
 
-// userData.lists = lists
-// console.log(await user.save(userToken, userData));
+/*
+CLEAR:
+
+user.clear(userToken, userData);
+
+SAVE:
+
+userData.lists = lists
+console.log(await user.save(userToken, userData));
+*/

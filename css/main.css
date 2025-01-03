@@ -301,6 +301,11 @@ nav.show {
   width: 100%;
   color: var(--main-color);
 }
+.tasks-main-container .task-input-container .tasksInput > i {
+  margin-right: 14px;
+  color: #d12b2b !important;
+  font-size: 24px;
+}
 .tasks-main-container .task-input-container .tasksInputOptions {
   display: flex;
   align-items: center;

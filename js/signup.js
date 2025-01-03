@@ -18,7 +18,7 @@ function signUp() {
 	return new Promise(async (res, rej) => {
 		try {
 			const response = await fetch(
-				"http://localhost:5000/api/auth/signup",
+				"http://192.168.1.100:5000/api/auth/signup",
 				{
 					headers: {
 						Accept: "application/json",

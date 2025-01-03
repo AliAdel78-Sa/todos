@@ -249,3 +249,5 @@ SAVE:
 userData.lists = lists
 console.log(await user.save(userToken, userData));
 */
+
+// storage.clear();

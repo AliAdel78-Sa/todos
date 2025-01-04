@@ -1,3 +1,15 @@
+// Installing App
+if ("serviceWorker" in navigator) {
+	navigator.serviceWorker
+		.register("sw.js")
+		.then((reg) => {
+			console.log(reg);
+		})
+		.catch((e) => {
+			console.log(e);
+		});
+}
+
 // Modules
 import {
 	closeNavBar,
@@ -12,11 +24,15 @@ import { elements } from "./modules/elements.js";
 import { initialLists, initialSettings } from "./modules/default.js";
 import { handleThemes } from "./modules/themes.js";
 import { user } from "./modules/userData.js";
-// Variables
+// CONSTANTS
 const SMART_LISTS_IDS = [1, 2, 3, 4, 5];
 const userToken = storage.get("token");
+const CURRENT_LIST_ID = "currentListId";
+
+// Variables
 let lists = initialLists;
 let userData = {};
+
 // Events
 elements.deleteListBtn.addEventListener("click", deleteCurrentList);
 elements.deleteList.addEventListener("click", () => {
@@ -39,15 +55,42 @@ elements.newListInput.addEventListener("keydown", (e) => {
 elements.renameListInput.addEventListener("keydown", (e) => {
 	renameList(e);
 });
+// elements.addTaskInput.addEventListener("keydown", (e) => {
+// 	if (e.key === "Enter") {
+// 		addNewTask(elements.addTaskInput.value.trim(), "no");
+// 		elements.addTaskInput.value = "";
+// 		validate();
+// 		updateDisplay();
+// 		updateCount();
+// 	}
+// });
+
 // Functions
+
+function findListById(id) {
+	return lists.find((list) => Number(list.settings.id) === Number(id));
+}
+function findTaskById(tasks, id) {
+	return tasks.find((task) => Number(task.id) === Number(id));
+}
+function isValid(text) {
+	if (text.length > 0 && text.length < 30) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+// Lists
 async function renameList(e) {
 	const value = elements.renameListInput.value.trim();
 	let changedValue = "";
 
 	if (e.key === "Enter") {
+		// Check If Input's Value Is Empty
 		elements.renameListInput.blur();
-		if (value.length < 0) {
-			changedValue = "Untitled";
+		if (value.length === 0) {
+			changedValue = "Untitled List";
 		} else {
 			changedValue = value;
 		}
@@ -56,32 +99,18 @@ async function renameList(e) {
 		elements.listTitle.textContent = changedValue;
 
 		// Change The List Title In The Lists And Save It
-		lists.forEach((list) => {
-			if (
-				Number(list.settings.id) ===
-				Number(storage.get("currentListId", 1))
-			) {
-				list.settings.title = changedValue;
-			}
-		});
+		const list = findListById(storage.get(CURRENT_LIST_ID));
+		list.settings.title = changedValue;
 
 		// Change The Title Of The List Item In The Nav Bar
 		const listItems = document.querySelectorAll(".list-item");
 		listItems.forEach((listItem) => {
-			if (Number(listItem.id) === Number(storage.get("currentListId"))) {
+			if (Number(listItem.id) === Number(storage.get(CURRENT_LIST_ID))) {
 				listItem.lastChild.textContent = changedValue;
 			}
 		});
-
 		userData.lists = lists;
 		console.log(await user.save(userToken, userData));
-	}
-}
-function isValid(text) {
-	if (text.length > 0 && text.length < 30) {
-		return true;
-	} else {
-		return false;
 	}
 }
 function showModal() {
@@ -93,7 +122,7 @@ async function deleteCurrentList() {
 	// Create A List Without The Current List And Saving It
 	lists = lists.filter((list) => {
 		return (
-			Number(list.settings.id) !== Number(storage.get("currentListId"))
+			Number(list.settings.id) !== Number(storage.get(CURRENT_LIST_ID))
 		);
 	});
 	// Going To The Previous List and Removing The List Item From The DOM
@@ -101,7 +130,7 @@ async function deleteCurrentList() {
 	listItems.forEach((listItem, index) => {
 		if (
 			Number(listItem.getAttribute("id")) ===
-			Number(storage.get("currentListId"))
+			Number(storage.get(CURRENT_LIST_ID))
 		) {
 			handleListClick(listItems[index - 1]);
 			listItem.remove();
@@ -112,9 +141,9 @@ async function deleteCurrentList() {
 }
 function handleListClick(listItem) {
 	// Change Id Of Page
-	storage.set("currentListId", Number(listItem.id));
+	storage.set(CURRENT_LIST_ID, Number(listItem.id));
 	// Hide Delete And Rename Options For Smart Lists
-	if (SMART_LISTS_IDS.includes(Number(storage.get("currentListId")))) {
+	if (SMART_LISTS_IDS.includes(Number(storage.get(CURRENT_LIST_ID)))) {
 		elements.deleteList.style.display = "none";
 		elements.renameList.style.display = "none";
 	} else {
@@ -131,7 +160,6 @@ function handleListClick(listItem) {
 	listItem.classList.add("active");
 	closeNavBar();
 	// Display Tasks Of That List
-
 	renderAllTasks();
 }
 async function addNewList(listTitle) {
@@ -156,6 +184,7 @@ async function addNewList(listTitle) {
 	listItem.addEventListener("click", () => {
 		handleListClick(listItem);
 	});
+
 	// Saving List In The Storage
 	userData.lists.push(list);
 	console.log(await user.save(userToken, userData));
@@ -175,7 +204,7 @@ function renderAllLists() {
 		}
 
 		// Hiding The Delete And Rename Options If The List Is Smart
-		if (SMART_LISTS_IDS.includes(Number(storage.get("currentListId", 1)))) {
+		if (SMART_LISTS_IDS.includes(Number(storage.get(CURRENT_LIST_ID, 1)))) {
 			elements.deleteList.style.display = "none";
 			elements.renameList.style.display = "none";
 		} else {
@@ -184,7 +213,7 @@ function renderAllLists() {
 		}
 
 		// Trigger A handleListClick On The Current List
-		if (Number(storage.get("currentListId", 1)) === Number(listItem.id)) {
+		if (Number(storage.get(CURRENT_LIST_ID, 1)) === Number(listItem.id)) {
 			handleListClick(listItem);
 		}
 
@@ -202,7 +231,7 @@ function buildList(list, container) {
 	const text = document.createElement("div");
 	// Add Classes And Some Changes
 	listItem.classList.add("list-item");
-	if (Number(storage.get("currentListId")) === Number(list.settings.id)) {
+	if (Number(storage.get(CURRENT_LIST_ID)) === Number(list.settings.id)) {
 		listItem.classList.add("active");
 		elements.listTitle.textContent = list.settings.title;
 	}
@@ -218,22 +247,21 @@ function buildList(list, container) {
 
 	return listItem;
 }
+
+// Tasks
 function renderAllTasks() {
 	elements.tasksContainers.forEach((cont) => {
 		cont.innerHTML = "";
 	});
-	lists.forEach((list) => {
-		if (+list.settings.id === +storage.get("currentListId")) {
-			list.tasks.forEach((task) => {
-				const [taskItem, checkBox, text] = buildTaskUi(task);
-				checkBox.addEventListener("click", () => {
-					handleCompletion(checkBox);
-				});
-				text.addEventListener("click", () => {
-					handleCompletion(text);
-				});
-			});
-		}
+	const list = findListById(storage.get(CURRENT_LIST_ID));
+	list.tasks.forEach((task) => {
+		const [taskItem, checkBox, text] = buildTaskUi(task);
+		checkBox.addEventListener("click", () => {
+			handleCompletion(checkBox);
+		});
+		text.addEventListener("click", () => {
+			handleCompletion(text);
+		});
 	});
 	updateCount();
 	updateDisplay();
@@ -241,6 +269,7 @@ function renderAllTasks() {
 async function addNewTask(taskTitle, priority) {
 	if (taskTitle.length === 0) return;
 	let parentListId;
+
 	const task = {
 		id: Date.now(),
 		title: taskTitle,
@@ -251,24 +280,20 @@ async function addNewTask(taskTitle, priority) {
 		subTasks: [],
 		note: "",
 	};
-	lists.forEach((list) => {
-		if (Number(list.settings.id) === Number(storage.get("currentListId"))) {
-			if (Number(list.settings.id) === SMART_LISTS_IDS[1]) {
-				parentListId = 5;
-				lists.forEach((list) => {
-					if (+list.settings.id === parentListId) {
-						list.tasks.push(task);
-						task.parentListTitle = list.settings.title;
-					}
-				});
-			} else {
-				parentListId = list.settings.id;
-				task.parentListTitle = list.settings.title;
-				list.tasks.push(task);
-			}
-		}
-	});
-	task.parentList = parentListId;
+
+	// Saving Task In The List
+	const list = findListById(storage.get(CURRENT_LIST_ID));
+	if (Number(list.settings.id) === SMART_LISTS_IDS[1]) {
+		parentListId = 5;
+		let tasksList = findListById(parentListId);
+		task.parentListTitle = tasksList.settings.title;
+		tasksList.tasks.push(task);
+	} else {
+		task.parentListTitle = list.settings.title;
+		parentListId = list.settings.id;
+		list.tasks.push(task);
+	}
+
 	// build Task
 	const [taskItem, checkBox, text] = buildTaskUi(task);
 	checkBox.addEventListener("click", () => {
@@ -281,28 +306,25 @@ async function addNewTask(taskTitle, priority) {
 	userData.lists = lists;
 	console.log(await user.save(userToken, userData));
 }
-function handleCompletion(checkBox) {
-	lists.forEach((list) => {
-		if (list.settings.id === +storage.get("currentListId")) {
-			list.tasks.forEach(async (task) => {
-				if (task.id === +checkBox.parentElement.id) {
-					if (task.completed === true) {
-						task.completed = false;
-					} else {
-						task.completed = true;
-					}
-					renderAllTasks();
-					userData.lists = lists;
-					console.log(await user.save(userToken, userData));
-				}
-			});
+async function handleCompletion(child) {
+	const list = findListById(storage.get(CURRENT_LIST_ID));
+	const task = findTaskById(list.tasks, child.parentElement.id);
+	if (task.id === +child.parentElement.id) {
+		task.completed = !task.completed;
+		if (task.completed) {
+			elements.completetionSound.currentTime = 0;
+			elements.completetionSound.volume = 0.5;
+			elements.completetionSound.play();
+			child.parentElement.classList.add("checked");
 		}
-	});
+		child.parentElement.style.opacity = "0";
+		setTimeout(() => {
+			renderAllTasks();
+		}, 300);
+		userData.lists = lists;
+		console.log(await user.save(userToken, userData));
+	}
 }
-function handleTaskClick() {
-	showTaskModal();
-}
-function showTaskModal(task) {}
 function buildTaskUi(task) {
 	// Creating Elements
 	const li = document.createElement("li");
@@ -316,38 +338,34 @@ function buildTaskUi(task) {
 	date.classList.add("due-date");
 	li.classList.add("task-item");
 	icon.classList.add("icon");
+	if (task.completed) {
+		li.classList.add("checked");
+	}
 	text.classList.add("text");
 	date.innerHTML = "Today";
 	img.src = "assets/svgs/check.svg";
 	text.textContent = task.title;
 
 	// Appending Elements
-
 	icon.append(img);
 	li.append(icon, text, date);
-
+	let container;
 	if (task.completed === true) {
-		elements.completedList.append(li);
+		container = elements.completedList;
 	} else if (task.priority === "high") {
-		elements.highList.append(li);
+		container = elements.highList;
 	} else if (task.priority === "medium") {
-		elements.mediumList.append(li);
+		container = elements.mediumList;
 	} else if (task.priority === "low") {
-		elements.lowList.append(li);
+		container = elements.lowList;
 	} else if (task.priority === "no") {
-		elements.noList.append(li);
+		container = elements.noList;
 	}
-
+	container.append(li);
+	// Remove the animation class after it completes
 	return [li, icon, text];
 }
-elements.addTaskInput.addEventListener("keydown", (e) => {
-	if (e.key === "Enter") {
-		addNewTask(elements.addTaskInput.value.trim(), "no");
-		console.log(lists);
-		elements.addTaskInput.value = "";
-		validate();
-	}
-});
+
 // For User
 async function initialUserData() {
 	if (userToken === null) return window.location.assign("/pages/login.html");
@@ -378,5 +396,3 @@ SAVE:
 userData.lists = lists
 console.log(await user.save(userToken, userData));
 */
-
-// storage.clear();

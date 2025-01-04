@@ -1,0 +1,20 @@
+{
+	"name": "To Do App",
+	"short_name": "To Do",
+	"start_url": ".",
+	"background_color": "#000",
+	"theme_color": "#000",
+	"display": "fullscreen",
+	"icons": [
+		{
+			"src": "assets/imgs/image.webp",
+			"type": "image/webp",
+			"sizes": "192x192"
+		},
+		{
+			"src": "assets/imgs/image (1).webp",
+			"type": "image/webp",
+			"sizes": "512x512"
+		}
+	]
+}

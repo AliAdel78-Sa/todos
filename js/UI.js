@@ -172,9 +172,9 @@ export function handleUI() {
 	elements.searchBar.addEventListener("focus", () => {
 		elements.closeSearchBar.style.display = "none";
 	});
-	elements.taskInput.addEventListener("focus", showTaskInputOptions);
-	elements.taskInput.addEventListener("blur", hideTaskInputOptions);
-	elements.taskInput.addEventListener("input", validate);
+	// elements.taskInput.addEventListener("focus", showTaskInputOptions);
+	// elements.taskInput.addEventListener("blur", hideTaskInputOptions);
+	// elements.taskInput.addEventListener("input", validate);
 	elements.searchBarIcon.addEventListener("click", openSearchBar);
 	elements.closeSearchBar.addEventListener("click", clearSearchBar);
 	elements.searchOverlay.addEventListener("click", closeSearchBar);

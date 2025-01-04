@@ -8,6 +8,15 @@
 		/>
 		<link rel="stylesheet" href="css/main.css" />
 		<link rel="stylesheet" href="assets/fontawesome/all.min.css" />
+		<link rel="manifest" href="/manifest.json" />
+		<meta name="theme-color" content="#000" />
+		<link rel="apple-touch-icon" href="assets/svgs/check.svg" />
+		<meta name="mobile-web-wapp-capable" content="yes" />
+		<link
+			rel="shortcut icon"
+			href="assets/imgs/spider.jpg"
+			type="image/x-icon"
+		/>
 		<link
 			href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
 			rel="stylesheet"
@@ -112,26 +121,7 @@
 					<i class="bx bx-dots-horizontal-rounded bx-sm"></i>
 				</div>
 			</header>
-			<div class="task-input-container">
-				<div class="tasksInput">
-					<div class="icon">
-						<i class="bx bx-plus bx-sm"></i>
-					</div>
-					<input
-						type="text"
-						autocomplete="off"
-						spellcheck="false"
-						id="tasks-input"
-						placeholder="Add a task"
-						value="Add a task"
-						inputmode="text"
-					/>
-					<i class="bx bxs-flag" style="color: #ffffff"></i>
-				</div>
-				<div class="tasksInputOptions">
-					<button class="add-btn">Add</button>
-				</div>
-			</div>
+
 			<div id="tasks-list">
 				<header class="list-header">
 					<h2>HIGH PRIORITY</h2>
@@ -343,14 +333,21 @@
 
 			<div class="links">
 				<p>
-					<img src="assets/svgs/sun.svg" alt="" />
+					<i
+						class="bx bxl-instagram bx-sm"
+						style="color: #78b9fd"
+					></i>
 					<a href="https://instagram.com/">Follow Me On Instagram</a>
 				</p>
 				<p>
-					<img src="assets/svgs/sun.svg" alt="" />
+					<i class="bx bxl-github bx-sm" style="color: #78b9fd"></i>
 					<a href="https://github.com/AliAdel78-Sa"
 						>Follow Me On Github</a
 					>
+				</p>
+				<p onclick="signOut()">
+					<i class="bx bx-log-out bx-sm" style="color: #ff0000"></i>
+					<span style="color: red">Sign Out</span>
 				</p>
 			</div>
 		</aside>
@@ -457,8 +454,18 @@
 			</div>
 		</div>
 
+		<audio
+			src="assets/sounds/complete-sound.mp3"
+			style="display: none"
+		></audio>
 		<script type="module" src="js/app.js"></script>
 		<script src="js/modules/test.js" type="module"></script>
+		<script>
+			function signOut() {
+				localStorage.removeItem("token");
+				window.location.reload();
+			}
+		</script>
 	</body>
 </html>
 

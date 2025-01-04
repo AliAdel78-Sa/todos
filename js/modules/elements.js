@@ -43,9 +43,9 @@ export const elements = {
 	navOverlay: $("#nav-overlay"),
 	newListInput: $("#list-input"),
 	listInputContainer: $(".add-list-input"),
-	taskInput: $("#tasks-input"),
-	taskInputOptions: $(".tasksInputOptions"),
-	addTaskBtn: $(".add-btn"),
+	// taskInput: $("#tasks-input"),
+	// taskInputOptions: $(".tasksInputOptions"),
+	// addTaskBtn: $(".add-btn"),
 	cornerBtn: $(".add-task-btn"),
 	togglers: $(".toggler", true),
 	onOff: $(".onOff", true),
@@ -74,7 +74,7 @@ export const elements = {
 	themes: $(".theme", true),
 	loader: $("#preloader"),
 	profilePhoto: $(".profile-photo"),
-	addTaskInput: $("#tasks-input"),
+	// addTaskInput: $("#tasks-input"),
 	tasksList: $("#tasks-list"),
 	headers: $(".list-header", true),
 	tasksContainers: $(".tasks-container", true),
@@ -83,6 +83,7 @@ export const elements = {
 	highList: $(`[priority="high"]`),
 	noList: $(`[priority="no"]`),
 	completedList: $("#completedList"),
+	completetionSound: $("audio"),
 };
 
 //<li class="task-item" id="${task.id}">

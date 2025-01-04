@@ -2,7 +2,7 @@ export const initialLists = [
 	{
 		settings: {
 			id: 1,
-			title: "My Day",
+			title: "Today",
 			isMain: true,
 			pinned: false,
 			theme: null,

@@ -1,0 +1,343 @@
+{
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzgzNjI1OGMyZmY1YWY3ODg5ZjY5NCIsImlhdCI6MTczNjAxNjMyN30.811GTvx4ri1u37bVvBdP8Qi3JRFS1_2VQFtAwwLo0aU",
+	"user": {
+		"userData": {
+			"lists": [
+				{
+					"settings": {
+						"id": 1,
+						"title": "Today",
+						"isMain": true,
+						"pinned": false,
+						"theme": null,
+						"icon": "assets/svgs/sun.svg"
+					},
+					"tasks": [
+						{
+							"id": 1736014906459,
+							"title": "task",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736014961306,
+							"title": "Tasks Idk DOt Input Right?",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015464707,
+							"title": "Add a tandsk",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015465802,
+							"title": "dabs",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015466218,
+							"title": "dsb",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015466386,
+							"title": "sf",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015466611,
+							"title": "b",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015466762,
+							"title": "sfb",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015466914,
+							"title": "sf",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015467042,
+							"title": "b",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015467178,
+							"title": "fs",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015467298,
+							"title": "b",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015467459,
+							"title": "fs",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015467594,
+							"title": "bfs",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015467866,
+							"title": "bns",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015468003,
+							"title": "fn",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015468307,
+							"title": "nf",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015468578,
+							"title": "sfn",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015468746,
+							"title": "sf",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015468890,
+							"title": "n",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015469178,
+							"title": "gsdn",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015469330,
+							"title": "gd",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015469466,
+							"title": "n",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015469618,
+							"title": "gd",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015469755,
+							"title": "n",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						},
+						{
+							"id": 1736015470170,
+							"title": "gd",
+							"completed": false,
+							"priority": "no",
+							"parentList": null,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": ""
+						}
+					],
+					"completedTasks": [],
+					"importantTasks": []
+				},
+				{
+					"settings": {
+						"id": 2,
+						"title": "All",
+						"isMain": true,
+						"pinned": false,
+						"theme": null,
+						"icon": "assets/svgs/all.svg"
+					},
+					"tasks": [],
+					"completedTasks": [],
+					"importantTasks": []
+				},
+				{
+					"settings": {
+						"id": 3,
+						"title": "Completed",
+						"isMain": true,
+						"pinned": false,
+						"theme": null,
+						"icon": "assets/svgs/checked.svg"
+					},
+					"tasks": [],
+					"completedTasks": [],
+					"importantTasks": []
+				},
+				{
+					"settings": {
+						"id": 4,
+						"title": "Planned",
+						"isMain": true,
+						"pinned": false,
+						"theme": null,
+						"icon": "assets/svgs/calendar.svg"
+					},
+					"tasks": [],
+					"completedTasks": [],
+					"importantTasks": []
+				},
+				{
+					"settings": {
+						"id": 5,
+						"title": "Tasks",
+						"isMain": true,
+						"pinned": false,
+						"theme": null,
+						"icon": "assets/svgs/list.svg"
+					},
+					"tasks": [],
+					"completedTasks": [],
+					"importantTasks": []
+				}
+			]
+		},
+		"_id": "677836258c2ff5af7889f694",
+		"email": "alya70934@gmail.com",
+		"password": "$2b$10$Ympd8ooHwutj1gbNe9cld.JXqqhewVMHLscI5qBMtcMAJpXDF0tbC",
+		"firstName": "Ali",
+		"lastName": "Adel",
+		"verified": true,
+		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzgzNjI1OGMyZmY1YWY3ODg5ZjY5NCIsImlhdCI6MTczNjAxNjMyN30.811GTvx4ri1u37bVvBdP8Qi3JRFS1_2VQFtAwwLo0aU",
+		"__v": 0
+	}
+}

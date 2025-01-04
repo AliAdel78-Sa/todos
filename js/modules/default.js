@@ -27,7 +27,7 @@ export const initialLists = [
 	},
 	{
 		settings: {
-			id: 4,
+			id: 3,
 			title: "Completed",
 			isMain: true,
 			pinned: false,
@@ -40,7 +40,7 @@ export const initialLists = [
 	},
 	{
 		settings: {
-			id: 5,
+			id: 4,
 			title: "Planned",
 			isMain: true,
 			pinned: false,
@@ -53,7 +53,7 @@ export const initialLists = [
 	},
 	{
 		settings: {
-			id: 6,
+			id: 5,
 			title: "Tasks",
 			isMain: true,
 			pinned: false,

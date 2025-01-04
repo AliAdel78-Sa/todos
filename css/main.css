@@ -16,6 +16,8 @@
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  scrollbar-width: none;
+  scroll-behavior: smooth;
 }
 
 a:visited {
@@ -26,6 +28,10 @@ body {
   background-color: #11100e;
   height: 100dvh;
   overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 body > header {
@@ -251,24 +257,24 @@ nav.show {
 .tasks-main-container * {
   color: var(--main-color);
 }
-.tasks-main-container header {
+.tasks-main-container > header {
   display: flex;
   gap: 10px;
-  align-items: center;
+  position: sticky;
   padding: 0 20px 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
-.tasks-main-container header h1 {
+.tasks-main-container > header h1 {
   font-size: 20px;
 }
-.tasks-main-container header #renameListInput {
+.tasks-main-container > header #renameListInput {
   font-size: 20px;
   border: 1px solid #fff;
   padding: 10px;
   width: 150px;
   display: none;
 }
-.tasks-main-container header #list-options-menu {
+.tasks-main-container > header #list-options-menu {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -277,6 +283,8 @@ nav.show {
 }
 .tasks-main-container .task-input-container {
   margin-top: 20px;
+  top: 0;
+  align-items: center;
 }
 .tasks-main-container .task-input-container .tasksInput {
   display: flex;
@@ -326,6 +334,7 @@ nav.show {
   height: 35px;
   padding-inline: 7px;
   opacity: 0.7;
+  color: #fff;
   margin-right: 10px;
 }
 .tasks-main-container .task-input-container .tasksInputOptions button.active {
@@ -335,43 +344,98 @@ nav.show {
 .tasks-main-container .task-input-container .tasksInputOptions.show {
   transform: translateY(0);
 }
-.tasks-main-container .task-item {
-  background-color: #252422;
+
+#tasks-list header {
+  opacity: 0.6;
   display: flex;
   align-items: center;
-  padding: 10px 20px;
-  gap: 15px;
+  padding-inline: 10px;
+  background-color: #292828;
+  padding-block: 10px;
+  border-radius: 5px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  transition: 0.3s ease all;
 }
-.tasks-main-container .task-item .icon .circle {
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  width: 26px;
+#tasks-list header.show {
+  border-radius: 5px;
+}
+#tasks-list header .icon {
+  transition: 0.3s ease all;
+}
+#tasks-list header .icon.rotate {
+  rotate: -90deg;
+}
+#tasks-list header h2 {
+  margin-right: auto;
+}
+#tasks-list header * {
+  font-weight: normal;
+  color: #fff;
+}
+#tasks-list header span {
+  margin-right: 5px;
+}
+
+#tasks-list ul {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: 0.3s ease all;
+  background-color: #1f1e1e;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  margin-bottom: 10px;
+}
+#tasks-list ul * {
+  color: #fff;
+}
+#tasks-list ul.show {
+  grid-template-rows: 1fr;
+}
+#tasks-list ul > div {
+  overflow: hidden;
+}
+#tasks-list ul.completedList * {
+  color: #fff;
+  opacity: 0.6;
+}
+#tasks-list ul.completedList .task-item .icon {
+  background-color: #fff;
+  border-color: #fff;
+}
+#tasks-list ul.completedList .task-item .icon img {
+  display: block;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  gap: 15px;
+  border-radius: 5px;
+}
+.task-item .text {
+  margin-top: 3px;
+}
+.task-item .icon {
+  border: 2px solid var(--list-color);
+  width: 20px;
+  border-radius: 5px;
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: 0.3s ease all;
 }
-.tasks-main-container .task-item .icon .circle img {
+.task-item .icon img {
   display: none;
 }
-.tasks-main-container .task-item .icon.checked .circle {
-  background-color: #78b9fd;
-  border: 1px solid transparent;
-}
-.tasks-main-container .task-item .icon.checked .circle img {
-  display: block;
-}
-.tasks-main-container .task-item .icon.checked ~ .text {
-  text-decoration: line-through;
-  opacity: 0.5;
-}
-.tasks-main-container .task-item .star {
+.task-item .due-date {
   margin-left: auto;
 }
 
 .add-task-btn {
-  position: absolute;
+  position: fixed;
   bottom: 30px;
   right: 20px;
   border-radius: 50%;

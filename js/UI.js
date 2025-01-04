@@ -41,7 +41,7 @@ function hideSettingsAside() {
 	elements.settingsBar.classList.remove("show");
 	elements.asideOverlay.classList.remove("show");
 }
-function validate() {
+export function validate() {
 	if (elements.taskInput.value.length > 0) {
 		elements.addTaskBtn.classList.add("active");
 		return true;
@@ -85,8 +85,40 @@ export function closeNavBar() {
 	elements.navBar.classList.remove("show");
 	elements.navOverlay.classList.remove("show");
 }
+export function updateDisplay() {
+	elements.tasksContainers.forEach((cont) => {
+		if (cont.childElementCount === 0) {
+			cont.parentElement.style.display = "none";
+			cont.parentElement.previousElementSibling.style.display = "none";
+		} else {
+			cont.parentElement.previousElementSibling.style.display = "flex";
+			cont.parentElement.style.display = "grid";
+		}
+	});
+}
+
+function countTasks() {
+	let counts = [];
+	elements.tasksContainers.forEach((cont) => {
+		counts.push(cont.childElementCount);
+	});
+	return counts;
+}
+
+export function updateCount() {
+	countTasks().forEach((n, i) => {
+		elements.headers[i].childNodes[3].innerHTML = n;
+	});
+}
 
 export function handleUI() {
+	elements.headers.forEach((header) => {
+		header.addEventListener("click", () => {
+			header.classList.toggle("show");
+			header.nextElementSibling.classList.toggle("show");
+			header.childNodes[5].classList.toggle("rotate");
+		});
+	});
 	elements.renameList.addEventListener("click", () => {
 		hideListOptions();
 		showRenameInput();

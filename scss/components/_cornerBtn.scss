@@ -1,7 +1,7 @@
 @use "../themes" as *;
 
 .add-task-btn {
-	position: absolute;
+	position: fixed;
 	bottom: 30px;
 	right: 20px;
 	border-radius: 50%;

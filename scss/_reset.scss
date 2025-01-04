@@ -16,6 +16,8 @@
 	user-select: none;
 	-webkit-tap-highlight-color: transparent;
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	scrollbar-width: none;
+	scroll-behavior: smooth;
 }
 a:visited {
 	color: #fff;
@@ -24,4 +26,8 @@ body {
 	background-color: #11100e;
 	height: 100dvh;
 	overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+	display: none;
 }

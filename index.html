@@ -132,8 +132,68 @@
 					<button class="add-btn">Add</button>
 				</div>
 			</div>
-
-			<ul id="tasks-list"></ul>
+			<div id="tasks-list">
+				<header class="list-header">
+					<h2>HIGH PRIORITY</h2>
+					<span>1</span>
+					<div class="icon">
+						<i class="bx bx-chevron-down"></i>
+					</div>
+				</header>
+				<ul class="show" style="--list-color: red">
+					<div class="tasks-container" priority="high"></div>
+				</ul>
+				<header class="list-header">
+					<h2>MEDIUM PRIORITY</h2>
+					<span>1</span>
+					<div class="icon">
+						<i class="bx bx-chevron-down"></i>
+					</div>
+				</header>
+				<ul class="show" style="--list-color: orange">
+					<div class="tasks-container" priority="medium"></div>
+				</ul>
+				<header class="list-header">
+					<h2>LOW PRIORITY</h2>
+					<span>1</span>
+					<div class="icon">
+						<i class="bx bx-chevron-down"></i>
+					</div>
+				</header>
+				<ul class="show" style="--list-color: blue">
+					<div class="tasks-container" priority="low"></div>
+				</ul>
+				<header class="list-header">
+					<h2>NO PRIORITY</h2>
+					<span>1</span>
+					<div class="icon">
+						<i class="bx bx-chevron-down"></i>
+					</div>
+				</header>
+				<ul class="show" style="--list-color: gray">
+					<div class="tasks-container" priority="no"></div>
+				</ul>
+				<header class="list-header">
+					<h2>HABITS</h2>
+					<span>1</span>
+					<div class="icon">
+						<i class="bx bx-chevron-down"></i>
+					</div>
+				</header>
+				<ul class="show" style="--list-color: gray">
+					<div class="tasks-container"></div>
+				</ul>
+				<header class="list-header">
+					<h2>COMPLETED</h2>
+					<span>1</span>
+					<div class="icon">
+						<i class="bx bx-chevron-down"></i>
+					</div>
+				</header>
+				<ul class="show completedList" style="--list-color: gray">
+					<div class="tasks-container" id="completedList"></div>
+				</ul>
+			</div>
 		</div>
 
 		<!-- Settings Bar :) -->
@@ -410,15 +470,14 @@
       </div>
    </div>
    <div class="text">${task.title</div>
-   <div class="star">
-      <img src="assets/svgs/star-blue.svg" alt="" />
+	<div class="star">
+		<img src="assets/svgs/star-blue.svg" alt="" />
 		<div class="filled">
 			<img src="assets/svgs/star-blue.svg" alt="" />
 		</div>
-   </div>
+	</div>
 </li>
 -->
-
 <!--
 <div class="high-priority-list">
 	<header></header>

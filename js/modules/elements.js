@@ -74,4 +74,23 @@ export const elements = {
 	themes: $(".theme", true),
 	loader: $("#preloader"),
 	profilePhoto: $(".profile-photo"),
+	addTaskInput: $("#tasks-input"),
+	tasksList: $("#tasks-list"),
+	headers: $(".list-header", true),
+	tasksContainers: $(".tasks-container", true),
+	lowList: $(`[priority="low"]`),
+	mediumList: $(`[priority="medium"]`),
+	highList: $(`[priority="high"]`),
+	noList: $(`[priority="no"]`),
+	completedList: $("#completedList"),
 };
+
+//<li class="task-item" id="${task.id}">
+{
+	/* <div class="icon">
+<img src="assets/svgs/check.svg" alt="" />
+</div>
+<div class="text">Task</div>
+<div class="due-date">Today</div>
+</li> */
+}

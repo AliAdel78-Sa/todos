@@ -1,19 +1,22 @@
 // Modules
-import { closeNavBar, handleUI } from "./UI.js";
+import {
+	closeNavBar,
+	handleUI,
+	updateCount,
+	updateDisplay,
+	validate,
+} from "./UI.js";
 import { handleSettings } from "./modules/settings.js";
 import { storage } from "./modules/storage.js";
 import { elements } from "./modules/elements.js";
 import { initialLists, initialSettings } from "./modules/default.js";
 import { handleThemes } from "./modules/themes.js";
 import { user } from "./modules/userData.js";
-
 // Variables
-
-const SMART_LISTS_IDS = [1, 2, 3, 4, 5, 6];
+const SMART_LISTS_IDS = [1, 2, 3, 4, 5];
 const userToken = storage.get("token");
 let lists = initialLists;
 let userData = {};
-
 // Events
 elements.deleteListBtn.addEventListener("click", deleteCurrentList);
 elements.deleteList.addEventListener("click", () => {
@@ -36,7 +39,6 @@ elements.newListInput.addEventListener("keydown", (e) => {
 elements.renameListInput.addEventListener("keydown", (e) => {
 	renameList(e);
 });
-
 // Functions
 async function renameList(e) {
 	const value = elements.renameListInput.value.trim();
@@ -94,7 +96,6 @@ async function deleteCurrentList() {
 			Number(list.settings.id) !== Number(storage.get("currentListId"))
 		);
 	});
-
 	// Going To The Previous List and Removing The List Item From The DOM
 	const listItems = document.querySelectorAll(".list-item");
 	listItems.forEach((listItem, index) => {
@@ -131,7 +132,7 @@ function handleListClick(listItem) {
 	closeNavBar();
 	// Display Tasks Of That List
 
-	// renderAllTasks(listItem);
+	renderAllTasks();
 }
 async function addNewList(listTitle) {
 	// Create List
@@ -140,7 +141,6 @@ async function addNewList(listTitle) {
 			id: Date.now(),
 			title: listTitle,
 			isMain: false,
-			pinned: false,
 			theme: null,
 			icon: "assets/svgs/list.svg",
 		},
@@ -218,7 +218,136 @@ function buildList(list, container) {
 
 	return listItem;
 }
+function renderAllTasks() {
+	elements.tasksContainers.forEach((cont) => {
+		cont.innerHTML = "";
+	});
+	lists.forEach((list) => {
+		if (+list.settings.id === +storage.get("currentListId")) {
+			list.tasks.forEach((task) => {
+				const [taskItem, checkBox, text] = buildTaskUi(task);
+				checkBox.addEventListener("click", () => {
+					handleCompletion(checkBox);
+				});
+				text.addEventListener("click", () => {
+					handleCompletion(text);
+				});
+			});
+		}
+	});
+	updateCount();
+	updateDisplay();
+}
+async function addNewTask(taskTitle, priority) {
+	if (taskTitle.length === 0) return;
+	let parentListId;
+	const task = {
+		id: Date.now(),
+		title: taskTitle,
+		completed: false,
+		priority: priority,
+		parentList: null,
+		parentListTitle: "",
+		subTasks: [],
+		note: "",
+	};
+	lists.forEach((list) => {
+		if (Number(list.settings.id) === Number(storage.get("currentListId"))) {
+			if (Number(list.settings.id) === SMART_LISTS_IDS[1]) {
+				parentListId = 5;
+				lists.forEach((list) => {
+					if (+list.settings.id === parentListId) {
+						list.tasks.push(task);
+						task.parentListTitle = list.settings.title;
+					}
+				});
+			} else {
+				parentListId = list.settings.id;
+				task.parentListTitle = list.settings.title;
+				list.tasks.push(task);
+			}
+		}
+	});
+	task.parentList = parentListId;
+	// build Task
+	const [taskItem, checkBox, text] = buildTaskUi(task);
+	checkBox.addEventListener("click", () => {
+		handleCompletion(checkBox);
+	});
+	text.addEventListener("click", () => {
+		handleCompletion(text);
+	});
+	// Save Data
+	userData.lists = lists;
+	console.log(await user.save(userToken, userData));
+}
+function handleCompletion(checkBox) {
+	lists.forEach((list) => {
+		if (list.settings.id === +storage.get("currentListId")) {
+			list.tasks.forEach(async (task) => {
+				if (task.id === +checkBox.parentElement.id) {
+					if (task.completed === true) {
+						task.completed = false;
+					} else {
+						task.completed = true;
+					}
+					renderAllTasks();
+					userData.lists = lists;
+					console.log(await user.save(userToken, userData));
+				}
+			});
+		}
+	});
+}
+function handleTaskClick() {
+	showTaskModal();
+}
+function showTaskModal(task) {}
+function buildTaskUi(task) {
+	// Creating Elements
+	const li = document.createElement("li");
+	const icon = document.createElement("div");
+	const img = document.createElement("img");
+	const text = document.createElement("div");
+	const date = document.createElement("div");
 
+	// Editing Elements
+	li.id = task.id;
+	date.classList.add("due-date");
+	li.classList.add("task-item");
+	icon.classList.add("icon");
+	text.classList.add("text");
+	date.innerHTML = "Today";
+	img.src = "assets/svgs/check.svg";
+	text.textContent = task.title;
+
+	// Appending Elements
+
+	icon.append(img);
+	li.append(icon, text, date);
+
+	if (task.completed === true) {
+		elements.completedList.append(li);
+	} else if (task.priority === "high") {
+		elements.highList.append(li);
+	} else if (task.priority === "medium") {
+		elements.mediumList.append(li);
+	} else if (task.priority === "low") {
+		elements.lowList.append(li);
+	} else if (task.priority === "no") {
+		elements.noList.append(li);
+	}
+
+	return [li, icon, text];
+}
+elements.addTaskInput.addEventListener("keydown", (e) => {
+	if (e.key === "Enter") {
+		addNewTask(elements.addTaskInput.value.trim(), "no");
+		console.log(lists);
+		elements.addTaskInput.value = "";
+		validate();
+	}
+});
 // For User
 async function initialUserData() {
 	if (userToken === null) return window.location.assign("/pages/login.html");
@@ -233,16 +362,16 @@ async function initialUserData() {
 	handleUI();
 	handleSettings();
 	handleThemes();
+	renderAllTasks();
 	setTimeout(() => elements.loader.classList.add("hide"), 100);
 }
-
 // Initial
 initialUserData();
 
 /*
 CLEAR:
-
 user.clear(userToken, userData);
+
 
 SAVE:
 

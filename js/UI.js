@@ -1,6 +1,7 @@
 import { elements } from "./modules/elements.js";
 import { storage } from "./modules/storage.js";
 const SMART_LISTS_IDS = [1, 2, 3, 4, 5, 6];
+let initialHeight = window.visualViewport.height;
 
 function closeSearchBar() {
 	elements.searchBar.classList.remove("show");
@@ -19,19 +20,19 @@ function clearSearchBar() {
 	elements.searchBar.value = "";
 	elements.searchBar.focus();
 }
+function initialLink() {
+	elements.links.forEach((link) => {
+		if (
+			storage.get("currentPage", "to-do-list") ===
+			link.getAttribute("data-id")
+		) {
+			link.classList.add("active");
+		}
+	});
+}
 function openNavBar() {
 	elements.navBar.classList.add("show");
 	elements.navOverlay.classList.add("show");
-}
-function showTaskInputOptions() {
-	elements.taskInput.focus();
-	elements.taskInput.value = "";
-	elements.taskInputOptions.classList.add("show");
-	validate();
-}
-function hideTaskInputOptions() {
-	elements.taskInput.value = "Add a task";
-	elements.taskInputOptions.classList.remove("show");
 }
 function showSettingsAside() {
 	elements.settingsBar.classList.add("show");
@@ -40,15 +41,6 @@ function showSettingsAside() {
 function hideSettingsAside() {
 	elements.settingsBar.classList.remove("show");
 	elements.asideOverlay.classList.remove("show");
-}
-export function validate() {
-	if (elements.taskInput.value.length > 0) {
-		elements.addTaskBtn.classList.add("active");
-		return true;
-	} else {
-		elements.addTaskBtn.classList.remove("active");
-		return false;
-	}
 }
 function openListOptions() {
 	elements.listOptions.classList.add("show");
@@ -96,7 +88,6 @@ export function updateDisplay() {
 		}
 	});
 }
-
 function countTasks() {
 	let counts = [];
 	elements.tasksContainers.forEach((cont) => {
@@ -104,13 +95,11 @@ function countTasks() {
 	});
 	return counts;
 }
-
 export function updateCount() {
 	countTasks().forEach((n, i) => {
 		elements.headers[i].childNodes[3].innerHTML = n;
 	});
 }
-
 export function handleUI() {
 	elements.headers.forEach((header) => {
 		header.addEventListener("click", () => {
@@ -131,12 +120,9 @@ export function handleUI() {
 			showRenameInput();
 		}
 	});
-	elements.newListInput.addEventListener("focus", () => {
-		elements.newListInput.value = "";
-	});
 	elements.newListInput.addEventListener("keydown", (e) => {
 		if (e.key === "Enter") {
-			elements.newListInput.value = "New List";
+			elements.newListInput.value = "";
 			elements.newListInput.blur();
 		}
 	});
@@ -159,9 +145,8 @@ export function handleUI() {
 	elements.openNavBtn.addEventListener("click", openNavBar);
 	elements.navOverlay.addEventListener("click", closeNavBar);
 	elements.newListInput.addEventListener("blur", () => {
-		elements.newListInput.value = "New List";
+		elements.newListInput.value = "";
 	});
-	elements.cornerBtn.addEventListener("click", showTaskInputOptions);
 	elements.searchBar.addEventListener("input", () => {
 		if (elements.searchBar.value.length > 0) {
 			elements.closeSearchBar.style.display = "flex";
@@ -172,9 +157,6 @@ export function handleUI() {
 	elements.searchBar.addEventListener("focus", () => {
 		elements.closeSearchBar.style.display = "none";
 	});
-	// elements.taskInput.addEventListener("focus", showTaskInputOptions);
-	// elements.taskInput.addEventListener("blur", hideTaskInputOptions);
-	// elements.taskInput.addEventListener("input", validate);
 	elements.searchBarIcon.addEventListener("click", openSearchBar);
 	elements.closeSearchBar.addEventListener("click", clearSearchBar);
 	elements.searchOverlay.addEventListener("click", closeSearchBar);
@@ -183,4 +165,36 @@ export function handleUI() {
 	elements.closeSettingsBar.addEventListener("click", hideSettingsAside);
 	elements.listOptionsMenu.addEventListener("click", openListOptions);
 	elements.listOptionsOverlay.addEventListener("click", hideListOptions);
+	elements.cornerBtn.addEventListener("click", () => {
+		elements.addTaskInput.focus();
+	});
+	window.visualViewport.addEventListener("resize", () => {
+		const currentHeight = window.visualViewport.height;
+		if (currentHeight < initialHeight) {
+			elements.addTaskInput.style.bottom = `${
+				window.innerHeight - window.innerHeight / 2
+			}px`;
+			elements.addTaskInput.style.opacity = "1";
+			elements.addTaskInput.style.pointerEvents = "all";
+		} else {
+			elements.addTaskInput.style.bottom = "0";
+			elements.addTaskInput.style.opacity = "0";
+			elements.addTaskInput.style.pointerEvents = "none";
+		}
+	});
+
+	elements.links.forEach((link) => {
+		link.addEventListener("click", () => {
+			elements.links.forEach((link) => {
+				link.classList.remove("active");
+			});
+			link.classList.add("active");
+			link.style.animationName = "scaleDown";
+			setTimeout(() => {
+				link.style.animationName = "";
+			}, 200);
+			storage.set("currentPage", link.getAttribute("data-id"));
+		});
+	});
+	initialLink();
 }

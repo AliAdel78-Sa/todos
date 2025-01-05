@@ -11,13 +11,7 @@ if ("serviceWorker" in navigator) {
 }
 
 // Modules
-import {
-	closeNavBar,
-	handleUI,
-	updateCount,
-	updateDisplay,
-	validate,
-} from "./UI.js";
+import { closeNavBar, handleUI, updateCount, updateDisplay } from "./UI.js";
 import { handleSettings } from "./modules/settings.js";
 import { storage } from "./modules/storage.js";
 import { elements } from "./modules/elements.js";
@@ -47,6 +41,8 @@ elements.newListInput.addEventListener("keydown", (e) => {
 	if (e.key === "Enter") {
 		if (isValid(elements.newListInput.value.trim())) {
 			addNewList(elements.newListInput.value.trim());
+			updateCount();
+			updateDisplay();
 		} else {
 			window.alert("Too Small or Large Value");
 		}
@@ -55,15 +51,15 @@ elements.newListInput.addEventListener("keydown", (e) => {
 elements.renameListInput.addEventListener("keydown", (e) => {
 	renameList(e);
 });
-// elements.addTaskInput.addEventListener("keydown", (e) => {
-// 	if (e.key === "Enter") {
-// 		addNewTask(elements.addTaskInput.value.trim(), "no");
-// 		elements.addTaskInput.value = "";
-// 		validate();
-// 		updateDisplay();
-// 		updateCount();
-// 	}
-// });
+elements.addTaskInput.addEventListener("keydown", (e) => {
+	if (e.key === "Enter") {
+		addNewTask(elements.addTaskInput.value.trim(), "low");
+		elements.addTaskInput.value = "";
+		elements.addTaskInput.blur();
+		updateDisplay();
+		updateCount();
+	}
+});
 
 // Functions
 
@@ -178,6 +174,7 @@ async function addNewList(listTitle) {
 	};
 
 	// Build The List UI
+	lists.push(list);
 	const listItem = buildList(list, elements.listsContainer);
 	handleListClick(listItem); //  Trigger A Click On That List
 
@@ -186,7 +183,7 @@ async function addNewList(listTitle) {
 	});
 
 	// Saving List In The Storage
-	userData.lists.push(list);
+	userData.lists = lists;
 	console.log(await user.save(userToken, userData));
 }
 function renderAllLists() {
@@ -390,9 +387,10 @@ initialUserData();
 CLEAR:
 user.clear(userToken, userData);
 
-
 SAVE:
 
 userData.lists = lists
 console.log(await user.save(userToken, userData));
 */
+
+// storage.clear();

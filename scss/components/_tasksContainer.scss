@@ -1,10 +1,9 @@
 @use "../themes" as *;
 .tasks-main-container {
-	height: calc(100% - 52px);
+	padding: 30px 10px 0;
 	display: grid;
-	grid-template-rows: auto 1fr;
+	grid-template-rows: auto auto 1fr;
 	overflow: auto;
-	padding: 30px 10px;
 	* {
 		color: var(--main-color);
 	}
@@ -37,7 +36,6 @@
 
 #tasks-list {
 	overflow: auto;
-	padding: 15px 0;
 	header {
 		opacity: 0.6;
 		display: flex;
@@ -75,7 +73,7 @@
 	ul {
 		display: grid;
 		grid-template-rows: 0fr;
-		transition: 0.5s ease all;
+		transition: 0.3s ease all;
 		background-color: #1f1e1e;
 		border-bottom-right-radius: 5px;
 		border-bottom-left-radius: 5px;

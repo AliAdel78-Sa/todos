@@ -1,0 +1,44 @@
+body > footer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 120px;
+	padding: 10px 0;
+}
+
+footer {
+	.link.active {
+		svg {
+			stroke: var(--main-color);
+		}
+	}
+	.link {
+		transition: 0.2s ease-in-out all;
+		animation-duration: 200ms;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: 1;
+		animation-fill-mode: both;
+		animation-direction: alternate;
+	}
+}
+
+#tasks-input {
+	background-color: #2c2b2b;
+	position: fixed;
+	opacity: 0;
+	bottom: 0;
+	width: 100%;
+	color: #fff;
+	padding: 20px;
+	pointer-events: none;
+}
+
+@keyframes scaleDown {
+	50% {
+		scale: 0.8;
+	}
+	0%,
+	100% {
+		scale: 1;
+	}
+}

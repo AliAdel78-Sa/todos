@@ -43,9 +43,7 @@ export const elements = {
 	navOverlay: $("#nav-overlay"),
 	newListInput: $("#list-input"),
 	listInputContainer: $(".add-list-input"),
-	// taskInput: $("#tasks-input"),
-	// taskInputOptions: $(".tasksInputOptions"),
-	// addTaskBtn: $(".add-btn"),
+	taskInput: $("#tasks-input"),
 	cornerBtn: $(".add-task-btn"),
 	togglers: $(".toggler", true),
 	onOff: $(".onOff", true),
@@ -74,7 +72,7 @@ export const elements = {
 	themes: $(".theme", true),
 	loader: $("#preloader"),
 	profilePhoto: $(".profile-photo"),
-	// addTaskInput: $("#tasks-input"),
+	addTaskInput: $("#tasks-input"),
 	tasksList: $("#tasks-list"),
 	headers: $(".list-header", true),
 	tasksContainers: $(".tasks-container", true),
@@ -84,14 +82,5 @@ export const elements = {
 	noList: $(`[priority="no"]`),
 	completedList: $("#completedList"),
 	completetionSound: $("audio"),
+	links: $(".link", true),
 };
-
-//<li class="task-item" id="${task.id}">
-{
-	/* <div class="icon">
-<img src="assets/svgs/check.svg" alt="" />
-</div>
-<div class="text">Task</div>
-<div class="due-date">Today</div>
-</li> */
-}

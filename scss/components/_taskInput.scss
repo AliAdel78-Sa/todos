@@ -1,0 +1,32 @@
+// .input-container {
+// 	position: fixed;
+// 	bottom: 0;
+// 	color: #fff;
+// 	left: 0;
+// 	width: 100%;
+// 	opacity: 0;
+// 	transition: 0.5s ease all;
+// 	background-color: #000000;
+// 	border-radius: 7px;
+// 	border-bottom-right-radius: 0;
+// 	border-bottom-left-radius: 0;
+// 	z-index: 4;
+// 	height: 70%;
+// 	display: flex;
+// 	align-items: flex-start;
+// 	pointer-events: none;
+// 	&.focused {
+// 		opacity: 1;
+// 		pointer-events: all;
+// 	}
+// 	.tasksInput {
+// 		display: block;
+// 		color: #fff;
+// 		width: 100%;
+// 		background-color: #000000;
+// 		border-radius: 7px;
+// 		border-bottom-right-radius: 0;
+// 		border-bottom-left-radius: 0;
+// 		padding: 20px;
+// 	}
+// }

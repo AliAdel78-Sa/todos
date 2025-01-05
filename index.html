@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<!-- Meta Tags -->
 		<meta charset="UTF-8" />
 		<meta
 			name="viewport"
-			content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
 		/>
+		<meta name="mobile-web-wapp-capable" content="yes" />
+		<meta name="theme-color" content="#000" />
+		<!-- Link Tags -->
 		<link rel="stylesheet" href="css/main.css" />
 		<link rel="stylesheet" href="assets/fontawesome/all.min.css" />
 		<link rel="manifest" href="/manifest.json" />
-		<meta name="theme-color" content="#000" />
 		<link rel="apple-touch-icon" href="assets/svgs/check.svg" />
-		<meta name="mobile-web-wapp-capable" content="yes" />
 		<link
 			rel="shortcut icon"
 			href="assets/imgs/spider.jpg"
@@ -21,6 +23,7 @@
 			href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
 			rel="stylesheet"
 		/>
+		<!-- Scripts & Title -->
 		<script src="assets/fontawesome/all.min.js"></script>
 		<title>To Do</title>
 	</head>
@@ -72,36 +75,30 @@
 		</header>
 
 		<!-- Navigation Bar :) -->
-
 		<div class="overlay" id="nav-overlay"></div>
 		<nav>
 			<header>
 				<div class="icon" id="close-nav">
 					<img src="assets/svgs/add-small.svg" alt="" />
 				</div>
-				<footer>
+				<div class="add-list-container">
 					<div class="add-list-input">
-						<!-- <div class="icon">
-							<img src="assets/svgs/add-blue.svg" alt="" />
-						</div> -->
 						<input
 							type="text"
 							id="list-input"
 							autocomplete="off"
 							spellcheck="false"
 							inputmode="text"
-							value="New List"
 							placeholder="New List"
 						/>
 					</div>
-				</footer>
+				</div>
 			</header>
 			<ul id="main-lists"></ul>
 			<ul id="lists"></ul>
 		</nav>
 
 		<!-- Tasks Container :) -->
-
 		<div class="tasks-main-container">
 			<header>
 				<div class="icon" id="open-nav">
@@ -187,7 +184,6 @@
 		</div>
 
 		<!-- Settings Bar :) -->
-
 		<div class="aside-overlay"></div>
 		<aside class="settings-bar">
 			<header>
@@ -352,14 +348,12 @@
 			</div>
 		</aside>
 
-		<!-- Add Task Btn :) -->
-
+		<!-- Corner Btn :) -->
 		<div class="add-task-btn">
 			<img src="assets/svgs/add.svg" alt="" />
 		</div>
 
 		<!-- Context Menus -->
-
 		<div class="context-menu-overlay"></div>
 		<div class="context-menu" id="list-options">
 			<header>
@@ -441,7 +435,6 @@
 		</div>
 
 		<!-- Confirmation Messeges -->
-
 		<div class="overlay" id="delete-list-overlay"></div>
 		<div class="modal">
 			<h2>Delete List</h2>
@@ -454,10 +447,70 @@
 			</div>
 		</div>
 
+		<footer>
+			<div class="icon link" data-id="to-do-list">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="30"
+					height="30"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="#fff"
+					stroke-width="2.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="feather feather-check-circle"
+				>
+					<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+					<polyline points="22 4 12 14.01 9 11.01"></polyline>
+				</svg>
+			</div>
+			<div class="icon link" data-id="habit-tracker">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="30"
+					height="30"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="#fff"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="feather feather-target"
+				>
+					<circle cx="12" cy="12" r="10"></circle>
+					<circle cx="12" cy="12" r="6"></circle>
+					<circle cx="12" cy="12" r="2"></circle>
+				</svg>
+			</div>
+			<div class="icon link" data-id="stop-watch">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="30"
+					height="30"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="#fff"
+					stroke-width="2.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="feather feather-clock"
+				>
+					<circle cx="12" cy="12" r="10"></circle>
+					<polyline points="12 6 12 12 16 14"></polyline>
+				</svg>
+			</div>
+		</footer>
+
+		<input type="text" id="tasks-input" class="test" />
+
+		<!-- Audios -->
 		<audio
 			src="assets/sounds/complete-sound.mp3"
 			style="display: none"
 		></audio>
+
+		<!-- Scripts -->
 		<script type="module" src="js/app.js"></script>
 		<script src="js/modules/test.js" type="module"></script>
 		<script>
@@ -468,42 +521,3 @@
 		</script>
 	</body>
 </html>
-
-<!--
-<li class="task-item" id="${task.id}">
-   <div class="icon">
-      <div class="circle">
-         <img src="assets/svgs/check.svg" alt="" />
-      </div>
-   </div>
-   <div class="text">${task.title</div>
-	<div class="star">
-		<img src="assets/svgs/star-blue.svg" alt="" />
-		<div class="filled">
-			<img src="assets/svgs/star-blue.svg" alt="" />
-		</div>
-	</div>
-</li>
--->
-<!--
-<div class="high-priority-list">
-	<header></header>
-	<ul></ul>
-</div>
-<div class="medium-priority-list">
-	<header></header>
-	<ul></ul>
-</div>
-<div class="low-priority-list">
-	<header></header>
-	<ul></ul>
-</div>
-<div class="no-priority-list">
-	<header></header>
-	<ul></ul>
-</div>
-<div class="completed-list">
-	<header></header>
-	<ul></ul>
-</div>
--->

@@ -52,7 +52,7 @@ nav {
 			width: 30px;
 		}
 	}
-	footer {
+	.add-list-container {
 		.add-list-input {
 			display: flex;
 			align-items: center;
@@ -72,6 +72,12 @@ nav {
 			padding: 15px 0;
 			color: #fff;
 			font-size: 20px;
+			&::placeholder {
+				color: #fff;
+			}
+			&:focus::placeholder {
+				color: gray;
+			}
 		}
 	}
 	&.show {

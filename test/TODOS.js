@@ -6,6 +6,9 @@
 // 3. Loading Sign Up & Login
 // 4. Styling Messeges Of Login & Sign Up
 // 5. Tasks Overview Of Lists
+// 6. Subtasks
+// 7. Clean Code
+// 8. Fix Overlays Doom
 
 // =====
 // TODO: tomorrow

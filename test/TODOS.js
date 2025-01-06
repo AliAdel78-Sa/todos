@@ -7,8 +7,6 @@
 // 4. Styling Messeges Of Login & Sign Up
 // 5. Tasks Overview Of Lists
 
-// And By That We Finish All Things About Tasks
-
 // =====
 // TODO: tomorrow
 // =====

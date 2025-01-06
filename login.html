@@ -6,53 +6,33 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
 		/>
-		<link rel="stylesheet" href="../css/main.css" />
-		<link rel="stylesheet" href="../css/login.css" />
-		<link rel="stylesheet" href="../assets/fontawesome/all.min.css" />
+		<link rel="stylesheet" href="/css/main.css" />
+		<link rel="stylesheet" href="/css/login.css" />
+		<link rel="stylesheet" href="/assets/fontawesome/all.min.css" />
 		<link
 			rel="shortcut icon"
-			href="../assets/imgs/spider.jpg"
+			href="/assets/imgs/spider.jpg"
 			type="image/x-icon"
 		/>
 		<link
 			href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
 			rel="stylesheet"
 		/>
-		<script src="../assets/fontawesome/all.min.js"></script>
-		<title>Sign Up Page</title>
+		<script src="/assets/fontawesome/all.min.js"></script>
+		<title>Login Page</title>
 	</head>
 	<body>
 		<div class="wrapper">
-			<h1>Sign Up</h1>
+			<h1>Login</h1>
 			<div class="input-box">
 				<input
 					type="email"
 					required
 					placeholder="Email"
 					id="email-input"
+					name="email"
 					autocomplete="off"
-					spellcheck="false"
-				/>
-				<i class="bx bxs-user"></i>
-			</div>
-			<div class="input-box">
-				<input
-					type="text"
-					required
-					id="firstname-input"
-					placeholder="First Name"
-					autocomplete="off"
-					spellcheck="false"
-				/>
-				<i class="bx bxs-user"></i>
-			</div>
-			<div class="input-box">
-				<input
-					type="text"
-					required
-					placeholder="Last Name"
-					id="lastname-input"
-					autocomplete="off"
+					autofocus
 					spellcheck="false"
 				/>
 				<i class="bx bxs-user"></i>
@@ -63,7 +43,6 @@
 					required
 					placeholder="Password"
 					id="password-input"
-					name="password"
 					autocomplete="off"
 					spellcheck="false"
 				/>
@@ -74,15 +53,25 @@
 					id="hidePassword"
 				></i>
 			</div>
-			<button id="signup-btn" class="btn">Sign Up</button>
+			<div class="remember-forgot">
+				<label for="check">
+					<input type="checkbox" id="check" /> Remember Me
+				</label>
+				<a href="signup.html">Forgot Password?</a>
+			</div>
+			<button id="login-btn" class="btn">Login</button>
 			<div class="register-link">
 				<p>
-					Already have an account?
-					<a href="login.html">Login!</a>
+					Don't have an account?
+					<a href="signup.html">Sign Up!</a>
 				</p>
 			</div>
 		</div>
-
-		<script type="module" src="../js/signup.js"></script>
+		<script type="module" src="/js/login.js"></script>
 	</body>
 </html>
+
+<!-- alya70934@gmail.com -->
+<!-- Ali -->
+<!-- Adel -->
+<!-- AliAdel78$$$ -->

@@ -497,7 +497,7 @@ function handleTaskDate() {
 }
 // For User
 async function initialUserData() {
-	if (userToken === null) return window.location.assign("/pages/login.html");
+	if (userToken === null) return window.location.assign("/login.html");
 	const data = await user.get(userToken);
 	userData = data.userData;
 	userData.lists.length === 0

@@ -15,7 +15,7 @@
 
 	header {
 		display: flex;
-		gap: 20px;
+		justify-content: space-between;
 		align-items: center;
 		border-bottom: 1px solid rgba($color: #fff, $alpha: 0.3);
 		padding-bottom: 20px;
@@ -39,10 +39,57 @@
 		* {
 			color: gray;
 		}
+		textarea {
+			min-height: 100px;
+			color: #fff;
+			&::placeholder {
+				color: #fff;
+			}
+			&:focus::placeholder {
+				color: gray;
+			}
+		}
 	}
 	section:first-child {
-		input {
-			width: 100%;
+		.task {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			input {
+				width: 100%;
+				font-size: 1.25rem;
+				margin-top: 3px;
+				color: #fff;
+			}
+			.icon {
+				border: 2px solid var(--list-color);
+				width: 25px;
+				border-radius: 5px;
+				aspect-ratio: 1;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				transition: 0.3s ease all;
+				img {
+					display: none;
+				}
+			}
+			&.checked {
+				* {
+					color: #fff;
+					opacity: 0.6;
+				}
+				.icon {
+					background-color: #fff;
+					border-color: #fff;
+					img {
+						display: block;
+					}
+				}
+				.text {
+					text-decoration: line-through;
+				}
+			}
 		}
 	}
 

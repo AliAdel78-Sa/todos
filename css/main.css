@@ -913,7 +913,7 @@ footer .link {
 }
 .task-details header {
   display: flex;
-  gap: 20px;
+  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   padding-bottom: 20px;
@@ -936,8 +936,53 @@ footer .link {
 .task-details section * {
   color: gray;
 }
-.task-details section:first-child input {
+.task-details section textarea {
+  min-height: 100px;
+  color: #fff;
+}
+.task-details section textarea::placeholder {
+  color: #fff;
+}
+.task-details section textarea:focus::placeholder {
+  color: gray;
+}
+.task-details section:first-child .task {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.task-details section:first-child .task input {
   width: 100%;
+  font-size: 1.25rem;
+  margin-top: 3px;
+  color: #fff;
+}
+.task-details section:first-child .task .icon {
+  border: 2px solid var(--list-color);
+  width: 25px;
+  border-radius: 5px;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s ease all;
+}
+.task-details section:first-child .task .icon img {
+  display: none;
+}
+.task-details section:first-child .task.checked * {
+  color: #fff;
+  opacity: 0.6;
+}
+.task-details section:first-child .task.checked .icon {
+  background-color: #fff;
+  border-color: #fff;
+}
+.task-details section:first-child .task.checked .icon img {
+  display: block;
+}
+.task-details section:first-child .task.checked .text {
+  text-decoration: line-through;
 }
 .task-details footer {
   display: flex;

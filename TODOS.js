@@ -1,12 +1,9 @@
 // =====
 // TODO: today
 // =====
-// 1. Edit
-// 2. Complete
-// 3. Priority
-// 4. Move Task
-// 5. Subtasks
-// 6. Note
+// 1. Priority
+// 2. Subtasks
+// 3. Move Task
 
 // And By That We Finish All Things About Tasks
 

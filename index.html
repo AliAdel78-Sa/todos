@@ -338,6 +338,7 @@
 		<div class="task-details-overlay"></div>
 		<div class="task-details">
 			<header>
+				<h1>Task details</h1>
 				<div class="icon" id="close-task-details">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -351,16 +352,27 @@
 						/>
 					</svg>
 				</div>
-				<h1>Task details</h1>
 			</header>
 
 			<div>
 				<section>
-					<div class="task">
-						<div class="icon">
+					<div class="task" id="task-details-item">
+						<div
+							class="icon"
+							id="completeTaskBtn"
+							style="--list-color: gray"
+						>
 							<img src="assets/svgs/check.svg" alt="" />
 						</div>
-						<input type="text" value="Task 3" id="editTaskInput" />
+						<input
+							type="text"
+							value="Task 3"
+							id="editTaskInput"
+							placeholder="Untitled Task"
+							autocomplete="off"
+							inputmode="text"
+							spellcheck="false"
+						/>
 						<div class="priority">
 							<i class="bx bx-flag bx-sm"></i>
 						</div>
@@ -368,12 +380,13 @@
 				</section>
 				<section>
 					<textarea
-						name=""
 						style="resize: none; width: 100%"
-						id=""
+						id="noteTextArea"
 						placeholder="Add a note"
+						autocomplete="off"
+						spellcheck="false"
+						inputmode="text"
 					></textarea>
-					<p>Update a few seconds ago</p>
 				</section>
 			</div>
 

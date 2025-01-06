@@ -88,7 +88,34 @@ elements.cancelDeleteTaskBtn.addEventListener("click", () => {
 window.addEventListener("contextmenu", (e) => {
 	e.preventDefault();
 });
-
+elements.editTaskInput.addEventListener("keydown", (e) => {
+	if (e.key === "Enter") {
+		if (elements.editTaskInput.value.trim().length === 0) {
+			renameTask(gTaskItem, "Untitled Task");
+		} else {
+			renameTask(gTaskItem, elements.editTaskInput.value.trim());
+		}
+		renderAllTasks();
+		elements.editTaskInput.blur();
+	}
+});
+elements.editTaskInput.addEventListener("blur", () => {
+	if (elements.editTaskInput.value.trim().length === 0) {
+		renameTask(gTaskItem, "Untitled Task");
+	} else {
+		renameTask(gTaskItem, elements.editTaskInput.value.trim());
+	}
+	renderAllTasks();
+	elements.editTaskInput.blur();
+});
+elements.completeTaskBtn.addEventListener("click", () => {
+	elements.taskDetailsItem.classList.toggle("checked");
+	completeTask(gTaskItem);
+});
+elements.noteTextArea.addEventListener("blur", () => {
+	addNote(gTaskItem);
+	renderAllTasks();
+});
 // Functions
 function findListById(id) {
 	return lists.find((list) => Number(list.settings.id) === Number(id));
@@ -444,6 +471,17 @@ function handleTaskClick(taskItem) {
 	taskItem.getAttribute("parent-id");
 	gTaskItem = taskItem;
 	elements.editTaskInput.value = taskItem.childNodes[1].textContent;
+	const list = findListById(taskItem.getAttribute("parent-id"));
+	list.tasks.forEach((task) => {
+		if (Number(task.id) === Number(taskItem.id)) {
+			elements.noteTextArea.value = task.note;
+		}
+	});
+	if (taskItem.classList.contains("checked")) {
+		elements.taskDetailsItem.classList.add("checked");
+	} else {
+		elements.taskDetailsItem.classList.remove("checked");
+	}
 	handleTaskDate();
 	openTaskDetails();
 }
@@ -464,8 +502,45 @@ async function deleteTask(taskItem) {
 	userData.lists = lists;
 	console.log(await user.save(userToken, userData));
 }
-function completeTask() {}
-function editTask() {}
+async function renameTask(taskItem, newTitle) {
+	const list = findListById(taskItem.getAttribute("parent-id"));
+	list.tasks.forEach((task) => {
+		if (Number(task.id) === Number(taskItem.id)) {
+			task.title = newTitle;
+			elements.editTaskInput.value = newTitle;
+		}
+	});
+	userData.lists = lists;
+	console.log(await user.save(userToken, userData));
+}
+async function completeTask(taskItem) {
+	const list = findListById(taskItem.getAttribute("parent-id"));
+	list.tasks.forEach((task) => {
+		if (Number(task.id) === Number(taskItem.id)) {
+			task.completed = !task.completed;
+			if (task.completed) {
+				if (storage.get("settings", initialSettings).playSound) {
+					elements.completetionSound.currentTime = 0;
+					elements.completetionSound.volume = 0.5;
+					elements.completetionSound.play();
+				}
+			}
+			const taskItems = document.querySelectorAll(".task-item");
+			taskItems.forEach((taskItm) => {
+				if (taskItm.id === taskItem.id) {
+					taskItm.style.opacity = "0";
+				}
+			});
+			setTimeout(() => {
+				renderAllTasks();
+			}, 300);
+			console.log(taskItem);
+		}
+	});
+	userData.lists = lists;
+	console.log(await user.save(userToken, userData));
+}
+
 function setPriority() {}
 
 function handleTaskDate() {
@@ -489,14 +564,24 @@ function handleTaskDate() {
 	).getDate();
 	const date = new Date(Number(gTaskItem.id));
 	if (date.getDate() === today) {
-		elements.taskDate.textContent = "Created At Today";
+		elements.taskDate.textContent = "Created today";
 	} else if (date.getDate() === yesterDay) {
-		elements.taskDate.textContent = "Created At Yesterday";
+		elements.taskDate.textContent = "Created yesterday";
 	} else {
-		elements.taskDate.textContent = `Created At ${
+		elements.taskDate.textContent = `Created at ${
 			months[date.getMonth()]
 		} ${date.getDate()} ${date.getFullYear()}`;
 	}
+}
+async function addNote(taskItem) {
+	const list = findListById(taskItem.getAttribute("parent-id"));
+	list.tasks.forEach((task) => {
+		if (Number(task.id) === Number(taskItem.id)) {
+			task.note = elements.noteTextArea.value;
+		}
+	});
+	userData.lists = lists;
+	console.log(await user.save(userToken, userData));
 }
 // For User
 async function initialUserData() {

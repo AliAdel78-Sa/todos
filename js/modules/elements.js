@@ -95,4 +95,7 @@ export const elements = {
 	editTaskInput: $("#editTaskInput"),
 	tasksInputContainer: $(".tasksInput"),
 	taskDate: $(".task-date"),
+	completeTaskBtn: $("#completeTaskBtn"),
+	taskDetailsItem: $("#task-details-item"),
+	noteTextArea: $("#noteTextArea"),
 };

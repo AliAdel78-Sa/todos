@@ -76,6 +76,7 @@ elements.addTaskInput.addEventListener("keydown", (e) => {
 			elements.addTaskInput.value = "";
 			updateDisplay();
 			updateCount();
+			elements.validateIcon.style.display = "none";
 		}
 	} else {
 		elements.validateIcon.style.display = "none";
@@ -406,18 +407,27 @@ function renderAllTasks() {
 		tasks = list.tasks;
 	}
 	tasks.forEach((task) => {
-		const [taskItem, checkBox, text] = buildTaskUi(task);
-		checkBox.addEventListener("click", () => {
-			handleCompletion(checkBox);
-		});
-		text.addEventListener("click", () => {
-			handleCompletion(text);
-		});
-		taskItem.addEventListener("click", (e) => {
-			if (e.target === taskItem) {
-				handleTaskClick(taskItem);
+		if (list.settings.id === SMART_LISTS_IDS[0]) {
+			if (handleTaskDate(task) !== "Today") {
+				task.show = false;
 			}
-		});
+		} else {
+			task.show = true;
+		}
+		if (task.show) {
+			const [taskItem, checkBox, text] = buildTaskUi(task);
+			checkBox.addEventListener("click", () => {
+				handleCompletion(checkBox);
+			});
+			text.addEventListener("click", () => {
+				handleCompletion(text);
+			});
+			taskItem.addEventListener("click", (e) => {
+				if (e.target === taskItem) {
+					handleTaskClick(taskItem);
+				}
+			});
+		}
 	});
 	updateCount();
 	updateDisplay();
@@ -455,6 +465,7 @@ async function addNewTask(taskTitle, priority) {
 		parentListTitle: "",
 		subTasks: [],
 		note: "",
+		show: true,
 	};
 
 	// Saving Task In The List

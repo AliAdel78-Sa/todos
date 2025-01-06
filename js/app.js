@@ -587,6 +587,10 @@ async function addNote(taskItem) {
 async function initialUserData() {
 	if (userToken === null) return window.location.assign("/login.html");
 	const data = await user.get(userToken);
+	if (data.message) {
+		window.location.assign("/login.html");
+		return;
+	}
 	userData = data.userData;
 	userData.lists.length === 0
 		? (userData.lists = lists)

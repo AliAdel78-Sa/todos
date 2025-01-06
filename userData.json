@@ -1,4 +1,5 @@
 {
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzgzNjI1OGMyZmY1YWY3ODg5ZjY5NCIsImlhdCI6MTczNjE3MTIxOX0.tEpkD5ujp6d3tlRA94oJm_OScHpPkjMNzpu21HU6auo",
 	"user": {
 		"userData": {
 			"lists": [
@@ -13,264 +14,44 @@
 					},
 					"tasks": [
 						{
-							"id": 1736014906459,
-							"title": "task",
+							"id": 1736167730485,
+							"title": "Add Priority For Tasks",
 							"completed": false,
 							"priority": "no",
-							"parentList": null,
+							"parentList": 1,
 							"parentListTitle": "Today",
 							"subTasks": [],
 							"note": ""
 						},
 						{
-							"id": 1736014961306,
-							"title": "Tasks Idk DOt Input Right?",
+							"id": 1736167744381,
+							"title": "Move tasks",
 							"completed": false,
 							"priority": "no",
-							"parentList": null,
+							"parentList": 1,
+							"parentListTitle": "Today",
+							"subTasks": [],
+							"note": "1. Create Lists Except For Comp & All\n2. Add event for each list\n3. if list attr chose is clicked nothing occurs\n4. else run move tasks to that list function"
+						},
+						{
+							"id": 1736167868058,
+							"title": "SubTasks",
+							"completed": false,
+							"priority": "no",
+							"parentList": 1,
 							"parentListTitle": "Today",
 							"subTasks": [],
 							"note": ""
 						},
 						{
-							"id": 1736015464707,
-							"title": "Add a tandsk",
-							"completed": false,
+							"id": 1736167870372,
+							"title": "Note",
+							"completed": true,
 							"priority": "no",
-							"parentList": null,
+							"parentList": 1,
 							"parentListTitle": "Today",
 							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015465802,
-							"title": "dabs",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015466218,
-							"title": "dsb",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015466386,
-							"title": "sf",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015466611,
-							"title": "b",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015466762,
-							"title": "sfb",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015466914,
-							"title": "sf",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015467042,
-							"title": "b",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015467178,
-							"title": "fs",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015467298,
-							"title": "b",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015467459,
-							"title": "fs",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015467594,
-							"title": "bfs",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015467866,
-							"title": "bns",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015468003,
-							"title": "fn",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015468307,
-							"title": "nf",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015468578,
-							"title": "sfn",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015468746,
-							"title": "sf",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015468890,
-							"title": "n",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015469178,
-							"title": "gsdn",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015469330,
-							"title": "gd",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015469466,
-							"title": "n",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015469618,
-							"title": "gd",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015469755,
-							"title": "n",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736015470170,
-							"title": "gd",
-							"completed": false,
-							"priority": "no",
-							"parentList": null,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
+							"note": "Finished It Successfully"
 						}
 					],
 					"completedTasks": [],
@@ -327,6 +108,18 @@
 					"tasks": [],
 					"completedTasks": [],
 					"importantTasks": []
+				},
+				{
+					"settings": {
+						"id": 1736169034146,
+						"title": "To Do App",
+						"isMain": false,
+						"theme": null,
+						"icon": "assets/svgs/list.svg"
+					},
+					"tasks": [],
+					"completedTasks": [],
+					"importantTasks": []
 				}
 			]
 		},
@@ -336,7 +129,7 @@
 		"firstName": "Ali",
 		"lastName": "Adel",
 		"verified": true,
-		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzgzNjI1OGMyZmY1YWY3ODg5ZjY5NCIsImlhdCI6MTczNjAxNjMyN30.811GTvx4ri1u37bVvBdP8Qi3JRFS1_2VQFtAwwLo0aU",
+		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzgzNjI1OGMyZmY1YWY3ODg5ZjY5NCIsImlhdCI6MTczNjE3MTIxOX0.tEpkD5ujp6d3tlRA94oJm_OScHpPkjMNzpu21HU6auo",
 		"__v": 0
 	}
 }

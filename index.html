@@ -118,7 +118,19 @@
 					<i class="bx bx-dots-horizontal-rounded bx-sm"></i>
 				</div>
 			</header>
-
+			<div class="tasksInput">
+				<div class="icon">
+					<i class="bx bx-plus bx-sm"></i>
+				</div>
+				<input
+					type="text"
+					autocomplete="off"
+					spellcheck="false"
+					id="tasks-input"
+					placeholder="What do you wanna do today?"
+					inputmode="text"
+				/>
+			</div>
 			<div id="tasks-list">
 				<header class="list-header">
 					<h2>HIGH PRIORITY</h2>
@@ -232,36 +244,6 @@
 				</div>
 			</div>
 			<div class="toggle-container">
-				<label for="c" class="h3">Move starred tasks to top</label>
-				<div class="switch-container">
-					<label for="c" data-settings="starToTop" class="switch"
-						><div class="switch-circle"></div
-					></label>
-					<input
-						type="checkbox"
-						data-settings="starToTop"
-						class="toggler"
-						id="c"
-					/>
-					<div class="onOff" data-settings="starToTop">On</div>
-				</div>
-			</div>
-			<div class="toggle-container">
-				<label for="d" class="h3">Add new tasks on top</label>
-				<div class="switch-container">
-					<label for="d" data-settings="addToTop" class="switch"
-						><div class="switch-circle"></div>
-					</label>
-					<input
-						type="checkbox"
-						data-settings="addToTop"
-						class="toggler"
-						id="d"
-					/>
-					<div class="onOff" data-settings="addToTop">On</div>
-				</div>
-			</div>
-			<div class="toggle-container">
 				<label for="x" class="h3">Play Completetion Sound</label>
 				<div class="switch-container">
 					<label for="x" data-settings="playSound" class="switch">
@@ -331,12 +313,15 @@
 				<p>
 					<i
 						class="bx bxl-instagram bx-sm"
-						style="color: #78b9fd"
+						style="color: var(--main-color)"
 					></i>
 					<a href="https://instagram.com/">Follow Me On Instagram</a>
 				</p>
 				<p>
-					<i class="bx bxl-github bx-sm" style="color: #78b9fd"></i>
+					<i
+						class="bx bxl-github bx-sm"
+						style="color: var(--main-color)"
+					></i>
 					<a href="https://github.com/AliAdel78-Sa"
 						>Follow Me On Github</a
 					>
@@ -501,8 +486,6 @@
 				</svg>
 			</div>
 		</footer>
-
-		<input type="text" id="tasks-input" class="test" />
 
 		<!-- Audios -->
 		<audio

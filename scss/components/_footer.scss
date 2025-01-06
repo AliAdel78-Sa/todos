@@ -22,17 +22,6 @@ footer {
 	}
 }
 
-#tasks-input {
-	background-color: #2c2b2b;
-	position: fixed;
-	opacity: 0;
-	bottom: 0;
-	width: 100%;
-	color: #fff;
-	padding: 20px;
-	pointer-events: none;
-}
-
 @keyframes scaleDown {
 	50% {
 		scale: 0.8;

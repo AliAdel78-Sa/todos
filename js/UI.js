@@ -168,20 +168,6 @@ export function handleUI() {
 	elements.cornerBtn.addEventListener("click", () => {
 		elements.addTaskInput.focus();
 	});
-	window.visualViewport.addEventListener("resize", () => {
-		const currentHeight = window.visualViewport.height;
-		if (currentHeight < initialHeight) {
-			elements.addTaskInput.style.bottom = `${
-				window.innerHeight - window.innerHeight / 2
-			}px`;
-			elements.addTaskInput.style.opacity = "1";
-			elements.addTaskInput.style.pointerEvents = "all";
-		} else {
-			elements.addTaskInput.style.bottom = "0";
-			elements.addTaskInput.style.opacity = "0";
-			elements.addTaskInput.style.pointerEvents = "none";
-		}
-	});
 
 	elements.links.forEach((link) => {
 		link.addEventListener("click", () => {
@@ -196,5 +182,6 @@ export function handleUI() {
 			storage.set("currentPage", link.getAttribute("data-id"));
 		});
 	});
+
 	initialLink();
 }

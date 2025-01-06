@@ -66,14 +66,11 @@ export const initialLists = [
 	},
 ];
 export const initialSettings = {
-	addToTop: true,
 	confirmBeforeDeletion: true,
 	light: false,
 	showAll: true,
 	showCompleted: true,
-	showImportant: true,
 	showPlanned: true,
-	starToTop: true,
 	playSound: true,
 	theme: "blue",
 };

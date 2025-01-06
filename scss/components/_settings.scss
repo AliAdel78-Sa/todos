@@ -68,7 +68,7 @@ aside {
 					transform: translate(-100%);
 					background-color: #fff;
 				}
-				background-color: #245df8;
+				background-color: var(--main-color);
 				border: 1px solid transparent;
 			}
 		}
@@ -87,7 +87,7 @@ aside {
 			align-items: center;
 			gap: 20px;
 			* {
-				color: #78b9fd;
+				color: var(--main-color);
 			}
 		}
 	}

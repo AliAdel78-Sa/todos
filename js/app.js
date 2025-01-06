@@ -1,4 +1,5 @@
 // Installing App
+
 if ("serviceWorker" in navigator) {
 	navigator.serviceWorker
 		.register("sw.js")
@@ -55,7 +56,6 @@ elements.addTaskInput.addEventListener("keydown", (e) => {
 	if (e.key === "Enter") {
 		addNewTask(elements.addTaskInput.value.trim(), "low");
 		elements.addTaskInput.value = "";
-		elements.addTaskInput.blur();
 		updateDisplay();
 		updateCount();
 	}
@@ -309,9 +309,11 @@ async function handleCompletion(child) {
 	if (task.id === +child.parentElement.id) {
 		task.completed = !task.completed;
 		if (task.completed) {
-			elements.completetionSound.currentTime = 0;
-			elements.completetionSound.volume = 0.5;
-			elements.completetionSound.play();
+			if (storage.get("settings", initialSettings).playSound) {
+				elements.completetionSound.currentTime = 0;
+				elements.completetionSound.volume = 0.5;
+				elements.completetionSound.play();
+			}
 			child.parentElement.classList.add("checked");
 		}
 		child.parentElement.style.opacity = "0";
@@ -379,14 +381,14 @@ async function initialUserData() {
 	handleThemes();
 	renderAllTasks();
 	setTimeout(() => elements.loader.classList.add("hide"), 100);
+
+	// CLEAR
+	// await user.clear(userToken, userData);
 }
 // Initial
 initialUserData();
 
 /*
-CLEAR:
-user.clear(userToken, userData);
-
 SAVE:
 
 userData.lists = lists

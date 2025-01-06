@@ -1,12 +1,12 @@
 // =====
 // TODO: today
 // =====
-// 1. Edit Task Option & Add Priority
-// 2. Complete Task Option
-// 3. Move Task To Another List Option
-// 4. Give The User The Ability To Add Subtasks
-// 5. Add Note To The Task Option
-// 6. Add Search For Tasks Feature
+// 1. Edit
+// 2. Complete
+// 3. Priority
+// 4. Move Task
+// 5. Subtasks
+// 6. Note
 
 // And By That We Finish All Things About Tasks
 
@@ -17,3 +17,4 @@
 // 2. Add Pomo And StopWatch
 // 3. Add Clock Sound When Every Time A Second Pass
 // 4. Add Feature Of Focusing On A Specific Task
+// 5. Add Search For Tasks Feature

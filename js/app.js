@@ -282,14 +282,16 @@ function renderAllTasks() {
 	if (list.settings.id === SMART_LISTS_IDS[2]) {
 		tasks = calcCompletedTasks();
 		elements.tasksInputContainer.style.display = "none";
+		elements.cornerBtn.style.display = "none";
 	} else if (list.settings.id === SMART_LISTS_IDS[1]) {
 		tasks = calcAllTasks();
+		elements.cornerBtn.style.display = "flex";
 		elements.tasksInputContainer.style.display = "flex";
 	} else {
+		elements.cornerBtn.style.display = "flex";
 		elements.tasksInputContainer.style.display = "flex";
 		tasks = list.tasks;
 	}
-
 	tasks.forEach((task) => {
 		const [taskItem, checkBox, text] = buildTaskUi(task);
 		checkBox.addEventListener("click", () => {
@@ -441,6 +443,7 @@ function buildTaskUi(task) {
 function handleTaskClick(taskItem) {
 	taskItem.getAttribute("parent-id");
 	gTaskItem = taskItem;
+	elements.editTaskInput.value = taskItem.childNodes[1].textContent;
 	handleTaskDate();
 	openTaskDetails();
 }
@@ -464,6 +467,7 @@ async function deleteTask(taskItem) {
 function completeTask() {}
 function editTask() {}
 function setPriority() {}
+
 function handleTaskDate() {
 	const months = [
 		"Jan",
@@ -489,7 +493,6 @@ function handleTaskDate() {
 	} else if (date.getDate() === yesterDay) {
 		elements.taskDate.textContent = "Created At Yesterday";
 	} else {
-		elements.editTaskInput.value = taskItem.childNodes[1].textContent;
 		elements.taskDate.textContent = `Created At ${
 			months[date.getMonth()]
 		} ${date.getDate()} ${date.getFullYear()}`;
@@ -497,10 +500,7 @@ function handleTaskDate() {
 }
 // For User
 async function initialUserData() {
-	if (userToken === null)
-		return window.location.assign(
-			"https://aliadel78-sa.github.io/login.html"
-		);
+	if (userToken === null) return window.location.assign("/login.html");
 	const data = await user.get(userToken);
 	userData = data.userData;
 	userData.lists.length === 0
@@ -518,6 +518,7 @@ async function initialUserData() {
 	// CLEAR
 	// await user.clear(userToken, userData);
 }
+
 // Initial
 initialUserData();
 
@@ -528,4 +529,4 @@ userData.lists = lists
 console.log(await user.save(userToken, userData));
 */
 
-// storage.clear();
+// storage.remove("token");

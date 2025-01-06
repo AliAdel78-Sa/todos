@@ -426,7 +426,7 @@ nav.show {
 .add-task-btn {
   position: fixed;
   bottom: 80px;
-  right: 20px;
+  right: 30px;
   border-radius: 50%;
   width: 55px;
   aspect-ratio: 1;

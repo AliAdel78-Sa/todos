@@ -12,13 +12,21 @@ if ("serviceWorker" in navigator) {
 }
 
 // Modules
-import { closeNavBar, handleUI, updateCount, updateDisplay } from "./UI.js";
+import {
+	closeNavBar,
+	handleUI,
+	updateCount,
+	updateDisplay,
+	openTaskDetails,
+	closeTaskDetails,
+} from "./UI.js";
 import { handleSettings } from "./modules/settings.js";
 import { storage } from "./modules/storage.js";
 import { elements } from "./modules/elements.js";
 import { initialLists, initialSettings } from "./modules/default.js";
 import { handleThemes } from "./modules/themes.js";
 import { user } from "./modules/userData.js";
+
 // CONSTANTS
 const SMART_LISTS_IDS = [1, 2, 3, 4, 5];
 const userToken = storage.get("token");
@@ -27,6 +35,7 @@ const CURRENT_LIST_ID = "currentListId";
 // Variables
 let lists = initialLists;
 let userData = {};
+let gTaskItem = null;
 
 // Events
 elements.deleteListBtn.addEventListener("click", deleteCurrentList);
@@ -54,15 +63,33 @@ elements.renameListInput.addEventListener("keydown", (e) => {
 });
 elements.addTaskInput.addEventListener("keydown", (e) => {
 	if (e.key === "Enter") {
-		addNewTask(elements.addTaskInput.value.trim(), "low");
+		addNewTask(elements.addTaskInput.value.trim(), "no");
 		elements.addTaskInput.value = "";
 		updateDisplay();
 		updateCount();
 	}
 });
+elements.deleteTaskBtn.addEventListener("click", () => {
+	if (storage.get("settings", initialSettings).confirmBeforeDeletion) {
+		showConfirmationMessege();
+	} else {
+		deleteTask(gTaskItem);
+	}
+});
+elements.deleteTaskConfirmBtn.addEventListener("click", () => {
+	deleteTask(gTaskItem);
+	elements.deleteTaskModal.classList.remove("show");
+	elements.taskDeleteOverlay.classList.remove("show");
+});
+elements.cancelDeleteTaskBtn.addEventListener("click", () => {
+	elements.deleteTaskModal.classList.remove("show");
+	elements.taskDeleteOverlay.classList.remove("show");
+});
+window.addEventListener("contextmenu", (e) => {
+	e.preventDefault();
+});
 
 // Functions
-
 function findListById(id) {
 	return lists.find((list) => Number(list.settings.id) === Number(id));
 }
@@ -247,11 +274,23 @@ function buildList(list, container) {
 
 // Tasks
 function renderAllTasks() {
+	let tasks;
 	elements.tasksContainers.forEach((cont) => {
 		cont.innerHTML = "";
 	});
 	const list = findListById(storage.get(CURRENT_LIST_ID));
-	list.tasks.forEach((task) => {
+	if (list.settings.id === SMART_LISTS_IDS[2]) {
+		tasks = calcCompletedTasks();
+		elements.tasksInputContainer.style.display = "none";
+	} else if (list.settings.id === SMART_LISTS_IDS[1]) {
+		tasks = calcAllTasks();
+		elements.tasksInputContainer.style.display = "flex";
+	} else {
+		elements.tasksInputContainer.style.display = "flex";
+		tasks = list.tasks;
+	}
+
+	tasks.forEach((task) => {
 		const [taskItem, checkBox, text] = buildTaskUi(task);
 		checkBox.addEventListener("click", () => {
 			handleCompletion(checkBox);
@@ -259,9 +298,34 @@ function renderAllTasks() {
 		text.addEventListener("click", () => {
 			handleCompletion(text);
 		});
+		taskItem.addEventListener("click", (e) => {
+			if (e.target === taskItem) {
+				handleTaskClick(taskItem);
+			}
+		});
 	});
 	updateCount();
 	updateDisplay();
+}
+function calcCompletedTasks() {
+	let tasks = [];
+	lists.forEach((list) => {
+		list.tasks.forEach((task) => {
+			if (task.completed) {
+				tasks.push(task);
+			}
+		});
+	});
+	return tasks;
+}
+function calcAllTasks() {
+	let tasks = [];
+	lists.forEach((list) => {
+		list.tasks.forEach((task) => {
+			tasks.push(task);
+		});
+	});
+	return tasks;
 }
 async function addNewTask(taskTitle, priority) {
 	if (taskTitle.length === 0) return;
@@ -283,11 +347,13 @@ async function addNewTask(taskTitle, priority) {
 	if (Number(list.settings.id) === SMART_LISTS_IDS[1]) {
 		parentListId = 5;
 		let tasksList = findListById(parentListId);
+		task.parentList = parentListId;
 		task.parentListTitle = tasksList.settings.title;
 		tasksList.tasks.push(task);
 	} else {
 		task.parentListTitle = list.settings.title;
 		parentListId = list.settings.id;
+		task.parentList = parentListId;
 		list.tasks.push(task);
 	}
 
@@ -299,13 +365,20 @@ async function addNewTask(taskTitle, priority) {
 	text.addEventListener("click", () => {
 		handleCompletion(text);
 	});
+	taskItem.addEventListener("click", (e) => {
+		if (e.target === taskItem) {
+			handleTaskClick(taskItem);
+		}
+	});
 	// Save Data
 	userData.lists = lists;
 	console.log(await user.save(userToken, userData));
 }
 async function handleCompletion(child) {
-	const list = findListById(storage.get(CURRENT_LIST_ID));
+	const list = findListById(child.parentElement.getAttribute("parent-id"));
 	const task = findTaskById(list.tasks, child.parentElement.id);
+	console.log(task);
+
 	if (task.id === +child.parentElement.id) {
 		task.completed = !task.completed;
 		if (task.completed) {
@@ -334,6 +407,7 @@ function buildTaskUi(task) {
 
 	// Editing Elements
 	li.id = task.id;
+	li.setAttribute("parent-id", task.parentList);
 	date.classList.add("due-date");
 	li.classList.add("task-item");
 	icon.classList.add("icon");
@@ -364,7 +438,63 @@ function buildTaskUi(task) {
 	// Remove the animation class after it completes
 	return [li, icon, text];
 }
+function handleTaskClick(taskItem) {
+	taskItem.getAttribute("parent-id");
+	gTaskItem = taskItem;
+	handleTaskDate();
+	openTaskDetails();
+}
+function showConfirmationMessege() {
+	console.log(gTaskItem);
 
+	elements.deleteTaskModal.classList.add("show");
+	elements.taskDeleteOverlay.classList.add("show");
+	elements.deleteTaskTitle.textContent = `Are You Sure You Want To Delete "${gTaskItem.childNodes[1].textContent}"`;
+}
+async function deleteTask(taskItem) {
+	const list = findListById(taskItem.getAttribute("parent-id"));
+	list.tasks = list.tasks.filter(
+		(task) => Number(taskItem.id) !== Number(task.id)
+	);
+	renderAllTasks();
+	closeTaskDetails();
+	userData.lists = lists;
+	console.log(await user.save(userToken, userData));
+}
+function completeTask() {}
+function editTask() {}
+function setPriority() {}
+function handleTaskDate() {
+	const months = [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"May",
+		"Jun",
+		"Jul",
+		"Aug",
+		"Sep",
+		"Oct",
+		"Nov",
+		"Dec",
+	];
+	const today = new Date().getDate();
+	const yesterDay = new Date(
+		new Date().setDate(new Date().getDate() - 1)
+	).getDate();
+	const date = new Date(Number(gTaskItem.id));
+	if (date.getDate() === today) {
+		elements.taskDate.textContent = "Created At Today";
+	} else if (date.getDate() === yesterDay) {
+		elements.taskDate.textContent = "Created At Yesterday";
+	} else {
+		elements.editTaskInput.value = taskItem.childNodes[1].textContent;
+		elements.taskDate.textContent = `Created At ${
+			months[date.getMonth()]
+		} ${date.getDate()} ${date.getFullYear()}`;
+	}
+}
 // For User
 async function initialUserData() {
 	if (userToken === null) return window.location.assign("/pages/login.html");

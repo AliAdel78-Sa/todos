@@ -333,6 +333,84 @@
 			</div>
 		</aside>
 
+		<!-- Task Details Component -->
+		<div class="task-details-overlay"></div>
+		<div class="task-details">
+			<header>
+				<div class="icon" id="close-task-details">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						height="30px"
+						viewBox="0 -960 960 960"
+						width="30px"
+						fill="gray"
+					>
+						<path
+							d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+						/>
+					</svg>
+				</div>
+				<h1>Task details</h1>
+			</header>
+
+			<div>
+				<section>
+					<div class="task">
+						<div class="icon"></div>
+						<input type="text" value="Task 3" id="editTaskInput" />
+						<div class="priority"></div>
+					</div>
+				</section>
+				<section>
+					<textarea
+						name=""
+						style="resize: none; width: 100%"
+						id=""
+						placeholder="Add a note"
+					></textarea>
+					<p>Update a few seconds ago</p>
+				</section>
+			</div>
+
+			<footer>
+				<div class="icon">
+					<svg
+						class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0"
+						aria-label=""
+						fill="#fff"
+						aria-hidden="true"
+						width="20"
+						height="20"
+						viewBox="0 0 20 20"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M9.18 10.5l-1 .87a.5.5 0 10.66.76l2-1.75a.5.5 0 000-.76l-2-1.75a.5.5 0 10-.66.76l1 .87H5.5a.5.5 0 000 1h3.68zM16 16a2 2 0 002-2V6a2 2 0 00-2-2H4a2 2 0 00-2 2v8c0 1.1.9 2 2 2h12zm1-2a1 1 0 01-1 1h-3V5h3a1 1 0 011 1v8zm-5-9v10H4a1 1 0 01-1-1V6a1 1 0 011-1h8z"
+							fill="#fff"
+						></path>
+					</svg>
+				</div>
+				<div class="task-date">Created Today</div>
+				<div class="icon" id="delete-task-btn">
+					<svg
+						class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0"
+						aria-label=""
+						fill="#fff"
+						aria-hidden="true"
+						width="20"
+						height="20"
+						viewBox="0 0 20 20"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M8.5 4h3a1.5 1.5 0 00-3 0zm-1 0a2.5 2.5 0 015 0h5a.5.5 0 010 1h-1.05l-1.2 10.34A3 3 0 0112.27 18H7.73a3 3 0 01-2.98-2.66L3.55 5H2.5a.5.5 0 010-1h5zM5.74 15.23A2 2 0 007.73 17h4.54a2 2 0 001.99-1.77L15.44 5H4.56l1.18 10.23zM8.5 7.5c.28 0 .5.22.5.5v6a.5.5 0 01-1 0V8c0-.28.22-.5.5-.5zM12 8a.5.5 0 00-1 0v6a.5.5 0 001 0V8z"
+							fill="#fff"
+						></path>
+					</svg>
+				</div>
+			</footer>
+		</div>
+
 		<!-- Corner Btn :) -->
 		<div class="add-task-btn">
 			<img src="assets/svgs/add.svg" alt="" />
@@ -421,14 +499,29 @@
 
 		<!-- Confirmation Messeges -->
 		<div class="overlay" id="delete-list-overlay"></div>
-		<div class="modal">
+		<div class="modal" id="delete-list-modal">
 			<h2>Delete List</h2>
 			<p id="delete-list-title">
-				Are You Sure You Want To Delete "Test" ?
+				Are You Sure You Want To Delete "List" ?
 			</p>
 			<div class="btns">
 				<button class="delete-btn" id="delete-list-btn">Delete</button>
 				<button class="cancel-btn" id="cancel-list-btn">Cancel</button>
+			</div>
+		</div>
+		<div class="overlay" id="delete-task-overlay"></div>
+		<div class="modal" id="delete-task-modal">
+			<h2>Delete List</h2>
+			<p id="delete-task-title">
+				Are You Sure You Want To Delete "Task" ?
+			</p>
+			<div class="btns">
+				<button class="delete-btn" id="deleteTaskConfirmBtn">
+					Delete
+				</button>
+				<button class="cancel-btn" id="cancelTaskConfirmBtn">
+					Cancel
+				</button>
 			</div>
 		</div>
 

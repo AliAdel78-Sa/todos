@@ -1,7 +1,6 @@
 import { elements } from "./modules/elements.js";
 import { storage } from "./modules/storage.js";
 const SMART_LISTS_IDS = [1, 2, 3, 4, 5, 6];
-let initialHeight = window.visualViewport.height;
 
 function closeSearchBar() {
 	elements.searchBar.classList.remove("show");
@@ -95,6 +94,15 @@ function countTasks() {
 	});
 	return counts;
 }
+export function closeTaskDetails() {
+	elements.taskDetails.classList.remove("show");
+	elements.taskDetailOverlay.classList.remove("show");
+}
+
+export function openTaskDetails() {
+	elements.taskDetailOverlay.classList.add("show");
+	elements.taskDetails.classList.add("show");
+}
 export function updateCount() {
 	countTasks().forEach((n, i) => {
 		elements.headers[i].childNodes[3].innerHTML = n;
@@ -168,7 +176,8 @@ export function handleUI() {
 	elements.cornerBtn.addEventListener("click", () => {
 		elements.addTaskInput.focus();
 	});
-
+	elements.taskDetailOverlay.addEventListener("click", closeTaskDetails);
+	elements.closeTaskDetails.addEventListener("click", closeTaskDetails);
 	elements.links.forEach((link) => {
 		link.addEventListener("click", () => {
 			elements.links.forEach((link) => {
@@ -182,6 +191,5 @@ export function handleUI() {
 			storage.set("currentPage", link.getAttribute("data-id"));
 		});
 	});
-
 	initialLink();
 }

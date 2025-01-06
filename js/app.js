@@ -497,7 +497,10 @@ function handleTaskDate() {
 }
 // For User
 async function initialUserData() {
-	if (userToken === null) return window.location.assign("/login.html");
+	if (userToken === null)
+		return window.location.assign(
+			"https://aliadel78-sa.github.io/login.html"
+		);
 	const data = await user.get(userToken);
 	userData = data.userData;
 	userData.lists.length === 0

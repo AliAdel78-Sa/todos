@@ -15,3 +15,26 @@
 		color: #fff;
 	}
 }
+
+.animation-circle {
+	position: fixed;
+	bottom: 80px;
+	right: 30px;
+	border-radius: 50%;
+	width: 55px;
+	aspect-ratio: 1;
+	background-color: var(--main-color);
+	scale: 1;
+	opacity: 1;
+	animation-name: scaling;
+	animation-duration: 1s;
+	animation-timing-function: ease;
+	animation-iteration-count: infinite;
+}
+
+@keyframes scaling {
+	100% {
+		scale: 1.5;
+		opacity: 0;
+	}
+}

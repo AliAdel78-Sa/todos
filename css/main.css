@@ -311,6 +311,23 @@ nav.show {
 .tasks-main-container .tasksInput .icon * {
   color: var(--main-color);
 }
+.tasks-main-container .tasksInput .icon .bxs-send {
+  color: #fff;
+}
+.tasks-main-container .tasksInput .icon:last-child {
+  background-color: var(--main-color);
+  border-radius: 20px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  margin-right: 20px;
+  display: none;
+}
+.tasks-main-container .tasksInput .icon:last-child i {
+  font-size: 20px;
+}
 .tasks-main-container .tasksInput input {
   height: 100%;
   width: 100%;
@@ -439,6 +456,28 @@ nav.show {
   color: #fff;
 }
 
+.animation-circle {
+  position: fixed;
+  bottom: 80px;
+  right: 30px;
+  border-radius: 50%;
+  width: 55px;
+  aspect-ratio: 1;
+  background-color: var(--main-color);
+  scale: 1;
+  opacity: 1;
+  animation-name: scaling;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+}
+
+@keyframes scaling {
+  100% {
+    scale: 1.5;
+    opacity: 0;
+  }
+}
 aside {
   background-color: #1f1e1d;
   width: 80%;
@@ -927,7 +966,7 @@ footer .link {
   padding-bottom: 20px;
 }
 .task-details section {
-  background-color: #2e2929;
+  background-color: #2b2b2b;
   width: 100%;
   padding: 10px;
   border-radius: 5px;
@@ -1010,6 +1049,89 @@ footer .link {
   transition: 0.3s ease all;
 }
 .task-details-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.priority-container {
+  background-color: #222;
+  border-radius: 5px;
+  padding: 0 10px;
+  width: 200px;
+  position: absolute;
+  top: 145px;
+  left: 100%;
+  transform: translateX(-110%);
+  transition: 0.15s ease all;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 60;
+}
+.priority-container * {
+  color: #fff;
+}
+.priority-container li {
+  margin-block: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.priority-container.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.move-tasks {
+  background-color: #222;
+  border-radius: 5px;
+  padding: 10px 0;
+  width: 200px;
+  position: absolute;
+  max-height: 500px;
+  overflow: auto;
+  bottom: 65px;
+  left: 70%;
+  transition: 0.15s ease all;
+  display: flex;
+  flex-flow: column;
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 60;
+}
+.move-tasks * {
+  color: #fff;
+}
+.move-tasks h1 {
+  margin-block: 10px;
+  font-size: 20px;
+  padding: 0 20px;
+}
+.move-tasks li {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px;
+}
+.move-tasks.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.priority-container-overlay,
+.move-task-overlay {
+  z-index: 50;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  transition: 0.3s ease all;
+}
+.priority-container-overlay.show,
+.move-task-overlay.show {
   opacity: 1;
   pointer-events: all;
 }/*# sourceMappingURL=main.css.map */

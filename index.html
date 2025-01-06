@@ -99,7 +99,6 @@
 		</nav>
 
 		<!--  COMPONENTS  -->
-
 		<div class="tasks-main-container">
 			<header>
 				<div class="icon" id="open-nav">
@@ -131,6 +130,9 @@
 					placeholder="What do you wanna do today?"
 					inputmode="text"
 				/>
+				<div class="icon" id="validation-icon">
+					<i class="bx bxs-send"></i>
+				</div>
 			</div>
 			<div id="tasks-list">
 				<header class="list-header">
@@ -316,14 +318,16 @@
 						class="bx bxl-instagram bx-sm"
 						style="color: var(--main-color)"
 					></i>
-					<a href="https://instagram.com/">Follow Me On Instagram</a>
+					<a tabindex="-1" href="https://instagram.com/"
+						>Follow Me On Instagram</a
+					>
 				</p>
 				<p>
 					<i
 						class="bx bxl-github bx-sm"
 						style="color: var(--main-color)"
 					></i>
-					<a href="https://github.com/AliAdel78-Sa"
+					<a tabindex="-1" href="https://github.com/AliAdel78-Sa"
 						>Follow Me On Github</a
 					>
 				</p>
@@ -366,15 +370,19 @@
 						</div>
 						<input
 							type="text"
+							class="text"
 							value="Task 3"
 							id="editTaskInput"
 							placeholder="Untitled Task"
 							autocomplete="off"
 							inputmode="text"
 							spellcheck="false"
+							tabindex="-1"
 						/>
 						<div class="priority">
-							<i class="bx bx-flag bx-sm"></i>
+							<i
+								class="bx bxs-flag-alt bx-sm choose-priority"
+							></i>
 						</div>
 					</div>
 				</section>
@@ -385,13 +393,14 @@
 						placeholder="Add a note"
 						autocomplete="off"
 						spellcheck="false"
+						tabindex="-1"
 						inputmode="text"
 					></textarea>
 				</section>
 			</div>
 
 			<footer>
-				<div class="icon">
+				<div class="icon move-task-btn">
 					<svg
 						class="fluentIcon ___12fm75w f1w7gpdv fez10in fg4l7m0"
 						aria-label=""
@@ -428,8 +437,29 @@
 				</div>
 			</footer>
 		</div>
+		<div class="priority-container-overlay"></div>
+		<ul class="priority-container">
+			<li class="priority-item" data="high" style="color: red">
+				<i class="bx bxs-flag-alt" style="color: red"></i>High Priority
+			</li>
+			<li class="priority-item" data="medium" style="color: orange">
+				<i class="bx bxs-flag-alt" style="color: orange"></i>Medium
+				Priority
+			</li>
+			<li class="priority-item" data="low" style="color: blue">
+				<i class="bx bxs-flag-alt" style="color: blue"></i>Low Priority
+			</li>
+			<li class="priority-item" data="no" style="color: gray">
+				<i class="bx bxs-flag-alt" astyle="color: gray"></i>No Priority
+			</li>
+		</ul>
+		<div class="move-task-overlay"></div>
+		<ul class="move-tasks">
+			<h1>Move Task To:</h1>
+		</ul>
 
 		<!-- Corner Btn :) -->
+		<div class="animation-circle"></div>
 		<div class="add-task-btn">
 			<img src="assets/svgs/add.svg" alt="" />
 		</div>

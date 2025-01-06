@@ -1,135 +1,182 @@
 {
-	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzgzNjI1OGMyZmY1YWY3ODg5ZjY5NCIsImlhdCI6MTczNjE3MTIxOX0.tEpkD5ujp6d3tlRA94oJm_OScHpPkjMNzpu21HU6auo",
-	"user": {
-		"userData": {
-			"lists": [
-				{
-					"settings": {
-						"id": 1,
-						"title": "Today",
-						"isMain": true,
-						"pinned": false,
-						"theme": null,
-						"icon": "assets/svgs/sun.svg"
-					},
-					"tasks": [
-						{
-							"id": 1736167730485,
-							"title": "Add Priority For Tasks",
-							"completed": false,
-							"priority": "no",
-							"parentList": 1,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736167744381,
-							"title": "Move tasks",
-							"completed": false,
-							"priority": "no",
-							"parentList": 1,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": "1. Create Lists Except For Comp & All\n2. Add event for each list\n3. if list attr chose is clicked nothing occurs\n4. else run move tasks to that list function"
-						},
-						{
-							"id": 1736167868058,
-							"title": "SubTasks",
-							"completed": false,
-							"priority": "no",
-							"parentList": 1,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": ""
-						},
-						{
-							"id": 1736167870372,
-							"title": "Note",
-							"completed": true,
-							"priority": "no",
-							"parentList": 1,
-							"parentListTitle": "Today",
-							"subTasks": [],
-							"note": "Finished It Successfully"
-						}
-					],
-					"completedTasks": [],
-					"importantTasks": []
+	"userData": {
+		"lists": [
+			{
+				"settings": {
+					"id": 1,
+					"title": "Today",
+					"isMain": true,
+					"pinned": false,
+					"theme": null,
+					"icon": "assets/svgs/sun.svg"
 				},
-				{
-					"settings": {
-						"id": 2,
-						"title": "All",
-						"isMain": true,
-						"pinned": false,
-						"theme": null,
-						"icon": "assets/svgs/all.svg"
-					},
-					"tasks": [],
-					"completedTasks": [],
-					"importantTasks": []
+				"tasks": [],
+				"completedTasks": [],
+				"importantTasks": []
+			},
+			{
+				"settings": {
+					"id": 2,
+					"title": "All",
+					"isMain": true,
+					"pinned": false,
+					"theme": null,
+					"icon": "assets/svgs/all.svg"
 				},
-				{
-					"settings": {
-						"id": 3,
-						"title": "Completed",
-						"isMain": true,
-						"pinned": false,
-						"theme": null,
-						"icon": "assets/svgs/checked.svg"
-					},
-					"tasks": [],
-					"completedTasks": [],
-					"importantTasks": []
+				"tasks": [],
+				"completedTasks": [],
+				"importantTasks": []
+			},
+			{
+				"settings": {
+					"id": 3,
+					"title": "Completed",
+					"isMain": true,
+					"pinned": false,
+					"theme": null,
+					"icon": "assets/svgs/checked.svg"
 				},
-				{
-					"settings": {
-						"id": 4,
-						"title": "Planned",
-						"isMain": true,
-						"pinned": false,
-						"theme": null,
-						"icon": "assets/svgs/calendar.svg"
-					},
-					"tasks": [],
-					"completedTasks": [],
-					"importantTasks": []
+				"tasks": [],
+				"completedTasks": [],
+				"importantTasks": []
+			},
+			{
+				"settings": {
+					"id": 4,
+					"title": "Planned",
+					"isMain": true,
+					"pinned": false,
+					"theme": null,
+					"icon": "assets/svgs/calendar.svg"
 				},
-				{
-					"settings": {
-						"id": 5,
-						"title": "Tasks",
-						"isMain": true,
-						"pinned": false,
-						"theme": null,
-						"icon": "assets/svgs/list.svg"
-					},
-					"tasks": [],
-					"completedTasks": [],
-					"importantTasks": []
+				"tasks": [],
+				"completedTasks": [],
+				"importantTasks": []
+			},
+			{
+				"settings": {
+					"id": 5,
+					"title": "Tasks",
+					"isMain": true,
+					"pinned": false,
+					"theme": null,
+					"icon": "assets/svgs/list.svg"
 				},
-				{
-					"settings": {
-						"id": 1736169034146,
-						"title": "To Do App",
-						"isMain": false,
-						"theme": null,
-						"icon": "assets/svgs/list.svg"
+				"tasks": [],
+				"completedTasks": [],
+				"importantTasks": []
+			},
+			{
+				"settings": {
+					"id": 1736169034146,
+					"title": "To Do App",
+					"isMain": false,
+					"theme": null,
+					"icon": "assets/svgs/list.svg"
+				},
+				"tasks": [
+					{
+						"id": 1736173855585,
+						"title": "Priority",
+						"completed": false,
+						"priority": "no",
+						"parentList": 1736169034146,
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "Add Priority Options For Task"
 					},
-					"tasks": [],
-					"completedTasks": [],
-					"importantTasks": []
-				}
-			]
-		},
-		"_id": "677836258c2ff5af7889f694",
-		"email": "alya70934@gmail.com",
-		"password": "$2b$10$Ympd8ooHwutj1gbNe9cld.JXqqhewVMHLscI5qBMtcMAJpXDF0tbC",
-		"firstName": "Ali",
-		"lastName": "Adel",
-		"verified": true,
-		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzgzNjI1OGMyZmY1YWY3ODg5ZjY5NCIsImlhdCI6MTczNjE3MTIxOX0.tEpkD5ujp6d3tlRA94oJm_OScHpPkjMNzpu21HU6auo",
-		"__v": 0
-	}
+					{
+						"id": 1736173858862,
+						"title": "Subtasks",
+						"completed": false,
+						"priority": "no",
+						"parentList": 1736169034146,
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": ""
+					},
+					{
+						"id": 1736173863770,
+						"title": "Move task",
+						"completed": false,
+						"priority": "no",
+						"parentList": 1736169034146,
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": ""
+					},
+					{
+						"id": 1736173874680,
+						"title": "Task btn",
+						"completed": false,
+						"priority": "no",
+						"parentList": 1736169034146,
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": ""
+					},
+					{
+						"id": 1736173889572,
+						"title": "Inputs Validation",
+						"completed": false,
+						"priority": "no",
+						"parentList": 1736169034146,
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": ""
+					},
+					{
+						"id": 1736173895083,
+						"title": "Server Messeges",
+						"completed": false,
+						"priority": "no",
+						"parentList": 1736169034146,
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": ""
+					},
+					{
+						"id": 1736173907758,
+						"title": "Loader Sign Up & Login",
+						"completed": false,
+						"priority": "no",
+						"parentList": 1736169034146,
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": ""
+					},
+					{
+						"id": 1736173926646,
+						"title": "Styling Alerts",
+						"completed": false,
+						"priority": "no",
+						"parentList": 1736169034146,
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": ""
+					},
+					{
+						"id": 1736173949200,
+						"title": "Tasks Overview Data",
+						"completed": false,
+						"priority": "no",
+						"parentList": 1736169034146,
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": ""
+					}
+				],
+				"completedTasks": [],
+				"importantTasks": []
+			}
+		]
+	},
+	"_id": "677836258c2ff5af7889f694",
+	"email": "alya70934@gmail.com",
+	"password": "$2b$10$Ympd8ooHwutj1gbNe9cld.JXqqhewVMHLscI5qBMtcMAJpXDF0tbC",
+	"firstName": "Ali",
+	"lastName": "Adel",
+	"verified": true,
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzgzNjI1OGMyZmY1YWY3ODg5ZjY5NCIsImlhdCI6MTczNjE3OTY3MX0.9YIyhOFqC63Ec5UgsRIOrvWuyyjkB8ubUXnDHgnLyAM",
+	"__v": 0
 }

@@ -98,4 +98,12 @@ export const elements = {
 	completeTaskBtn: $("#completeTaskBtn"),
 	taskDetailsItem: $("#task-details-item"),
 	noteTextArea: $("#noteTextArea"),
+	priorityContainer: $(".priority-container"),
+	choosePriority: $(".choose-priority"),
+	priorityItems: $(".priority-item", true),
+	priorityContainerOverlay: $(".priority-container-overlay"),
+	validateIcon: $("#validation-icon"),
+	moveTaskBtn: $(".move-task-btn"),
+	moveTaskMenu: $(".move-tasks"),
+	moveTaskOverlay: $(".move-task-overlay"),
 };

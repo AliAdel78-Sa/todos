@@ -1,9 +1,11 @@
 // =====
 // TODO: today
 // =====
-// 1. Priority
-// 2. Subtasks
-// 3. Move Task
+// 1. Validation
+// 2. Server Messeges
+// 3. Loading Sign Up & Login
+// 4. Styling Messeges Of Login & Sign Up
+// 5. Tasks Overview Of Lists
 
 // And By That We Finish All Things About Tasks
 

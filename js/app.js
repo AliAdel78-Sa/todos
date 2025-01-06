@@ -36,6 +36,7 @@ const CURRENT_LIST_ID = "currentListId";
 let lists = initialLists;
 let userData = {};
 let gTaskItem = null;
+let priority = "no";
 
 // Events
 elements.deleteListBtn.addEventListener("click", deleteCurrentList);
@@ -61,13 +62,40 @@ elements.newListInput.addEventListener("keydown", (e) => {
 elements.renameListInput.addEventListener("keydown", (e) => {
 	renameList(e);
 });
-elements.addTaskInput.addEventListener("keydown", (e) => {
-	if (e.key === "Enter") {
-		addNewTask(elements.addTaskInput.value.trim(), "no");
-		elements.addTaskInput.value = "";
-		updateDisplay();
-		updateCount();
+elements.addTaskInput.addEventListener("input", () => {
+	if (elements.addTaskInput.value.trim().length > 0) {
+		elements.validateIcon.style.display = "flex";
+	} else {
+		elements.validateIcon.style.display = "none";
 	}
+});
+elements.addTaskInput.addEventListener("keydown", (e) => {
+	if (elements.addTaskInput.value.trim().length > 0) {
+		if (e.key === "Enter") {
+			addNewTask(elements.addTaskInput.value.trim(), "no");
+			elements.addTaskInput.value = "";
+			updateDisplay();
+			updateCount();
+		}
+	} else {
+		elements.validateIcon.style.display = "none";
+	}
+});
+elements.validateIcon.addEventListener("click", () => {
+	elements.validateIcon.style.display = "none";
+	addNewTask(elements.addTaskInput.value.trim(), "no");
+	elements.addTaskInput.value = "";
+	updateDisplay();
+	updateCount();
+});
+elements.moveTaskBtn.addEventListener("click", () => {
+	elements.moveTaskMenu.classList.add("show");
+	elements.moveTaskOverlay.classList.add("show");
+	handleMovingTask();
+});
+elements.moveTaskOverlay.addEventListener("click", () => {
+	elements.moveTaskMenu.classList.remove("show");
+	elements.moveTaskOverlay.classList.remove("show");
 });
 elements.deleteTaskBtn.addEventListener("click", () => {
 	if (storage.get("settings", initialSettings).confirmBeforeDeletion) {
@@ -116,6 +144,32 @@ elements.noteTextArea.addEventListener("blur", () => {
 	addNote(gTaskItem);
 	renderAllTasks();
 });
+elements.choosePriority.addEventListener("click", () => {
+	elements.priorityContainer.classList.add("show");
+	elements.priorityContainerOverlay.classList.add("show");
+});
+elements.priorityContainerOverlay.addEventListener("click", () => {
+	elements.priorityContainer.classList.remove("show");
+	elements.priorityContainerOverlay.classList.remove("show");
+});
+elements.priorityItems.forEach((item) => {
+	item.addEventListener("click", async () => {
+		priority = item.getAttribute("data");
+		elements.choosePriority.style.color = item.style.color;
+		elements.priorityContainer.classList.remove("show");
+		elements.priorityContainerOverlay.classList.remove("show");
+		const list = findListById(gTaskItem.getAttribute("parent-id"));
+		list.tasks.forEach((task) => {
+			if (Number(task.id) === Number(gTaskItem.id)) {
+				task.priority = priority;
+			}
+		});
+		renderAllTasks();
+		userData.lists = lists;
+		console.log(await user.save(userToken, userData));
+	});
+});
+
 // Functions
 function findListById(id) {
 	return lists.find((list) => Number(list.settings.id) === Number(id));
@@ -132,6 +186,38 @@ function isValid(text) {
 }
 
 // Lists
+function handleMovingTask() {
+	elements.moveTaskMenu.innerHTML = "<h1>Move Task To:</h1>";
+	lists.forEach((list) => {
+		if (
+			list.settings.id !== SMART_LISTS_IDS[1] &&
+			list.settings.id !== SMART_LISTS_IDS[2]
+		) {
+			const li = document.createElement("li");
+			li.textContent = list.settings.title;
+			li.id = list.settings.id;
+			elements.moveTaskMenu.append(li);
+			li.addEventListener("click", async () => {
+				const list = findListById(gTaskItem.getAttribute("parent-id"));
+				const task = findTaskById(list.tasks, gTaskItem.id);
+				list.tasks = list.tasks.filter(
+					(taskItem) => taskItem.id !== task.id
+				);
+				const selectedList = findListById(li.id);
+				task.parentList = selectedList.settings.id;
+				task.parentListTitle = selectedList.settings.title;
+				selectedList.tasks.push(task);
+				elements.moveTaskMenu.classList.remove("show");
+				elements.moveTaskOverlay.classList.remove("show");
+				elements.taskDetails.classList.remove("show");
+				elements.taskDetailOverlay.classList.remove("show");
+				renderAllTasks();
+				userData.lists = lists;
+				console.log(await user.save(userToken, userData));
+			});
+		}
+	});
+}
 async function renameList(e) {
 	const value = elements.renameListInput.value.trim();
 	let changedValue = "";
@@ -444,7 +530,7 @@ function buildTaskUi(task) {
 		li.classList.add("checked");
 	}
 	text.classList.add("text");
-	date.innerHTML = "Today";
+	date.textContent = handleTaskDate(task);
 	img.src = "assets/svgs/check.svg";
 	text.textContent = task.title;
 
@@ -475,6 +561,18 @@ function handleTaskClick(taskItem) {
 	list.tasks.forEach((task) => {
 		if (Number(task.id) === Number(taskItem.id)) {
 			elements.noteTextArea.value = task.note;
+			if (task.priority === "high") {
+				elements.choosePriority.style.color = "red";
+			}
+			if (task.priority === "medium") {
+				elements.choosePriority.style.color = "orange";
+			}
+			if (task.priority === "low") {
+				elements.choosePriority.style.color = "blue";
+			}
+			if (task.priority === "no") {
+				elements.choosePriority.style.color = "gray";
+			}
 		}
 	});
 	if (taskItem.classList.contains("checked")) {
@@ -482,7 +580,7 @@ function handleTaskClick(taskItem) {
 	} else {
 		elements.taskDetailsItem.classList.remove("checked");
 	}
-	handleTaskDate();
+	handleTaskDate(gTaskItem);
 	openTaskDetails();
 }
 function showConfirmationMessege() {
@@ -540,10 +638,19 @@ async function completeTask(taskItem) {
 	userData.lists = lists;
 	console.log(await user.save(userToken, userData));
 }
-
-function setPriority() {}
-
-function handleTaskDate() {
+function scheduleMidnightAction() {
+	const now = new Date();
+	const nextMidnight = new Date(now);
+	nextMidnight.setDate(now.getDate() + 1);
+	nextMidnight.setHours(0, 0, 0, 0);
+	const timeUntilMidnight = nextMidnight - now;
+	setTimeout(() => {
+		renderAllLists();
+		renderAllTasks();
+		scheduleMidnightAction();
+	}, timeUntilMidnight);
+}
+function handleTaskDate(task) {
 	const months = [
 		"Jan",
 		"Feb",
@@ -558,20 +665,24 @@ function handleTaskDate() {
 		"Nov",
 		"Dec",
 	];
+	let formattedDate = null;
 	const today = new Date().getDate();
 	const yesterDay = new Date(
 		new Date().setDate(new Date().getDate() - 1)
 	).getDate();
-	const date = new Date(Number(gTaskItem.id));
+	const date = new Date(Number(task.id));
 	if (date.getDate() === today) {
-		elements.taskDate.textContent = "Created today";
+		formattedDate = "Today";
+		elements.taskDate.textContent = `Created ${formattedDate.toLowerCase()}`;
 	} else if (date.getDate() === yesterDay) {
-		elements.taskDate.textContent = "Created yesterday";
+		formattedDate = "Yesterday";
+		elements.taskDate.textContent = `Created ${formattedDate.toLowerCase()}`;
 	} else {
-		elements.taskDate.textContent = `Created at ${
-			months[date.getMonth()]
-		} ${date.getDate()} ${date.getFullYear()}`;
+		formattedDate = `${months[date.getMonth()]}
+		 ${date.getDate()} ${date.getFullYear()}`;
+		elements.taskDate.textContent = `Created at ${formattedDate}`;
 	}
+	return formattedDate;
 }
 async function addNote(taskItem) {
 	const list = findListById(taskItem.getAttribute("parent-id"));
@@ -610,6 +721,7 @@ async function initialUserData() {
 
 // Initial
 initialUserData();
+scheduleMidnightAction();
 
 /*
 SAVE:

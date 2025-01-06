@@ -707,11 +707,10 @@ async function addNote(taskItem) {
 }
 // For User
 async function initialUserData() {
-	if (userToken === null)
-		return window.location.assign("../pages/login.html");
+	if (userToken === null) return window.location.assign("/pages/login.html");
 	const data = await user.get(userToken);
 	if (data.message) {
-		window.location.assign("/login.html");
+		window.location.assign("/pages/login.html");
 		return;
 	}
 	userData = data.userData;

@@ -213,7 +213,7 @@ elements.transparentOverlay.addEventListener("click", () => {
 elements.priorityItems.forEach((item) => {
 	item.addEventListener("click", async () => {
 		priority = item.getAttribute("data");
-		elements.choosePriority.style.color = item.style.color;
+		elements.choosePriority.style.color = item.getAttribute("color");
 		elements.priorityContainer.classList.remove("show");
 		elements.transparentOverlay.classList.remove("show");
 		const list = findListById(gTaskItem.getAttribute("parent-id"));
@@ -553,6 +553,13 @@ async function completeTask(id, taskItem) {
 	const list = findListById(taskItem.getAttribute("parent-id"));
 	const task = findTaskById(list.tasks, id);
 	task.completed = !task.completed;
+	if (list.settings.id === 1) {
+		if (task.completed) {
+			list.completedTasks++;
+		} else {
+			list.completedTasks--;
+		}
+	}
 	if (task.completed) {
 		if (storage.get("settings", initialSettings).playSound) {
 			const audio = new Audio("../assets/sounds/complete-sound.mp3");
@@ -749,6 +756,12 @@ async function initialUserData() {
 			storage.set("welcomed", true);
 		}
 	}, 100);
+
+	lists.forEach((list) => {
+		if (list.settings.title === "Today") {
+			console.log(list.tasks);
+		}
+	});
 
 	// CLEAR
 	// await user.clear(userToken, userData);

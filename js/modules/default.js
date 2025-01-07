@@ -9,8 +9,8 @@ export const initialLists = [
 			icon: "assets/svgs/sun.svg",
 		},
 		tasks: [],
-		completedTasks: [],
-		importantTasks: [],
+		completedTasks: 0,
+		
 	},
 	{
 		settings: {
@@ -22,8 +22,6 @@ export const initialLists = [
 			icon: "assets/svgs/all.svg",
 		},
 		tasks: [],
-		completedTasks: [],
-		importantTasks: [],
 	},
 	{
 		settings: {
@@ -35,8 +33,6 @@ export const initialLists = [
 			icon: "assets/svgs/checked.svg",
 		},
 		tasks: [],
-		completedTasks: [],
-		importantTasks: [],
 	},
 	{
 		settings: {
@@ -48,8 +44,6 @@ export const initialLists = [
 			icon: "assets/svgs/calendar.svg",
 		},
 		tasks: [],
-		completedTasks: [],
-		importantTasks: [],
 	},
 	{
 		settings: {
@@ -61,8 +55,6 @@ export const initialLists = [
 			icon: "assets/svgs/list.svg",
 		},
 		tasks: [],
-		completedTasks: [],
-		importantTasks: [],
 	},
 ];
 export const initialSettings = {

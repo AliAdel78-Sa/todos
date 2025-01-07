@@ -45,13 +45,9 @@ function openListOptions() {
 	elements.listOptions.classList.add("show");
 	elements.mainOverlay.classList.add("show");
 }
-function hideListOptions() {
+export function hideListOptions() {
 	elements.mainOverlay.classList.remove("show");
 	elements.listOptions.classList.remove("show");
-}
-function hideModal() {
-	elements.deleteListModal.classList.remove("show");
-	elements.secondryOverlay.classList.remove("show");
 }
 function showThemeMenu() {
 	elements.secondryOverlay.classList.add("show");
@@ -99,7 +95,6 @@ export function closeTaskDetails() {
 	elements.taskDetails.classList.remove("show");
 	elements.mainOverlay.classList.remove("show");
 }
-
 export function openTaskDetails() {
 	elements.mainOverlay.classList.add("show");
 	elements.taskDetails.classList.add("show");
@@ -135,19 +130,11 @@ export function handleUI() {
 			hideListOptions();
 		});
 	});
-	elements.secondryOverlay.addEventListener("click", hideModal);
-	elements.cancelDeleteBtn.addEventListener("click", hideModal);
-	elements.deleteList.addEventListener("click", hideListOptions);
-	elements.deleteListBtn.addEventListener("click", () => {
-		hideListOptions();
-		hideModal();
-	});
 	elements.changeThemeBtn.addEventListener("click", showThemeMenu);
 	elements.secondryOverlay.addEventListener("click", hideThemeMenu);
 	elements.closeNavBtn.addEventListener("click", closeNavBar);
 	elements.openNavBtn.addEventListener("click", openNavBar);
 	elements.mainOverlay.addEventListener("click", closeNavBar);
-
 	elements.searchBar.addEventListener("input", () => {
 		if (elements.searchBar.value.length > 0) {
 			elements.closeSearchBar.style.display = "flex";

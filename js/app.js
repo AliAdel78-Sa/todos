@@ -1,5 +1,4 @@
 // Installing App
-
 if ("serviceWorker" in navigator) {
 	navigator.serviceWorker
 		.register("sw.js")
@@ -19,6 +18,7 @@ import {
 	updateDisplay,
 	openTaskDetails,
 	closeTaskDetails,
+	hideListOptions,
 } from "./UI.js";
 import { handleSettings } from "./modules/settings.js";
 import { storage } from "./modules/storage.js";
@@ -27,6 +27,7 @@ import { initialLists, initialSettings } from "./modules/default.js";
 import { handleThemes } from "./modules/themes.js";
 import { user } from "./modules/userData.js";
 import { notify } from "./modules/notify.js";
+import { displayAModal } from "./modules/modal.js";
 
 // CONSTANTS
 const SMART_LISTS_IDS = [1, 2, 3, 4, 5];
@@ -40,11 +41,19 @@ let gTaskItem = null;
 let priority = "no";
 
 // Events
-elements.deleteListBtn.addEventListener("click", deleteCurrentList);
 elements.deleteList.addEventListener("click", () => {
 	const settings = storage.get("settings", initialSettings);
 	if (settings.confirmBeforeDeletion) {
-		showModal();
+		displayAModal(
+			"Delete List",
+			`Are You Sure You Want To Delete "${elements.listTitle.textContent}`,
+			(action) => {
+				if (action === "execute") {
+					deleteCurrentList();
+					hideListOptions();
+				}
+			}
+		);
 	} else {
 		deleteCurrentList();
 	}
@@ -141,21 +150,21 @@ elements.transparentOverlay.addEventListener("click", () => {
 	elements.moveTaskMenu.classList.remove("show");
 	elements.transparentOverlay.classList.remove("show");
 });
+elements.signOutBtn.addEventListener("click", signOut);
 elements.deleteTaskBtn.addEventListener("click", () => {
 	if (storage.get("settings", initialSettings).confirmBeforeDeletion) {
-		showConfirmationMessege();
+		displayAModal(
+			"Delete Task",
+			`Are You Sure You Want To Delete "${gTaskItem.childNodes[1].textContent}"`,
+			(action) => {
+				if (action === "execute") {
+					deleteTask(gTaskItem);
+				}
+			}
+		);
 	} else {
 		deleteTask(gTaskItem);
 	}
-});
-elements.deleteTaskConfirmBtn.addEventListener("click", () => {
-	deleteTask(gTaskItem);
-	elements.deleteTaskModal.classList.remove("show");
-	elements.secondryOverlay.classList.remove("show");
-});
-elements.cancelDeleteTaskBtn.addEventListener("click", () => {
-	elements.deleteTaskModal.classList.remove("show");
-	elements.secondryOverlay.classList.remove("show");
 });
 window.addEventListener("contextmenu", (e) => {
 	e.preventDefault();
@@ -182,7 +191,12 @@ elements.editTaskInput.addEventListener("blur", () => {
 });
 elements.completeTaskBtn.addEventListener("click", () => {
 	elements.taskDetailsItem.classList.toggle("checked");
-	completeTask(gTaskItem);
+	const taskItems = document.querySelectorAll(".task-item");
+	taskItems.forEach((taskItem) => {
+		if (taskItem.id === gTaskItem.id) {
+			completeTask(gTaskItem.id, taskItem);
+		}
+	});
 });
 elements.noteTextArea.addEventListener("blur", () => {
 	addNote(gTaskItem);
@@ -221,12 +235,9 @@ function findListById(id) {
 function findTaskById(tasks, id) {
 	return tasks.find((task) => Number(task.id) === Number(id));
 }
-function isValid(text) {
-	if (text.length > 0 && text.length < 30) {
-		return true;
-	} else {
-		return false;
-	}
+function signOut() {
+	localStorage.removeItem("token");
+	window.location.reload();
 }
 
 // Lists
@@ -292,11 +303,6 @@ async function renameList(e) {
 		userData.lists = lists;
 		console.log(await user.save(userToken, userData));
 	}
-}
-function showModal() {
-	elements.deleteListModal.classList.add("show");
-	elements.secondryOverlay.classList.add("show");
-	elements.deleteListTitle.textContent = `Are You Sure You Want To Delete "${elements.listTitle.textContent}"`;
 }
 async function deleteCurrentList() {
 	// Create A List Without The Current List And Saving It
@@ -463,10 +469,10 @@ function renderAllTasks() {
 		if (task.show) {
 			const [taskItem, checkBox, text] = buildTaskUi(task);
 			checkBox.addEventListener("click", () => {
-				handleCompletion(checkBox);
+				completeTask(taskItem.id, taskItem);
 			});
 			text.addEventListener("click", () => {
-				handleCompletion(text);
+				completeTask(taskItem.id, taskItem);
 			});
 			taskItem.addEventListener("click", (e) => {
 				if (e.target === taskItem) {
@@ -501,7 +507,6 @@ function calcAllTasks() {
 async function addNewTask(taskTitle, priority) {
 	if (taskTitle.length === 0) return;
 	let parentListId;
-
 	const task = {
 		id: Date.now(),
 		title: taskTitle,
@@ -513,7 +518,6 @@ async function addNewTask(taskTitle, priority) {
 		note: "",
 		show: true,
 	};
-
 	// Saving Task In The List
 	const list = findListById(storage.get(CURRENT_LIST_ID));
 	if (Number(list.settings.id) === SMART_LISTS_IDS[1]) {
@@ -528,14 +532,13 @@ async function addNewTask(taskTitle, priority) {
 		task.parentList = parentListId;
 		list.tasks.push(task);
 	}
-
 	// build Task
 	const [taskItem, checkBox, text] = buildTaskUi(task);
 	checkBox.addEventListener("click", () => {
-		handleCompletion(checkBox);
+		completeTask(taskItem.id, taskItem);
 	});
 	text.addEventListener("click", () => {
-		handleCompletion(text);
+		completeTask(taskItem.id, taskItem);
 	});
 	taskItem.addEventListener("click", (e) => {
 		if (e.target === taskItem) {
@@ -546,28 +549,25 @@ async function addNewTask(taskTitle, priority) {
 	userData.lists = lists;
 	console.log(await user.save(userToken, userData));
 }
-async function handleCompletion(child) {
-	const list = findListById(child.parentElement.getAttribute("parent-id"));
-	const task = findTaskById(list.tasks, child.parentElement.id);
-	console.log(task);
-
-	if (task.id === +child.parentElement.id) {
-		task.completed = !task.completed;
-		if (task.completed) {
-			if (storage.get("settings", initialSettings).playSound) {
-				elements.completetionSound.currentTime = 0;
-				elements.completetionSound.volume = 0.5;
-				elements.completetionSound.play();
-			}
-			child.parentElement.classList.add("checked");
+async function completeTask(id, taskItem) {
+	const list = findListById(taskItem.getAttribute("parent-id"));
+	const task = findTaskById(list.tasks, id);
+	task.completed = !task.completed;
+	if (task.completed) {
+		if (storage.get("settings", initialSettings).playSound) {
+			const audio = new Audio("../assets/sounds/complete-sound.mp3");
+			audio.currentTime = 0;
+			audio.volume = 0.5;
+			audio.play();
 		}
-		child.parentElement.style.opacity = "0";
-		setTimeout(() => {
-			renderAllTasks();
-		}, 300);
-		userData.lists = lists;
-		console.log(await user.save(userToken, userData));
+		taskItem.classList.add("checked");
 	}
+	taskItem.style.opacity = "0";
+	setTimeout(() => {
+		renderAllTasks();
+	}, 300);
+	userData.lists = lists;
+	console.log(await user.save(userToken, userData));
 }
 function buildTaskUi(task) {
 	// Creating Elements
@@ -582,6 +582,7 @@ function buildTaskUi(task) {
 	li.setAttribute("parent-id", task.parentList);
 	date.classList.add("due-date");
 	li.classList.add("task-item");
+	li.style.position = "relative";
 	icon.classList.add("icon");
 	if (task.completed) {
 		li.classList.add("checked");
@@ -606,7 +607,7 @@ function buildTaskUi(task) {
 	} else if (task.priority === "no") {
 		container = elements.noList;
 	}
-	container.append(li);
+	container.prepend(li);
 	// Remove the animation class after it completes
 	return [li, icon, text];
 }
@@ -640,16 +641,6 @@ function handleTaskClick(taskItem) {
 	handleTaskDate(gTaskItem);
 	openTaskDetails();
 }
-elements.secondryOverlay.addEventListener("click", () => {
-	elements.secondryOverlay.classList.remove("show");
-	elements.deleteTaskModal.classList.remove("show");
-});
-function showConfirmationMessege() {
-	console.log(gTaskItem);
-	elements.deleteTaskModal.classList.add("show");
-	elements.secondryOverlay.classList.add("show");
-	elements.deleteTaskTitle.textContent = `Are You Sure You Want To Delete "${gTaskItem.childNodes[1].textContent}"`;
-}
 async function deleteTask(taskItem) {
 	const list = findListById(taskItem.getAttribute("parent-id"));
 	list.tasks = list.tasks.filter(
@@ -666,33 +657,6 @@ async function renameTask(taskItem, newTitle) {
 		if (Number(task.id) === Number(taskItem.id)) {
 			task.title = newTitle;
 			elements.editTaskInput.value = newTitle;
-		}
-	});
-	userData.lists = lists;
-	console.log(await user.save(userToken, userData));
-}
-async function completeTask(taskItem) {
-	const list = findListById(taskItem.getAttribute("parent-id"));
-	list.tasks.forEach((task) => {
-		if (Number(task.id) === Number(taskItem.id)) {
-			task.completed = !task.completed;
-			if (task.completed) {
-				if (storage.get("settings", initialSettings).playSound) {
-					elements.completetionSound.currentTime = 0;
-					elements.completetionSound.volume = 0.5;
-					elements.completetionSound.play();
-				}
-			}
-			const taskItems = document.querySelectorAll(".task-item");
-			taskItems.forEach((taskItm) => {
-				if (taskItm.id === taskItem.id) {
-					taskItm.style.opacity = "0";
-				}
-			});
-			setTimeout(() => {
-				renderAllTasks();
-			}, 300);
-			console.log(taskItem);
 		}
 	});
 	userData.lists = lists;

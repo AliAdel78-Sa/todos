@@ -32,16 +32,7 @@
 		<title>To Do</title>
 	</head>
 	<body>
-		<!-- Overlays -->
-		<div class="main-overlay"></div>
-		<div class="secondry-overlay"></div>
-		<div class="transparent-overlay"></div>
-
-		<!-- PreLoader -->
-		<div id="preloader">
-			<span class="loader"></span>
-		</div>
-		<!-- Header -->
+		<!-- HEADER -->
 		<header>
 			<h1 class="title"><a href="index.html">To Do</a></h1>
 			<div class="search-bar">
@@ -82,7 +73,7 @@
 			</div>
 		</header>
 
-		<!-- Navigation Bar :) -->
+		<!-- NAVBAR -->
 		<nav>
 			<header>
 				<div class="icon" id="close-nav">
@@ -105,7 +96,7 @@
 			<ul id="lists"></ul>
 		</nav>
 
-		<!--  COMPONENTS  -->
+		<!-- COMPONENTS  -->
 		<div class="tasks-main-container">
 			<header>
 				<div class="icon" id="open-nav">
@@ -205,7 +196,63 @@
 			</div>
 		</div>
 
-		<!-- Settings Bar :) -->
+		<!-- FOOTER -->
+		<footer>
+			<div class="icon link" data-id="to-do-list">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="30"
+					height="30"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="#fff"
+					stroke-width="2.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="feather feather-check-circle"
+				>
+					<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+					<polyline points="22 4 12 14.01 9 11.01"></polyline>
+				</svg>
+			</div>
+			<div class="icon link" data-id="habit-tracker">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="30"
+					height="30"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="#fff"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="feather feather-target"
+				>
+					<circle cx="12" cy="12" r="10"></circle>
+					<circle cx="12" cy="12" r="6"></circle>
+					<circle cx="12" cy="12" r="2"></circle>
+				</svg>
+			</div>
+			<div class="icon link" data-id="stop-watch">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="30"
+					height="30"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="#fff"
+					stroke-width="2.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="feather feather-clock"
+				>
+					<circle cx="12" cy="12" r="10"></circle>
+					<polyline points="12 6 12 12 16 14"></polyline>
+				</svg>
+			</div>
+		</footer>
+
+		<!-- SETTINGS -->
 		<aside class="settings-bar">
 			<header>
 				<h1>Settings</h1>
@@ -337,14 +384,14 @@
 						>Follow Me On Github</a
 					>
 				</p>
-				<p onclick="signOut()">
+				<p id="sign-out-btn">
 					<i class="bx bx-log-out bx-sm" style="color: #ff0000"></i>
 					<span style="color: red">Sign Out</span>
 				</p>
 			</div>
 		</aside>
 
-		<!-- Task Details Component -->
+		<!-- TASK -->
 		<div class="task-details">
 			<header>
 				<h1>Task details</h1>
@@ -461,13 +508,13 @@
 			<h1>Move Task To:</h1>
 		</ul>
 
-		<!-- Corner Btn :) -->
+		<!-- CORNERBTN -->
 		<div class="animation-circle"></div>
 		<div class="add-task-btn">
 			<img src="assets/svgs/add.svg" alt="" />
 		</div>
 
-		<!-- Context Menus -->
+		<!-- MENUS -->
 		<div class="context-menu" id="list-options">
 			<header>
 				<h1 class="title">Options</h1>
@@ -546,104 +593,22 @@
 			</div>
 		</div>
 
-		<!-- Confirmation Messeges -->
-		<div class="modal" id="delete-list-modal">
-			<h2>Delete List</h2>
-			<p id="delete-list-title">
-				Are You Sure You Want To Delete "List" ?
-			</p>
-			<div class="btns">
-				<button class="delete-btn" id="delete-list-btn">Delete</button>
-				<button class="cancel-btn" id="cancel-list-btn">Cancel</button>
-			</div>
-		</div>
-		<div class="modal" id="delete-task-modal">
-			<h2>Delete List</h2>
-			<p id="delete-task-title">
-				Are You Sure You Want To Delete "Task" ?
-			</p>
-			<div class="btns">
-				<button class="delete-btn" id="deleteTaskConfirmBtn">
-					Delete
-				</button>
-				<button class="cancel-btn" id="cancelTaskConfirmBtn">
-					Cancel
-				</button>
-			</div>
+		<!-- OVERLAYS -->
+		<div class="main-overlay"></div>
+		<div class="secondry-overlay"></div>
+		<div class="transparent-overlay"></div>
+
+		<!-- PRELOADERS -->
+		<div id="preloader">
+			<span class="loader"></span>
 		</div>
 
-		<footer>
-			<div class="icon link" data-id="to-do-list">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="30"
-					height="30"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="#fff"
-					stroke-width="2.5"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					class="feather feather-check-circle"
-				>
-					<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-					<polyline points="22 4 12 14.01 9 11.01"></polyline>
-				</svg>
-			</div>
-			<div class="icon link" data-id="habit-tracker">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="30"
-					height="30"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="#fff"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					class="feather feather-target"
-				>
-					<circle cx="12" cy="12" r="10"></circle>
-					<circle cx="12" cy="12" r="6"></circle>
-					<circle cx="12" cy="12" r="2"></circle>
-				</svg>
-			</div>
-			<div class="icon link" data-id="stop-watch">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="30"
-					height="30"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="#fff"
-					stroke-width="2.5"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					class="feather feather-clock"
-				>
-					<circle cx="12" cy="12" r="10"></circle>
-					<polyline points="12 6 12 12 16 14"></polyline>
-				</svg>
-			</div>
-		</footer>
-
-		<!-- Audios -->
-		<audio
-			src="assets/sounds/complete-sound.mp3"
-			style="display: none"
-		></audio>
-
-		<!-- Notifications -->
+		<!-- NOTIFICATIONS -->
 		<div class="notifications"></div>
 
-		<!-- Scripts -->
+		<!-- MODALS -->
+		<div class="modals"></div>
+
 		<script type="module" src="js/app.js"></script>
-		<script src="js/modules/test.js" type="module"></script>
-		<script>
-			function signOut() {
-				localStorage.removeItem("token");
-				window.location.reload();
-			}
-		</script>
 	</body>
 </html>

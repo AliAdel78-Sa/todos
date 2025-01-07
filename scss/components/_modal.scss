@@ -7,15 +7,21 @@
 	width: 350px;
 	display: flex;
 	flex-flow: column;
-	transition: 0.3s ease all;
+	transition: 0.2s ease all;
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	transform: translate(-50%, -50%);
+	transform: translate(-50%, -60%);
+	animation-name: fade-in;
+	animation-duration: 200ms;
+	animation-delay: 0s;
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: 1;
+	animation-fill-mode: both;
+	animation-direction: alternate;
+	z-index: 1000;
 	border-radius: 5px;
 	z-index: 15;
-	opacity: 0;
-	pointer-events: none;
 	h2 {
 		margin-bottom: 5px;
 		font-weight: 500;
@@ -54,9 +60,25 @@
 			}
 		}
 	}
+}
 
-	&.show {
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+		transform: translate(-50%, -60%);
+	}
+	100% {
 		opacity: 1;
-		pointer-events: all;
+		transform: translate(-50%, -50%);
+	}
+}
+@keyframes fade-out {
+	0% {
+		opacity: 1;
+		transform: translate(-50%, -50%);
+	}
+	100% {
+		opacity: 0;
+		transform: translate(-50%, -60%);
 	}
 }

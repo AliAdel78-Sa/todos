@@ -1,4 +1,3 @@
-import { elements } from "./modules/elements.js";
 import { notify } from "./modules/notify.js";
 import { storage } from "./modules/storage.js";
 
@@ -8,6 +7,8 @@ const password = document.getElementById("password-input");
 const showPassword = document.getElementById("showPassword");
 const hidePassword = document.getElementById("hidePassword");
 const loading = document.getElementById("loading");
+
+const validEmailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 hidePassword.addEventListener("click", hidePass);
 showPassword.addEventListener("click", showPass);
@@ -26,27 +27,36 @@ function showPass() {
 }
 
 loginBtn.addEventListener("click", () => {
-	loading.classList.remove("hide");
-	if (email.value.trim().length > 0 && password.value.trim().length > 0) {
-		login()
-			.then((data) => {
-				localStorage.setItem("token", JSON.stringify(data.token));
-				storage.set("welcomed", null);
+	console.log(String(email.value.trim()).match(validEmailRegEx));
 
-				setTimeout(() => {
-					window.location.assign("/");
-					loading.classList.add("hide");
-				}, 1000);
-			})
-			.catch((e) => {
-				console.log(e);
-
-				loading.classList.add("hide");
-				const title = e.split(",")[0];
-				const body = e.split(",")[1];
-				notify(title, body, "danger", 5);
-			});
+	if (String(email.value.trim()).match(validEmailRegEx) === null) {
+		notify(
+			"Invalid Email",
+			"Email Should Look Like 'example@gmail.com' ",
+			"danger",
+			3
+		);
+		return;
 	}
+	loading.classList.remove("hide");
+	login()
+		.then((data) => {
+			localStorage.setItem("token", JSON.stringify(data.token));
+			storage.set("welcomed", null);
+
+			setTimeout(() => {
+				window.location.assign("/");
+				loading.classList.add("hide");
+			}, 1000);
+		})
+		.catch((e) => {
+			console.log(e);
+
+			loading.classList.add("hide");
+			const title = e.split(",")[0];
+			const body = e.split(",")[1];
+			notify(title, body, "danger", 5);
+		});
 });
 
 function login() {

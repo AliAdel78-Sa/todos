@@ -1,5 +1,4 @@
 import { notify } from "./modules/notify.js";
-import { elements } from "./modules/elements.js";
 
 const signupBtn = document.getElementById("signup-btn");
 const email = document.getElementById("email-input");
@@ -12,6 +11,8 @@ const loading = document.getElementById("loading");
 hidePassword.addEventListener("click", hidePass);
 showPassword.addEventListener("click", showPass);
 
+const validEmailRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const validPassRegex = /^(?=.*[A-Za-z])(?=.*\d).+$/;
 function hidePass() {
 	hidePassword.style.display = "none";
 	showPassword.style.display = "block";
@@ -25,6 +26,37 @@ function showPass() {
 	password.focus();
 }
 signupBtn.addEventListener("click", () => {
+	if (String(email.value.trim()).match(validEmailRegEx) === null) {
+		notify(
+			"Invalid Email",
+			"Email Should Look Like 'example@gmail.com' ",
+			"danger",
+			3
+		);
+		return;
+	} else if (password.value.length < 10) {
+		notify(
+			"Invalid Password Characters",
+			"Password Must Be 10 or More Characters",
+			"danger",
+			3
+		);
+		return;
+	} else if (String(password.value).match(validPassRegex) === null) {
+		notify(
+			"Invalid Password",
+			"Password Must Include Letters & Numbers",
+			"danger",
+			3
+		);
+		return;
+	} else if (firstName.value.length === 0) {
+		notify("Invalid Name", "Please Provide Your First Name", "danger", 3);
+		return;
+	} else if (lastName.value.length === 0) {
+		notify("Invalid Name", "Please Provide Your Last Name", "danger", 3);
+		return;
+	}
 	loading.classList.remove("hide");
 	signUp()
 		.then((data) => {

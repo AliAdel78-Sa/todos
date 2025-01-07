@@ -1,10 +1,4 @@
 // =====
-// TODO: today
-// =====
-// 1. Clean Code
-// 2. Validate Email & Password
-
-// =====
 // TODO: tomorrow
 // =====
 // 1. Subtasks

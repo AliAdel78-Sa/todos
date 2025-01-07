@@ -600,15 +600,21 @@ aside.show {
   width: 350px;
   display: flex;
   flex-flow: column;
-  transition: 0.3s ease all;
+  transition: 0.2s ease all;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -60%);
+  animation-name: fade-in;
+  animation-duration: 200ms;
+  animation-delay: 0s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+  animation-direction: alternate;
+  z-index: 1000;
   border-radius: 5px;
   z-index: 15;
-  opacity: 0;
-  pointer-events: none;
 }
 .modal h2 {
   margin-bottom: 5px;
@@ -648,11 +654,27 @@ aside.show {
 .modal .btns button:last-child:hover {
   background-color: #434346;
 }
-.modal.show {
-  opacity: 1;
-  pointer-events: all;
-}
 
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+}
 .sub-context-menu {
   position: fixed;
   bottom: 0;
@@ -1010,7 +1032,6 @@ footer .link {
   position: fixed;
   top: 20px;
   left: 50%;
-  width: 100%;
   max-width: 470px;
   transform: translateX(-50%);
   box-shadow: 0 0 20px 3px #232631;
@@ -1089,5 +1110,11 @@ footer .link {
   }
   100% {
     top: -100px;
+  }
+}
+@keyframes ripple {
+  100% {
+    transform: translate(-50%, -50%) scale(100);
+    opacity: 0;
   }
 }/*# sourceMappingURL=main.css.map */

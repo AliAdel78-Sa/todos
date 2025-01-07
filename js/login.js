@@ -1,8 +1,13 @@
+import { elements } from "./modules/elements.js";
+import { notify } from "./modules/notify.js";
+import { storage } from "./modules/storage.js";
+
 const loginBtn = document.getElementById("login-btn");
 const email = document.getElementById("email-input");
 const password = document.getElementById("password-input");
 const showPassword = document.getElementById("showPassword");
 const hidePassword = document.getElementById("hidePassword");
+const loading = document.getElementById("loading");
 
 hidePassword.addEventListener("click", hidePass);
 showPassword.addEventListener("click", showPass);
@@ -10,22 +15,37 @@ showPassword.addEventListener("click", showPass);
 function hidePass() {
 	hidePassword.style.display = "none";
 	showPassword.style.display = "block";
+	password.focus();
 	password.type = "password";
 }
 function showPass() {
+	password.focus();
 	hidePassword.style.display = "block";
 	showPassword.style.display = "none";
 	password.type = "text";
 }
 
 loginBtn.addEventListener("click", () => {
+	loading.classList.remove("hide");
 	if (email.value.trim().length > 0 && password.value.trim().length > 0) {
 		login()
 			.then((data) => {
 				localStorage.setItem("token", JSON.stringify(data.token));
-				window.location.assign("/");
+				storage.set("welcomed", null);
+
+				setTimeout(() => {
+					window.location.assign("/");
+					loading.classList.add("hide");
+				}, 1000);
 			})
-			.catch((e) => alert(e));
+			.catch((e) => {
+				console.log(e);
+
+				loading.classList.add("hide");
+				const title = e.split(",")[0];
+				const body = e.split(",")[1];
+				notify(title, body, "danger", 5);
+			});
 	}
 });
 
@@ -48,11 +68,13 @@ function login() {
 			);
 			if (!response.ok) {
 				if (response.status === 404) {
-					rej("User not Found, Try Signing Up Instead");
+					rej(
+						"Email is invalid, Try signing up if you don't have an account"
+					);
 				} else if (response.status === 401) {
-					rej("Invalid Password");
+					rej("Invalid Password, Please try again");
 				} else {
-					rej("Error");
+					rej("Error, Server Error");
 				}
 			} else {
 				const data = await response.json();

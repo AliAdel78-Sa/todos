@@ -26,6 +26,7 @@ import { elements } from "./modules/elements.js";
 import { initialLists, initialSettings } from "./modules/default.js";
 import { handleThemes } from "./modules/themes.js";
 import { user } from "./modules/userData.js";
+import { notify } from "./modules/notify.js";
 
 // CONSTANTS
 const SMART_LISTS_IDS = [1, 2, 3, 4, 5];
@@ -50,12 +51,28 @@ elements.deleteList.addEventListener("click", () => {
 });
 elements.newListInput.addEventListener("keydown", (e) => {
 	if (e.key === "Enter") {
-		if (isValid(elements.newListInput.value.trim())) {
+		let val = elements.newListInput.value.trim().length;
+		if (val === 0) {
+			notify("Invalid Value", "Please Enter A Value", "danger", 2).then(
+				() => {
+					elements.newListInput.focus();
+				}
+			);
+		} else if (val >= 20) {
+			notify(
+				"Invalid Value",
+				"Value Must Be 20 Characters Or Less",
+				"danger",
+				2
+			).then(() => {
+				elements.newListInput.focus();
+			});
+		} else {
 			addNewList(elements.newListInput.value.trim());
 			updateCount();
 			updateDisplay();
-		} else {
-			window.alert("Too Small or Large Value");
+			elements.newListInput.value = "";
+			elements.newListInput.blur();
 		}
 	}
 });
@@ -70,33 +87,59 @@ elements.addTaskInput.addEventListener("input", () => {
 	}
 });
 elements.addTaskInput.addEventListener("keydown", (e) => {
-	if (elements.addTaskInput.value.trim().length > 0) {
-		if (e.key === "Enter") {
+	if (e.key === "Enter") {
+		let val = elements.addTaskInput.value.trim().length;
+		if (val === 0) {
+			elements.validateIcon.style.display = "none";
+			notify("Invalid Value", "Please Enter A Value", "danger", 2).then(
+				() => {
+					elements.addTaskInput.focus();
+				}
+			);
+		} else if (val >= 30) {
+			notify("Invalid Value", "Value Too Big", "danger", 2).then(() => {
+				elements.addTaskInput.focus();
+			});
+		} else {
 			addNewTask(elements.addTaskInput.value.trim(), "no");
 			elements.addTaskInput.value = "";
 			updateDisplay();
 			updateCount();
 			elements.validateIcon.style.display = "none";
 		}
-	} else {
-		elements.validateIcon.style.display = "none";
 	}
 });
 elements.validateIcon.addEventListener("click", () => {
-	elements.validateIcon.style.display = "none";
-	addNewTask(elements.addTaskInput.value.trim(), "no");
-	elements.addTaskInput.value = "";
-	updateDisplay();
-	updateCount();
+	elements.addTaskInput.focus();
+
+	let val = elements.addTaskInput.value.trim().length;
+	if (val === 0) {
+		elements.validateIcon.style.display = "none";
+		notify("Invalid Value", "Please Enter A Value", "danger", 2).then(
+			() => {
+				elements.addTaskInput.focus();
+			}
+		);
+	} else if (val >= 30) {
+		notify("Invalid Value", "Value Too Big", "danger", 2).then(() => {
+			elements.addTaskInput.focus();
+		});
+	} else {
+		addNewTask(elements.addTaskInput.value.trim(), "no");
+		elements.addTaskInput.value = "";
+		updateDisplay();
+		updateCount();
+		elements.validateIcon.style.display = "none";
+	}
 });
 elements.moveTaskBtn.addEventListener("click", () => {
 	elements.moveTaskMenu.classList.add("show");
-	elements.moveTaskOverlay.classList.add("show");
+	elements.transparentOverlay.classList.add("show");
 	handleMovingTask();
 });
-elements.moveTaskOverlay.addEventListener("click", () => {
+elements.transparentOverlay.addEventListener("click", () => {
 	elements.moveTaskMenu.classList.remove("show");
-	elements.moveTaskOverlay.classList.remove("show");
+	elements.transparentOverlay.classList.remove("show");
 });
 elements.deleteTaskBtn.addEventListener("click", () => {
 	if (storage.get("settings", initialSettings).confirmBeforeDeletion) {
@@ -108,11 +151,11 @@ elements.deleteTaskBtn.addEventListener("click", () => {
 elements.deleteTaskConfirmBtn.addEventListener("click", () => {
 	deleteTask(gTaskItem);
 	elements.deleteTaskModal.classList.remove("show");
-	elements.taskDeleteOverlay.classList.remove("show");
+	elements.secondryOverlay.classList.remove("show");
 });
 elements.cancelDeleteTaskBtn.addEventListener("click", () => {
 	elements.deleteTaskModal.classList.remove("show");
-	elements.taskDeleteOverlay.classList.remove("show");
+	elements.secondryOverlay.classList.remove("show");
 });
 window.addEventListener("contextmenu", (e) => {
 	e.preventDefault();
@@ -147,18 +190,18 @@ elements.noteTextArea.addEventListener("blur", () => {
 });
 elements.choosePriority.addEventListener("click", () => {
 	elements.priorityContainer.classList.add("show");
-	elements.priorityContainerOverlay.classList.add("show");
+	elements.transparentOverlay.classList.add("show");
 });
-elements.priorityContainerOverlay.addEventListener("click", () => {
+elements.transparentOverlay.addEventListener("click", () => {
 	elements.priorityContainer.classList.remove("show");
-	elements.priorityContainerOverlay.classList.remove("show");
+	elements.transparentOverlay.classList.remove("show");
 });
 elements.priorityItems.forEach((item) => {
 	item.addEventListener("click", async () => {
 		priority = item.getAttribute("data");
 		elements.choosePriority.style.color = item.style.color;
 		elements.priorityContainer.classList.remove("show");
-		elements.priorityContainerOverlay.classList.remove("show");
+		elements.transparentOverlay.classList.remove("show");
 		const list = findListById(gTaskItem.getAttribute("parent-id"));
 		list.tasks.forEach((task) => {
 			if (Number(task.id) === Number(gTaskItem.id)) {
@@ -209,9 +252,9 @@ function handleMovingTask() {
 				task.parentListTitle = selectedList.settings.title;
 				selectedList.tasks.push(task);
 				elements.moveTaskMenu.classList.remove("show");
-				elements.moveTaskOverlay.classList.remove("show");
+				elements.transparentOverlay.classList.remove("show");
 				elements.taskDetails.classList.remove("show");
-				elements.taskDetailOverlay.classList.remove("show");
+				elements.mainOverlay.classList.remove("show");
 				renderAllTasks();
 				userData.lists = lists;
 				console.log(await user.save(userToken, userData));
@@ -252,7 +295,7 @@ async function renameList(e) {
 }
 function showModal() {
 	elements.deleteListModal.classList.add("show");
-	elements.listDeleteOverlay.classList.add("show");
+	elements.secondryOverlay.classList.add("show");
 	elements.deleteListTitle.textContent = `Are You Sure You Want To Delete "${elements.listTitle.textContent}"`;
 }
 async function deleteCurrentList() {
@@ -397,12 +440,15 @@ function renderAllTasks() {
 		tasks = calcCompletedTasks();
 		elements.tasksInputContainer.style.display = "none";
 		elements.cornerBtn.style.display = "none";
+		elements.animationcircle.style.display = "none";
 	} else if (list.settings.id === SMART_LISTS_IDS[1]) {
 		tasks = calcAllTasks();
+		elements.animationcircle.style.display = "flex";
 		elements.cornerBtn.style.display = "flex";
 		elements.tasksInputContainer.style.display = "flex";
 	} else {
 		elements.cornerBtn.style.display = "flex";
+		elements.animationcircle.style.display = "flex";
 		elements.tasksInputContainer.style.display = "flex";
 		tasks = list.tasks;
 	}
@@ -594,11 +640,14 @@ function handleTaskClick(taskItem) {
 	handleTaskDate(gTaskItem);
 	openTaskDetails();
 }
+elements.secondryOverlay.addEventListener("click", () => {
+	elements.secondryOverlay.classList.remove("show");
+	elements.deleteTaskModal.classList.remove("show");
+});
 function showConfirmationMessege() {
 	console.log(gTaskItem);
-
 	elements.deleteTaskModal.classList.add("show");
-	elements.taskDeleteOverlay.classList.add("show");
+	elements.secondryOverlay.classList.add("show");
 	elements.deleteTaskTitle.textContent = `Are You Sure You Want To Delete "${gTaskItem.childNodes[1].textContent}"`;
 }
 async function deleteTask(taskItem) {
@@ -724,7 +773,18 @@ async function initialUserData() {
 	handleSettings();
 	handleThemes();
 	renderAllTasks();
-	setTimeout(() => elements.loader.classList.add("hide"), 100);
+	setTimeout(() => {
+		elements.loader.classList.add("hide");
+		if (storage.get("welcomed") === null) {
+			notify(
+				`Hello ${data.firstName} !!`,
+				"Welcome to To Do!",
+				"info",
+				4
+			);
+			storage.set("welcomed", true);
+		}
+	}, 100);
 
 	// CLEAR
 	// await user.clear(userToken, userData);

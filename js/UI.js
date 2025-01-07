@@ -5,7 +5,7 @@ const SMART_LISTS_IDS = [1, 2, 3, 4, 5, 6];
 function closeSearchBar() {
 	elements.searchBar.classList.remove("show");
 	elements.closeSearchBar.classList.remove("show");
-	elements.searchOverlay.classList.remove("show");
+	elements.transparentOverlay.classList.remove("show");
 	clearSearchBar();
 	elements.searchBar.blur();
 }
@@ -13,7 +13,7 @@ function openSearchBar() {
 	elements.searchBar.classList.add("show");
 	elements.closeSearchBar.classList.add("show");
 	elements.searchBar.focus();
-	elements.searchOverlay.classList.add("show");
+	elements.transparentOverlay.classList.add("show");
 }
 function clearSearchBar() {
 	elements.searchBar.value = "";
@@ -31,34 +31,34 @@ function initialLink() {
 }
 function openNavBar() {
 	elements.navBar.classList.add("show");
-	elements.navOverlay.classList.add("show");
+	elements.mainOverlay.classList.add("show");
 }
 function showSettingsAside() {
 	elements.settingsBar.classList.add("show");
-	elements.asideOverlay.classList.add("show");
+	elements.mainOverlay.classList.add("show");
 }
 function hideSettingsAside() {
 	elements.settingsBar.classList.remove("show");
-	elements.asideOverlay.classList.remove("show");
+	elements.mainOverlay.classList.remove("show");
 }
 function openListOptions() {
 	elements.listOptions.classList.add("show");
-	elements.listOptionsOverlay.classList.add("show");
+	elements.mainOverlay.classList.add("show");
 }
 function hideListOptions() {
-	elements.listOptionsOverlay.classList.remove("show");
+	elements.mainOverlay.classList.remove("show");
 	elements.listOptions.classList.remove("show");
 }
 function hideModal() {
 	elements.deleteListModal.classList.remove("show");
-	elements.listDeleteOverlay.classList.remove("show");
+	elements.secondryOverlay.classList.remove("show");
 }
 function showThemeMenu() {
-	elements.themeMenuOverlay.classList.add("show");
+	elements.secondryOverlay.classList.add("show");
 	elements.themeMenu.classList.add("show");
 }
 function hideThemeMenu() {
-	elements.themeMenuOverlay.classList.remove("show");
+	elements.secondryOverlay.classList.remove("show");
 	elements.themeMenu.classList.remove("show");
 }
 function showRenameInput() {
@@ -74,7 +74,8 @@ function hideRenameInput() {
 }
 export function closeNavBar() {
 	elements.navBar.classList.remove("show");
-	elements.navOverlay.classList.remove("show");
+	elements.mainOverlay.classList.remove("show");
+	elements.newListInput.value = "";
 }
 export function updateDisplay() {
 	elements.tasksContainers.forEach((cont) => {
@@ -96,11 +97,11 @@ function countTasks() {
 }
 export function closeTaskDetails() {
 	elements.taskDetails.classList.remove("show");
-	elements.taskDetailOverlay.classList.remove("show");
+	elements.mainOverlay.classList.remove("show");
 }
 
 export function openTaskDetails() {
-	elements.taskDetailOverlay.classList.add("show");
+	elements.mainOverlay.classList.add("show");
 	elements.taskDetails.classList.add("show");
 }
 export function updateCount() {
@@ -128,19 +129,13 @@ export function handleUI() {
 			showRenameInput();
 		}
 	});
-	elements.newListInput.addEventListener("keydown", (e) => {
-		if (e.key === "Enter") {
-			elements.newListInput.value = "";
-			elements.newListInput.blur();
-		}
-	});
 	elements.themes.forEach((theme) => {
 		theme.addEventListener("click", () => {
 			hideThemeMenu();
 			hideListOptions();
 		});
 	});
-	elements.listDeleteOverlay.addEventListener("click", hideModal);
+	elements.secondryOverlay.addEventListener("click", hideModal);
 	elements.cancelDeleteBtn.addEventListener("click", hideModal);
 	elements.deleteList.addEventListener("click", hideListOptions);
 	elements.deleteListBtn.addEventListener("click", () => {
@@ -148,13 +143,11 @@ export function handleUI() {
 		hideModal();
 	});
 	elements.changeThemeBtn.addEventListener("click", showThemeMenu);
-	elements.themeMenuOverlay.addEventListener("click", hideThemeMenu);
+	elements.secondryOverlay.addEventListener("click", hideThemeMenu);
 	elements.closeNavBtn.addEventListener("click", closeNavBar);
 	elements.openNavBtn.addEventListener("click", openNavBar);
-	elements.navOverlay.addEventListener("click", closeNavBar);
-	elements.newListInput.addEventListener("blur", () => {
-		elements.newListInput.value = "";
-	});
+	elements.mainOverlay.addEventListener("click", closeNavBar);
+
 	elements.searchBar.addEventListener("input", () => {
 		if (elements.searchBar.value.length > 0) {
 			elements.closeSearchBar.style.display = "flex";
@@ -167,16 +160,16 @@ export function handleUI() {
 	});
 	elements.searchBarIcon.addEventListener("click", openSearchBar);
 	elements.closeSearchBar.addEventListener("click", clearSearchBar);
-	elements.searchOverlay.addEventListener("click", closeSearchBar);
+	elements.transparentOverlay.addEventListener("click", closeSearchBar);
 	elements.settingsBtn.addEventListener("click", showSettingsAside);
-	elements.asideOverlay.addEventListener("click", hideSettingsAside);
+	elements.mainOverlay.addEventListener("click", hideSettingsAside);
 	elements.closeSettingsBar.addEventListener("click", hideSettingsAside);
 	elements.listOptionsMenu.addEventListener("click", openListOptions);
-	elements.listOptionsOverlay.addEventListener("click", hideListOptions);
+	elements.mainOverlay.addEventListener("click", hideListOptions);
 	elements.cornerBtn.addEventListener("click", () => {
 		elements.addTaskInput.focus();
 	});
-	elements.taskDetailOverlay.addEventListener("click", closeTaskDetails);
+	elements.mainOverlay.addEventListener("click", closeTaskDetails);
 	elements.closeTaskDetails.addEventListener("click", closeTaskDetails);
 	elements.links.forEach((link) => {
 		link.addEventListener("click", () => {

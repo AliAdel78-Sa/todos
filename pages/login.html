@@ -10,6 +10,10 @@
 		<link rel="stylesheet" href="../css/login.css" />
 		<link rel="stylesheet" href="../assets/fontawesome/all.min.css" />
 		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+		/>
+		<link
 			rel="shortcut icon"
 			href="../assets/imgs/spider.jpg"
 			type="image/x-icon"
@@ -22,6 +26,7 @@
 		<title>Login Page</title>
 	</head>
 	<body>
+		<div class="notifications"></div>
 		<div class="wrapper">
 			<h1>Login</h1>
 			<div class="input-box">
@@ -59,7 +64,12 @@
 				</label>
 				<a href="signup.html">Forgot Password?</a>
 			</div>
-			<button id="login-btn" class="btn">Login</button>
+			<button id="login-btn" class="btn">
+				<div id="loading" class="hide">
+					<span class="loader2"></span>
+				</div>
+				Login
+			</button>
 			<div class="register-link">
 				<p>
 					Don't have an account?

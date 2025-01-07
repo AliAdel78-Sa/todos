@@ -15,6 +15,10 @@
 			type="image/x-icon"
 		/>
 		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+		/>
+		<link
 			href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
 			rel="stylesheet"
 		/>
@@ -22,6 +26,7 @@
 		<title>Sign Up Page</title>
 	</head>
 	<body>
+		<div class="notifications"></div>
 		<div class="wrapper">
 			<h1>Sign Up</h1>
 			<div class="input-box">
@@ -74,7 +79,12 @@
 					id="hidePassword"
 				></i>
 			</div>
-			<button id="signup-btn" class="btn">Sign Up</button>
+			<button id="signup-btn" class="btn">
+				<div id="loading" class="hide">
+					<span class="loader2"></span>
+				</div>
+				Sign Up
+			</button>
 			<div class="register-link">
 				<p>
 					Already have an account?

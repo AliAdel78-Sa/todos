@@ -1,3 +1,13 @@
+// Tracking How Time The User Spent On The App
+let start = Date.now();
+let timeSpent = storage.get("timeSpent", 0);
+setInterval(() => {
+	let elapsed = Date.now() - start;
+	timeSpent += elapsed;
+	storage.set("timeSpent", timeSpent);
+	start = Date.now()
+}, 1000);
+
 // Installing App
 if ("serviceWorker" in navigator) {
 	navigator.serviceWorker

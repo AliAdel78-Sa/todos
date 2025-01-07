@@ -25,7 +25,10 @@ export function displayComponent() {
 		component.classList.remove("show");
 	});
 	components.forEach((component) => {
-		if (component.getAttribute("data-id") === storage.get("currentPage")) {
+		if (
+			component.getAttribute("data-id") ===
+			storage.get("currentPage", "to-do-list")
+		) {
 			component.classList.add("show");
 		}
 	});

@@ -2,12 +2,16 @@
 // TODO: tomorrow
 // =====
 // 1. Subtasks
-// 2. Tasks Overview Of Lists
-// 3. Add Links Feature (Components)
-// 4. Add Pomo And StopWatch
-// 5. Add Clock Sound When Every Time A Second Pass
-// 6. Add Feature Of Focusing On A Specific Task
-// 7. Add Search For Tasks Feature
+// 2. Add Links Feature (Components)
+
+// =====
+// TODO: advanced
+// =====
+// 1. Tasks Overview Of Lists
+// 2. Add Pomo And StopWatch
+// 3. Add Clock Sound When Every Time A Second Pass
+// 4. Add Feature Of Focusing On A Specific Task
+// 5. Add Search For Tasks Feature
 
 // Logic
 

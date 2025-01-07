@@ -829,7 +829,7 @@ footer .link {
   padding: 0 10px;
   width: 200px;
   position: absolute;
-  top: 200px;
+  top: 148px;
   left: 100%;
   transform: translateX(-110%);
   transition: 0.15s ease all;
@@ -1035,4 +1035,23 @@ footer .link {
     transform: translate(-50%, -50%) scale(100);
     opacity: 0;
   }
+}
+.component {
+  padding: 30px 10px 0;
+  overflow: auto;
+  display: none;
+}
+.component.show {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+}
+
+.underDev.show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.underDev.show * {
+  font-size: 40px;
+  color: #fff;
 }/*# sourceMappingURL=main.css.map */

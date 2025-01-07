@@ -2,7 +2,7 @@ export const initialLists = [
 	{
 		settings: {
 			id: 1,
-			title: "Today",
+			title: "Daily Tasks",
 			isMain: true,
 			pinned: false,
 			theme: null,
@@ -10,7 +10,6 @@ export const initialLists = [
 		},
 		tasks: [],
 		completedTasks: 0,
-		
 	},
 	{
 		settings: {

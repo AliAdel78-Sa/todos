@@ -28,6 +28,8 @@ import { handleThemes } from "./modules/themes.js";
 import { user } from "./modules/userData.js";
 import { notify } from "./modules/notify.js";
 import { displayAModal } from "./modules/modal.js";
+import "./modules/managingComponents.js";
+import { displayComponent } from "./modules/managingComponents.js";
 
 // CONSTANTS
 const SMART_LISTS_IDS = [1, 2, 3, 4, 5];
@@ -460,7 +462,7 @@ function renderAllTasks() {
 	}
 	tasks.forEach((task) => {
 		if (list.settings.id === SMART_LISTS_IDS[0]) {
-			if (handleTaskDate(task) !== "Today") {
+			if (handleTaskDate(task) !== "Daily Tasks") {
 				task.show = false;
 			}
 		} else {
@@ -757,7 +759,7 @@ async function initialUserData() {
 	}, 100);
 
 	lists.forEach((list) => {
-		if (list.settings.title === "Today") {
+		if (list.settings.title === "Daily Tasks") {
 			console.log(list.tasks);
 		}
 	});
@@ -769,6 +771,7 @@ async function initialUserData() {
 // Initial
 initialUserData();
 scheduleMidnightAction();
+displayComponent();
 
 /*
 SAVE:

@@ -128,18 +128,6 @@ export function handleUI() {
 	});
 	elements.mainOverlay.addEventListener("click", closeTaskDetails);
 	elements.closeTaskDetails.addEventListener("click", closeTaskDetails);
-	elements.links.forEach((link) => {
-		link.addEventListener("click", () => {
-			elements.links.forEach((link) => {
-				link.classList.remove("active");
-			});
-			link.classList.add("active");
-			link.style.animationName = "scaleDown";
-			setTimeout(() => {
-				link.style.animationName = "";
-			}, 200);
-			storage.set("currentPage", link.getAttribute("data-id"));
-		});
-	});
+
 	initialLink();
 }

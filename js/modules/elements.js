@@ -89,4 +89,11 @@ export const elements = {
 	notifications: $(".notifications"),
 	animationcircle: $(".animation-circle"),
 	signOutBtn: $("#sign-out-btn"),
+	components: [
+		$(".tasks-main-container"),
+		$(".habits-container"),
+		$(".timer-container"),
+		$(".search-container"),
+		$(".settings-container"),
+	],
 };

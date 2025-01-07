@@ -1,0 +1,21 @@
+.component {
+	padding: 30px 10px 0;
+	overflow: auto;
+	display: none;
+	&.show {
+		display: grid;
+		grid-template-rows: auto auto 1fr;
+	}
+}
+
+.underDev {
+	&.show {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		* {
+			font-size: 40px;
+			color: #fff;
+		}
+	}
+}

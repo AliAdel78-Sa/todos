@@ -33,9 +33,6 @@ const $ = function (selector, selectAll) {
 // Elements
 
 export const elements = {
-	searchBar: $("#search-input"),
-	closeSearchBar: $(".close-icon"),
-	searchBarIcon: $(".search-icon"),
 	closeNavBtn: $("#close-nav"),
 	openNavBtn: $("#open-nav"),
 	navBar: $("nav"),
@@ -61,7 +58,6 @@ export const elements = {
 	themeMenu: $(".sub-context-menu"),
 	themes: $(".theme", true),
 	loader: $("#preloader"),
-	profilePhoto: $(".profile-photo"),
 	addTaskInput: $("#tasks-input"),
 	tasksList: $("#tasks-list"),
 	headers: $(".list-header", true),

@@ -738,7 +738,6 @@ async function initialUserData() {
 		? (userData.lists = lists)
 		: (lists = userData.lists);
 	console.log(await user.save(userToken, userData));
-	elements.profilePhoto.innerHTML = data.firstName[0] + data.lastName[0];
 	renderAllLists();
 	handleUI();
 	handleSettings();

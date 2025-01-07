@@ -3,7 +3,7 @@
 nav {
 	background-color: #1f1e1d;
 	width: 80%;
-	height: calc(100% - 52px);
+	height: 100%;
 	padding: 10px 0 0;
 	display: grid;
 	grid-template: auto auto auto 1fr / 1fr;
@@ -11,7 +11,7 @@ nav {
 	transition: 0.3s ease all;
 	position: absolute;
 	left: 0;
-	top: 52px;
+	top: 0;
 	transform: translate(-100%);
 	z-index: 7;
 	* {

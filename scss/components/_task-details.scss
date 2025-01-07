@@ -1,12 +1,12 @@
 .task-details {
 	background-color: #1f1e1d;
 	width: 80%;
-	height: calc(100% - 52px);
+	height: 100%;
 	padding: 20px 20px 0;
 	overflow: auto;
 	transition: 0.3s ease all;
 	position: absolute;
-	top: 52px;
+	top: 0;
 	left: 100%;
 	z-index: 3;
 	transform: translate(0%);

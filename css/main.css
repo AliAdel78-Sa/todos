@@ -29,97 +29,11 @@ body {
   height: 100dvh;
   overflow-x: hidden;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 1fr auto;
 }
 
 ::-webkit-scrollbar {
   display: none;
-}
-
-body > header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background-color: #1b1a18;
-}
-body > header h1 a {
-  color: var(--main-color);
-  font-weight: 500;
-  font-size: 1.25rem;
-  display: block;
-}
-body > header h1 a:visited {
-  color: var(--main-color);
-}
-body > header > * {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-body > header .profile-photo {
-  width: 40px;
-  height: 40px;
-  background-color: var(--main-color);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
-  font-size: 17px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-}
-body > header .search-bar {
-  position: relative;
-  z-index: 3;
-  width: 60%;
-}
-body > header .search-bar input {
-  width: 100%;
-  display: flex;
-  background-color: #32312f;
-  color: #fff;
-  padding: 10px 40px;
-  border-radius: 5px;
-  font-size: 1.125rem;
-  opacity: 0;
-  pointer-events: none;
-}
-body > header .search-bar input.show {
-  pointer-events: all;
-  opacity: 1;
-}
-body > header .search-bar .search-icon {
-  position: absolute;
-  left: 1px;
-  width: 38px;
-  height: 97%;
-  background-color: #242325;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  z-index: 1;
-}
-body > header .search-bar .close-icon {
-  position: absolute;
-  left: 100%;
-  height: 100%;
-  width: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: translate(-100%);
-  opacity: 0;
-  pointer-events: none;
-  display: none;
-}
-body > header .search-bar .close-icon.show {
-  opacity: 1;
-  pointer-events: all;
 }
 
 body[theme=red] {
@@ -149,7 +63,7 @@ body[theme=blue] {
 nav {
   background-color: #1f1e1d;
   width: 80%;
-  height: calc(100% - 52px);
+  height: 100%;
   padding: 10px 0 0;
   display: grid;
   grid-template: auto auto auto 1fr/1fr;
@@ -157,7 +71,7 @@ nav {
   transition: 0.3s ease all;
   position: absolute;
   left: 0;
-  top: 52px;
+  top: 0;
   transform: translate(-100%);
   z-index: 7;
 }
@@ -451,12 +365,12 @@ nav.show {
 aside {
   background-color: #1f1e1d;
   width: 80%;
-  height: calc(100% - 52px);
+  height: 100%;
   padding: 20px 20px 0;
   overflow: auto;
   transition: 0.3s ease all;
   position: absolute;
-  top: 52px;
+  top: 0;
   left: 100%;
   z-index: 10;
   transform: translate(0%);
@@ -784,7 +698,7 @@ body > footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 120px;
+  gap: 50px;
   padding: 10px 0;
 }
 
@@ -811,12 +725,12 @@ footer .link {
 .task-details {
   background-color: #1f1e1d;
   width: 80%;
-  height: calc(100% - 52px);
+  height: 100%;
   padding: 20px 20px 0;
   overflow: auto;
   transition: 0.3s ease all;
   position: absolute;
-  top: 52px;
+  top: 0;
   left: 100%;
   z-index: 3;
   transform: translate(0%);

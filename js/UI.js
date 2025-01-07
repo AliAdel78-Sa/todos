@@ -2,23 +2,6 @@ import { elements } from "./modules/elements.js";
 import { storage } from "./modules/storage.js";
 const SMART_LISTS_IDS = [1, 2, 3, 4, 5, 6];
 
-function closeSearchBar() {
-	elements.searchBar.classList.remove("show");
-	elements.closeSearchBar.classList.remove("show");
-	elements.transparentOverlay.classList.remove("show");
-	clearSearchBar();
-	elements.searchBar.blur();
-}
-function openSearchBar() {
-	elements.searchBar.classList.add("show");
-	elements.closeSearchBar.classList.add("show");
-	elements.searchBar.focus();
-	elements.transparentOverlay.classList.add("show");
-}
-function clearSearchBar() {
-	elements.searchBar.value = "";
-	elements.searchBar.focus();
-}
 function initialLink() {
 	elements.links.forEach((link) => {
 		if (
@@ -135,19 +118,6 @@ export function handleUI() {
 	elements.closeNavBtn.addEventListener("click", closeNavBar);
 	elements.openNavBtn.addEventListener("click", openNavBar);
 	elements.mainOverlay.addEventListener("click", closeNavBar);
-	elements.searchBar.addEventListener("input", () => {
-		if (elements.searchBar.value.length > 0) {
-			elements.closeSearchBar.style.display = "flex";
-		} else {
-			elements.closeSearchBar.style.display = "none";
-		}
-	});
-	elements.searchBar.addEventListener("focus", () => {
-		elements.closeSearchBar.style.display = "none";
-	});
-	elements.searchBarIcon.addEventListener("click", openSearchBar);
-	elements.closeSearchBar.addEventListener("click", clearSearchBar);
-	elements.transparentOverlay.addEventListener("click", closeSearchBar);
 	elements.settingsBtn.addEventListener("click", showSettingsAside);
 	elements.mainOverlay.addEventListener("click", hideSettingsAside);
 	elements.closeSettingsBar.addEventListener("click", hideSettingsAside);

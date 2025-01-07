@@ -2,7 +2,6 @@
 // TODO: tomorrow
 // =====
 // 1. Subtasks
-// 2. Add Links Feature (Components)
 
 // =====
 // TODO: advanced

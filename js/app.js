@@ -5,7 +5,7 @@ setInterval(() => {
 	let elapsed = Date.now() - start;
 	timeSpent += elapsed;
 	storage.set("timeSpent", timeSpent);
-	start = Date.now()
+	start = Date.now();
 }, 1000);
 
 // Installing App
@@ -472,7 +472,7 @@ function renderAllTasks() {
 	}
 	tasks.forEach((task) => {
 		if (list.settings.id === SMART_LISTS_IDS[0]) {
-			if (handleTaskDate(task) !== "Daily Tasks") {
+			if (handleTaskDate(task) !== "Today") {
 				task.show = false;
 			}
 		} else {
@@ -768,11 +768,18 @@ async function initialUserData() {
 		}
 	}, 100);
 
-	lists.forEach((list) => {
-		if (list.settings.title === "Daily Tasks") {
-			console.log(list.tasks);
-		}
-	});
+	const dailyList = findListById(1);
+	if (dailyList.tasks.length !== 0) {
+		// const todayTasks = dailyList.tasks.filter((task) => task.show);
+		let currentDay = new Date().getDate() - new Date().getDay();
+		console.log(displayWeek(currentDay, dailyList));
+		elements.cornerBtn.addEventListener("click", () => {
+			currentDay -= 7;
+			console.log(displayWeek(currentDay, dailyList));
+		});
+	} else {
+		console.log("0%");
+	}
 
 	// CLEAR
 	// await user.clear(userToken, userData);
@@ -780,9 +787,39 @@ async function initialUserData() {
 
 // Initial
 initialUserData();
-scheduleMidnightAction();
 displayComponent();
 
+function displayWeek(currentDay, dailyList) {
+	const weekdays = getWeek(currentDay);
+	dailyList.tasks.forEach((task) => {
+		weekdays.forEach((weekDay) => {
+			if (
+				new Date(weekDay.time).getDate() === new Date(task.id).getDate()
+			) {
+				if (task.completed) {
+					weekDay.completedTasks++;
+				}
+				weekDay.tasks++;
+			}
+		});
+	});
+	return weekdays;
+}
+
+function getWeek(currentDay) {
+	let weekDays = [];
+	const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+	for (let i = 0; i < 7; i++) {
+		weekDays.push({
+			name: days[i],
+			day: new Date(new Date().setDate(currentDay + i)).getDate(),
+			time: new Date().setDate(currentDay + i),
+			completedTasks: 0,
+			tasks: 0,
+		});
+	}
+	return weekDays;
+}
 /*
 SAVE:
 

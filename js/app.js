@@ -98,7 +98,34 @@ elements.newListInput.addEventListener("keydown", (e) => {
 	}
 });
 elements.renameListInput.addEventListener("keydown", (e) => {
-	renameList(e);
+	if (e.key === "Enter") {
+		if (elements.renameListInput.value.trim().length >= 20) {
+			notify(
+				"Invalid Value",
+				"Value Must Be 20 Characters Or Less",
+				"danger",
+				2
+			).then(() => {
+				elements.newListInput.focus();
+			});
+		} else {
+			renameList(e);
+		}
+	}
+});
+elements.renameListInput.addEventListener("blur", (e) => {
+	if (elements.renameListInput.value.trim().length >= 20) {
+		notify(
+			"Invalid Value",
+			"Value Must Be 20 Characters Or Less",
+			"danger",
+			2
+		).then(() => {
+			elements.newListInput.focus();
+		});
+	} else {
+		renameList(e);
+	}
 });
 elements.addTaskInput.addEventListener("input", () => {
 	if (elements.addTaskInput.value.trim().length > 0) {
@@ -185,21 +212,31 @@ elements.editTaskInput.addEventListener("keydown", (e) => {
 	if (e.key === "Enter") {
 		if (elements.editTaskInput.value.trim().length === 0) {
 			renameTask(gTaskItem, "Untitled Task");
+			elements.editTaskInput.blur();
+		} else if (elements.editTaskInput.value.trim().length >= 30) {
+			notify("Invalid Value", "Value Too Big", "danger", 2).then(() => {
+				elements.addTaskInput.focus();
+			});
 		} else {
 			renameTask(gTaskItem, elements.editTaskInput.value.trim());
+			elements.editTaskInput.blur();
 		}
 		renderAllTasks();
-		elements.editTaskInput.blur();
 	}
 });
 elements.editTaskInput.addEventListener("blur", () => {
 	if (elements.editTaskInput.value.trim().length === 0) {
 		renameTask(gTaskItem, "Untitled Task");
+		elements.editTaskInput.blur();
+	} else if (elements.editTaskInput.value.trim().length >= 30) {
+		notify("Invalid Value", "Value Too Big", "danger", 2).then(() => {
+			elements.addTaskInput.focus();
+		});
 	} else {
 		renameTask(gTaskItem, elements.editTaskInput.value.trim());
+		elements.editTaskInput.blur();
 	}
 	renderAllTasks();
-	elements.editTaskInput.blur();
 });
 elements.completeTaskBtn.addEventListener("click", () => {
 	elements.taskDetailsItem.classList.toggle("checked");
@@ -511,7 +548,9 @@ function calcAllTasks() {
 	let tasks = [];
 	lists.forEach((list) => {
 		list.tasks.forEach((task) => {
-			tasks.push(task);
+			if (task.show) {
+				tasks.push(task);
+			}
 		});
 	});
 	return tasks;

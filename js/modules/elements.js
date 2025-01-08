@@ -96,4 +96,6 @@ export const elements = {
 		$(".search-container"),
 		$(".settings-container"),
 	],
+	barChartBtn: $(".bar_chart"),
+	tasksOverview: $(".tasksOverview")
 };

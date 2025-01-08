@@ -45,12 +45,15 @@ import { displayComponent } from "./modules/managingComponents.js";
 const SMART_LISTS_IDS = [1, 2, 3, 4, 5];
 const userToken = storage.get("token");
 const CURRENT_LIST_ID = "currentListId";
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 // Variables
 let lists = initialLists;
 let userData = {};
 let gTaskItem = null;
 let priority = "no";
+let weekDays = [];
+let firstDayOfWeek = new Date().getDate() - new Date().getDay();
 
 // Events
 elements.deleteList.addEventListener("click", () => {
@@ -276,6 +279,18 @@ elements.priorityItems.forEach((item) => {
 		console.log(await user.save(userToken, userData));
 	});
 });
+elements.barChartBtn.addEventListener("click", () => {
+	showTasksOverview();
+});
+
+elements.tasksOverview.addEventListener("click", hideTasksOverview);
+
+function showTasksOverview() {
+	elements.tasksOverview.classList.add("show");
+}
+function hideTasksOverview() {
+	elements.tasksOverview.classList.remove("show");
+}
 
 // Functions
 function findListById(id) {
@@ -508,14 +523,13 @@ function renderAllTasks() {
 		tasks = list.tasks;
 	}
 	tasks.forEach((task) => {
+		let show = false;
 		if (list.settings.id === SMART_LISTS_IDS[0]) {
-			if (handleTaskDate(task) !== "Today") {
-				task.show = false;
+			if (handleTaskDate(task) === "Today") {
+				show = true;
 			}
-		} else {
-			task.show = true;
 		}
-		if (task.show) {
+		if (show) {
 			const [taskItem, checkBox, text] = buildTaskUi(task);
 			checkBox.addEventListener("click", () => {
 				completeTask(taskItem.id, taskItem);
@@ -776,6 +790,7 @@ async function addNote(taskItem) {
 	userData.lists = lists;
 	console.log(await user.save(userToken, userData));
 }
+
 // For User
 async function initialUserData() {
 	if (userToken === null) return window.location.assign("/pages/login.html");
@@ -788,6 +803,7 @@ async function initialUserData() {
 	userData.lists.length === 0
 		? (userData.lists = lists)
 		: (lists = userData.lists);
+
 	console.log(await user.save(userToken, userData));
 	renderAllLists();
 	handleUI();
@@ -808,62 +824,90 @@ async function initialUserData() {
 	}, 100);
 
 	const dailyList = findListById(1);
-	if (dailyList.tasks.length !== 0) {
-		// const todayTasks = dailyList.tasks.filter((task) => task.show);
-		let currentDay = new Date().getDate() - new Date().getDay();
-		console.log(displayWeek(currentDay, dailyList));
-		elements.cornerBtn.addEventListener("click", () => {
-			currentDay -= 7;
-			console.log(displayWeek(currentDay, dailyList));
-		});
-	} else {
-		console.log("0%");
-	}
+	console.log(updateTasksOverview(dailyList));
 
 	// CLEAR
 	// await user.clear(userToken, userData);
 }
 
+function adjustWeekDays() {
+	weekDays = [];
+	for (let i = 0; i < 7; i++) {
+		const day = {
+			name: days[i],
+			date: new Date(
+				new Date().setDate(firstDayOfWeek + i)
+			).toLocaleDateString(),
+			completedTasks: 0,
+			totalTasks: 0,
+		};
+		weekDays.push(day);
+	}
+}
+function updateWeekDaysStats(dailyList) {
+	const weekDaysMap = new Map();
+	weekDays.forEach((day) => {
+		weekDaysMap.set(day.date, day);
+	});
+	dailyList.tasks.forEach((task) => {
+		const taskDate = new Date(task.id).toLocaleDateString();
+		const matchingDay = weekDaysMap.get(taskDate);
+		if (matchingDay) {
+			if (task.completed) {
+				matchingDay.completedTasks++;
+			}
+			matchingDay.totalTasks++;
+		}
+	});
+	weekDays = Object.values(Object.fromEntries(weekDaysMap.entries()));
+}
+function updateTasksOverview(dailyList) {
+	let completedTasks = 0;
+	let totalTasks = 0;
+	adjustWeekDays();
+	updateWeekDaysStats(dailyList);
+	weekDays.forEach((day) => {
+		completedTasks += day.completedTasks;
+		totalTasks += day.totalTasks;
+	});
+	let percentageOfCompleted = "0%";
+	if (totalTasks !== 0) {
+		percentageOfCompleted =
+			Math.round((completedTasks / totalTasks) * 100) + "%";
+	}
+	firstDayOfWeek -= 7;
+	let prevcompletedTasks = 0;
+	let prevtotalTasks = 0;
+	adjustWeekDays();
+	updateWeekDaysStats(dailyList);
+	weekDays.forEach((day) => {
+		prevcompletedTasks += day.completedTasks;
+		prevtotalTasks += day.totalTasks;
+	});
+	let progress = "N/A";
+	if (prevcompletedTasks !== 0) {
+		progress =
+			Math.round(
+				((completedTasks - prevcompletedTasks) / prevcompletedTasks) *
+					100
+			) + "%";
+	}
+	firstDayOfWeek += 7;
+	adjustWeekDays();
+	updateWeekDaysStats(dailyList);
+	return {
+		percentageOfCompleted: percentageOfCompleted,
+		undone: totalTasks - completedTasks,
+		completed: completedTasks,
+		progress: progress,
+	};
+}
 // Initial
 initialUserData();
 displayComponent();
+scheduleMidnightAction();
 
-function displayWeek(currentDay, dailyList) {
-	const weekdays = getWeek(currentDay);
-	dailyList.tasks.forEach((task) => {
-		weekdays.forEach((weekDay) => {
-			if (
-				new Date(weekDay.time).getDate() === new Date(task.id).getDate()
-			) {
-				if (task.completed) {
-					weekDay.completedTasks++;
-				}
-				weekDay.tasks++;
-			}
-		});
-	});
-	return weekdays;
-}
-
-function getWeek(currentDay) {
-	let weekDays = [];
-	const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-	for (let i = 0; i < 7; i++) {
-		weekDays.push({
-			name: days[i],
-			day: new Date(new Date().setDate(currentDay + i)).getDate(),
-			time: new Date().setDate(currentDay + i),
-			completedTasks: 0,
-			tasks: 0,
-		});
-	}
-	return weekDays;
-}
 /*
-SAVE:
-
 userData.lists = lists
 console.log(await user.save(userToken, userData));
 */
-
-// storage.remove("token");

@@ -1,6 +1,6 @@
 // Tracking How Time The User Spent On The App
 let start = Date.now();
-let timeSpent = storage.get("timeSpent", 0);
+let timeSpent = Number(storage.get("timeSpent", 0));
 setInterval(() => {
 	let elapsed = Date.now() - start;
 	timeSpent += elapsed;
@@ -305,10 +305,16 @@ elements.nextWeek.addEventListener("click", () => {
 elements.tasksOverviewCloseBtn.addEventListener("click", hideTasksOverview);
 
 function showTasksOverview() {
-	elements.tasksOverview.classList.add("show");
+	elements.tasksOverview.style.display = "block";
+	setTimeout(() => {
+		elements.tasksOverview.classList.add("show");
+	});
 }
 function hideTasksOverview() {
 	elements.tasksOverview.classList.remove("show");
+	setTimeout(() => {
+		elements.tasksOverview.style.display = "none";
+	}, 300);
 }
 
 // Functions
@@ -846,7 +852,7 @@ async function initialUserData() {
 			storage.set("welcomed", true);
 		}
 	}, 100);
-
+	elements.greeting.textContent = `Hi ${data.firstName} ${data.lastName}`;
 	// CLEAR
 	// await user.clear(userToken, userData);
 }

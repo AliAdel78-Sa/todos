@@ -1,5 +1,3 @@
-// 1. Tasks Overview Of Lists
-
 // =====
 // TODO: advanced
 // =====

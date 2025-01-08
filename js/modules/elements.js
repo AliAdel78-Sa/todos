@@ -108,4 +108,5 @@ export const elements = {
 	nextWeek: $(".next"),
 	week: $(".week"),
 	tasksOverviewCloseBtn: $(".tasksOverviewCloseBtn"),
+	greeting: $(".greeting"),
 };

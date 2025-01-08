@@ -175,16 +175,114 @@
 
 		<!-- SUBCOMPONENTS -->
 
-		<div class="tasksOverview show">
+		<div class="tasksOverview">
 			<div class="profile">
-				<img src="" alt="" />
+				<img
+					src="assets/imgs/spider.jpg"
+					width="64"
+					height="64"
+					alt=""
+				/>
 				<div>
-					<h1>Hi Ali Adel</h1>
+					<h1 class="greeting">Hi Ali Adel</h1>
 					<p>Keep Up The Hard Work, Champion!</p>
 				</div>
+				<img
+					class="tasksOverviewCloseBtn"
+					src="assets/svgs/close.svg"
+					style="margin-left: auto; border: none !important"
+					alt=""
+				/>
 			</div>
-			<h2>Tasks Overview</h2>
-			
+
+			<div style="overflow: auto">
+				<h2 style="font-size: 20px; opacity: 0.8">
+					Weekly Tasks Overview
+				</h2>
+				<div class="container">
+					<div class="card">
+						<span class="completedTasks">0</span>
+						<div class="label">Completed Tasks</div>
+					</div>
+					<div class="card">
+						<span class="undoneTasks">0</span>
+						<div class="label">Undone Tasks</div>
+					</div>
+				</div>
+
+				<div class="stats">
+					<header>
+						<h2>Completion Of Daily Tasks</h2>
+						<div class="change-week">
+							<div class="prev">&lt;</div>
+							<div class="week">1/5-1/11</div>
+							<div class="next">&gt;</div>
+						</div>
+					</header>
+
+					<div class="stats-container">
+						<div class="numbers">
+							<div>100%</div>
+							<div>80%</div>
+							<div>60%</div>
+							<div>40%</div>
+							<div>20%</div>
+							<div>0%</div>
+						</div>
+						<div class="stats_container">
+							<div
+								class="bar"
+								name="Sun"
+								style="--height: 0%"
+							></div>
+							<div
+								class="bar"
+								name="Mon"
+								style="--height: 0%"
+							></div>
+							<div
+								class="bar"
+								name="Tue"
+								style="--height: 0%"
+							></div>
+							<div
+								class="bar"
+								name="Wed"
+								style="--height: 0%"
+							></div>
+							<div
+								class="bar"
+								name="Thu"
+								style="--height: 0%"
+							></div>
+							<div
+								class="bar"
+								name="Fri"
+								style="--height: 0%"
+							></div>
+							<div
+								class="bar"
+								name="Sat"
+								style="--height: 0%"
+							></div>
+						</div>
+					</div>
+				</div>
+				<br />
+				<div class="completed-tasks">
+					<h2>Completed Tasks Percantage</h2>
+					<div class="progress percentage-circle">
+						<div class="circle percentage-text">0%</div>
+					</div>
+					<div class="label"></div>
+				</div>
+				<div class="growth">
+					<span class="growth-decrease">+15%</span>
+					<div class="label growthDecreaseMessege">
+						Growth From Last Week!
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<!-- FOOTER -->

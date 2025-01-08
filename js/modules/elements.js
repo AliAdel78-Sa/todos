@@ -97,5 +97,15 @@ export const elements = {
 		$(".settings-container"),
 	],
 	barChartBtn: $(".bar_chart"),
-	tasksOverview: $(".tasksOverview")
+	tasksOverview: $(".tasksOverview"),
+	completedTasks: $(".completedTasks"),
+	undoneTasks: $(".undoneTasks"),
+	growthDecrease: $(".growth-decrease"),
+	growthDecreaseMessege: $(".growthDecreaseMessege"),
+	percentageText: $(".percentage-text"),
+	percentageCircle: $(".percentage-circle"),
+	prevWeek: $(".prev"),
+	nextWeek: $(".next"),
+	week: $(".week"),
+	tasksOverviewCloseBtn: $(".tasksOverviewCloseBtn"),
 };

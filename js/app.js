@@ -280,10 +280,29 @@ elements.priorityItems.forEach((item) => {
 	});
 });
 elements.barChartBtn.addEventListener("click", () => {
+	firstDayOfWeek = new Date().getDate() - new Date().getDay();
 	showTasksOverview();
+	updateUi(updateTasksOverview(findListById(1)), weekDays);
 });
 
-elements.tasksOverview.addEventListener("click", hideTasksOverview);
+elements.prevWeek.addEventListener("click", () => {
+	firstDayOfWeek -= 7;
+	showTasksOverview();
+	updateUi(updateTasksOverview(findListById(1)), weekDays);
+	elements.week.textContent = `${weekDays[0].week}-${
+		weekDays[weekDays.length - 1].week
+	}`;
+});
+elements.nextWeek.addEventListener("click", () => {
+	firstDayOfWeek += 7;
+	showTasksOverview();
+	updateUi(updateTasksOverview(findListById(1)), weekDays);
+	elements.week.textContent = `${weekDays[0].week}-${
+		weekDays[weekDays.length - 1].week
+	}`;
+});
+
+elements.tasksOverviewCloseBtn.addEventListener("click", hideTasksOverview);
 
 function showTasksOverview() {
 	elements.tasksOverview.classList.add("show");
@@ -506,6 +525,11 @@ function renderAllTasks() {
 		cont.innerHTML = "";
 	});
 	const list = findListById(storage.get(CURRENT_LIST_ID));
+	if (list.settings.id === 1) {
+		elements.barChartBtn.style.display = "block";
+	} else {
+		elements.barChartBtn.style.display = "none";
+	}
 	if (list.settings.id === SMART_LISTS_IDS[2]) {
 		tasks = calcCompletedTasks();
 		elements.tasksInputContainer.style.display = "none";
@@ -823,9 +847,6 @@ async function initialUserData() {
 		}
 	}, 100);
 
-	const dailyList = findListById(1);
-	console.log(updateTasksOverview(dailyList));
-
 	// CLEAR
 	// await user.clear(userToken, userData);
 }
@@ -838,6 +859,11 @@ function adjustWeekDays() {
 			date: new Date(
 				new Date().setDate(firstDayOfWeek + i)
 			).toLocaleDateString(),
+			week:
+				new Date(new Date().setDate(firstDayOfWeek + i)).getMonth() +
+				1 +
+				"/" +
+				new Date(new Date().setDate(firstDayOfWeek + i)).getDate(),
 			completedTasks: 0,
 			totalTasks: 0,
 		};
@@ -864,12 +890,14 @@ function updateWeekDaysStats(dailyList) {
 function updateTasksOverview(dailyList) {
 	let completedTasks = 0;
 	let totalTasks = 0;
+	let average = 0;
 	adjustWeekDays();
 	updateWeekDaysStats(dailyList);
 	weekDays.forEach((day) => {
 		completedTasks += day.completedTasks;
 		totalTasks += day.totalTasks;
 	});
+	average = completedTasks / 7;
 	let percentageOfCompleted = "0%";
 	if (totalTasks !== 0) {
 		percentageOfCompleted =
@@ -900,8 +928,50 @@ function updateTasksOverview(dailyList) {
 		undone: totalTasks - completedTasks,
 		completed: completedTasks,
 		progress: progress,
+		average: average,
 	};
 }
+function updateUi(stats, weekDays) {
+	console.log(stats);
+	console.log(weekDays);
+	elements.undoneTasks.textContent = stats.undone;
+	elements.completedTasks.textContent = stats.completed;
+	const bars = document.querySelectorAll(".bar");
+	bars.forEach((bar, index) => {
+		bar.style.animationName = "";
+		let percentage;
+		if (weekDays[index].totalTasks !== 0) {
+			percentage =
+				Math.round(
+					(weekDays[index].completedTasks /
+						weekDays[index].totalTasks) *
+						100
+				) + "%";
+		} else {
+			percentage = "0%";
+		}
+		setTimeout(() => {
+			bar.style.setProperty("--height", percentage);
+			bar.style.animationName = "goHigh";
+		}, 300);
+	});
+	elements.growthDecrease.textContent = stats.progress;
+	if (stats.progress === "N/A") {
+		elements.growthDecreaseMessege.textContent =
+			"No Data For The Progress From Last Week";
+	} else if (stats.progress[0] === "-") {
+		elements.growthDecreaseMessege.textContent = "From Last Week";
+	}
+	elements.percentageText.textContent = stats.percentageOfCompleted;
+	elements.percentageCircle.style.setProperty("--gradient-angle", "0%");
+	setTimeout(() => {
+		elements.percentageCircle.style.setProperty(
+			"--gradient-angle",
+			stats.percentageOfCompleted
+		);
+	}, 300);
+}
+
 // Initial
 initialUserData();
 displayComponent();

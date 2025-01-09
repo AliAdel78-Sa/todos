@@ -24,3 +24,8 @@
 // Habits:
 
 // Don't forget to let the user set a daily goal for habits
+
+/*
+userData.lists = lists
+console.log(await user.save(userToken, userData));
+*/

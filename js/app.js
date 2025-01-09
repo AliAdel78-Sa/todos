@@ -1,19 +1,9 @@
-// Tracking How Time The User Spent On The App
-let start = Date.now();
-let timeSpent = Number(storage.get("timeSpent", 0));
-setInterval(() => {
-	let elapsed = Date.now() - start;
-	timeSpent += elapsed;
-	storage.set("timeSpent", timeSpent);
-	start = Date.now();
-}, 1000);
-
 // Installing App
 if ("serviceWorker" in navigator) {
 	navigator.serviceWorker
 		.register("sw.js")
 		.then((reg) => {
-			console.log(reg);
+			console.log("Registered Successfully");
 		})
 		.catch((e) => {
 			console.log(e);
@@ -41,18 +31,16 @@ import { displayAModal } from "./modules/modal.js";
 import "./modules/managingComponents.js";
 import { displayComponent } from "./modules/managingComponents.js";
 
-// CONSTANTS
+// Global Variables
 const SMART_LISTS_IDS = [1, 2, 3, 4, 5];
 const userToken = storage.get("token");
 const CURRENT_LIST_ID = "currentListId";
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-// Variables
 let lists = initialLists;
 let userData = {};
+let weekDays = [];
 let gTaskItem = null;
 let priority = "no";
-let weekDays = [];
 let firstDayOfWeek = new Date().getDate() - new Date().getDay();
 
 // Events
@@ -193,6 +181,7 @@ elements.transparentOverlay.addEventListener("click", () => {
 	elements.transparentOverlay.classList.remove("show");
 });
 elements.signOutBtn.addEventListener("click", signOut);
+
 elements.deleteTaskBtn.addEventListener("click", () => {
 	if (storage.get("settings", initialSettings).confirmBeforeDeletion) {
 		displayAModal(
@@ -270,59 +259,79 @@ elements.priorityItems.forEach((item) => {
 		elements.transparentOverlay.classList.remove("show");
 		const list = findListById(gTaskItem.getAttribute("parent-id"));
 		list.tasks.forEach((task) => {
-			if (Number(task.id) === Number(gTaskItem.id)) {
+			if (isSame(gTaskItem.id, task.id)) {
 				task.priority = priority;
 			}
 		});
 		renderAllTasks();
 		userData.lists = lists;
-		console.log(await user.save(userToken, userData));
+		await user.save(userToken, userData);
 	});
 });
 elements.barChartBtn.addEventListener("click", () => {
 	firstDayOfWeek = new Date().getDate() - new Date().getDay();
-	showTasksOverview();
-	updateUi(updateTasksOverview(findListById(1)), weekDays);
+	updateTasksOverviewUI(updateTasksOverview(findListById(1)), weekDays);
 });
 
 elements.prevWeek.addEventListener("click", () => {
 	firstDayOfWeek -= 7;
-	showTasksOverview();
-	updateUi(updateTasksOverview(findListById(1)), weekDays);
+	updateTasksOverviewUI(updateTasksOverview(findListById(1)), weekDays);
 	elements.week.textContent = `${weekDays[0].week}-${
 		weekDays[weekDays.length - 1].week
 	}`;
 });
 elements.nextWeek.addEventListener("click", () => {
 	firstDayOfWeek += 7;
-	showTasksOverview();
-	updateUi(updateTasksOverview(findListById(1)), weekDays);
+	updateTasksOverviewUI(updateTasksOverview(findListById(1)), weekDays);
 	elements.week.textContent = `${weekDays[0].week}-${
 		weekDays[weekDays.length - 1].week
 	}`;
 });
-
-elements.tasksOverviewCloseBtn.addEventListener("click", hideTasksOverview);
-
-function showTasksOverview() {
-	elements.tasksOverview.style.display = "grid";
-	setTimeout(() => {
-		elements.tasksOverview.classList.add("show");
-	});
+function generateUUID() {
+	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+		/[xy]/g,
+		function (c) {
+			const r = (Math.random() * 16) | 0;
+			const v = c === "x" ? r : (r & 0x3) | 0x8;
+			return v.toString(16);
+		}
+	);
 }
-function hideTasksOverview() {
-	elements.tasksOverview.classList.remove("show");
-	setTimeout(() => {
-		elements.tasksOverview.style.display = "none";
-	}, 300);
-}
+console.log(generateUUID());
 
 // Functions
+function trackUsageTime() {
+	let start = Date.now();
+	setTimeout(() => {
+		let timeSpent = Number(storage.get("timeSpent", 0));
+		let elapsed = Date.now() - start;
+		timeSpent += elapsed;
+		storage.set("timeSpent", timeSpent);
+		start = Date.now();
+		trackUsageTime();
+	}, 1000);
+}
+
+function renderTasksEveryMidNight() {
+	const now = new Date();
+	const nextMidnight = new Date(now);
+	nextMidnight.setDate(now.getDate() + 1);
+	nextMidnight.setHours(0, 0, 0, 0);
+	const timeUntilMidnight = nextMidnight - now;
+	setTimeout(() => {
+		renderAllLists();
+		renderAllTasks();
+		renderTasksEveryMidNight();
+	}, timeUntilMidnight);
+}
 function findListById(id) {
 	return lists.find((list) => Number(list.settings.id) === Number(id));
 }
 function findTaskById(tasks, id) {
 	return tasks.find((task) => Number(task.id) === Number(id));
+}
+function isSame(elementId, id) {
+	return Number(elementId) === Number(id);
 }
 function signOut() {
 	localStorage.removeItem("token");
@@ -408,7 +417,7 @@ function updateTasksOverview(dailyList) {
 		average: average,
 	};
 }
-function updateUi(stats, weekDays) {
+function updateTasksOverviewUI(stats, weekDays) {
 	console.log(stats);
 	console.log(weekDays);
 	elements.undoneTasks.textContent = stats.undone;
@@ -457,10 +466,11 @@ function updateUi(stats, weekDays) {
 function handleMovingTask() {
 	elements.moveTaskMenu.innerHTML = "<h1>Move Task To:</h1>";
 	lists.forEach((list) => {
-		if (
+		const isNotReadOnly =
 			list.settings.id !== SMART_LISTS_IDS[1] &&
-			list.settings.id !== SMART_LISTS_IDS[2]
-		) {
+			list.settings.id !== SMART_LISTS_IDS[2];
+
+		if (isNotReadOnly) {
 			const li = document.createElement("li");
 			li.textContent = list.settings.title;
 			li.id = list.settings.id;
@@ -481,7 +491,7 @@ function handleMovingTask() {
 				elements.mainOverlay.classList.remove("show");
 				renderAllTasks();
 				userData.lists = lists;
-				console.log(await user.save(userToken, userData));
+				await user.save(userToken, userData);
 			});
 		}
 	});
@@ -489,7 +499,6 @@ function handleMovingTask() {
 async function renameList(e) {
 	const value = elements.renameListInput.value.trim();
 	let changedValue = "";
-
 	if (e.key === "Enter") {
 		// Check If Input's Value Is Empty
 		elements.renameListInput.blur();
@@ -498,23 +507,20 @@ async function renameList(e) {
 		} else {
 			changedValue = value;
 		}
-
 		// Change The Title Of The List
 		elements.listTitle.textContent = changedValue;
-
 		// Change The List Title In The Lists And Save It
 		const list = findListById(storage.get(CURRENT_LIST_ID));
 		list.settings.title = changedValue;
-
 		// Change The Title Of The List Item In The Nav Bar
 		const listItems = document.querySelectorAll(".list-item");
 		listItems.forEach((listItem) => {
-			if (Number(listItem.id) === Number(storage.get(CURRENT_LIST_ID))) {
+			if (isSame(listItem.id, storage.get(CURRENT_LIST_ID))) {
 				listItem.lastChild.textContent = changedValue;
 			}
 		});
 		userData.lists = lists;
-		console.log(await user.save(userToken, userData));
+		await user.save(userToken, userData);
 	}
 }
 async function deleteCurrentList() {
@@ -536,7 +542,7 @@ async function deleteCurrentList() {
 		}
 	});
 	userData.lists = lists;
-	console.log(await user.save(userToken, userData));
+	await user.save(userToken, userData);
 }
 function handleListClick(listItem) {
 	// Change Id Of Page
@@ -587,7 +593,7 @@ async function addNewList(listTitle) {
 
 	// Saving List In The Storage
 	userData.lists = lists;
-	console.log(await user.save(userToken, userData));
+	await user.save(userToken, userData);
 }
 function renderAllLists() {
 	// Emptying The Lists Containers
@@ -613,7 +619,7 @@ function renderAllLists() {
 		}
 
 		// Trigger A handleListClick On The Current List
-		if (Number(storage.get(CURRENT_LIST_ID, 1)) === Number(listItem.id)) {
+		if (isSame(listItem.id, storage.get(CURRENT_LIST_ID, 1))) {
 			handleListClick(listItem);
 		}
 
@@ -624,6 +630,8 @@ function renderAllLists() {
 	});
 }
 function buildList(list, container) {
+	const fragement = document.createDocumentFragment();
+
 	// Create
 	const listItem = document.createElement("li");
 	const iconContainer = document.createElement("div");
@@ -631,7 +639,7 @@ function buildList(list, container) {
 	const text = document.createElement("div");
 	// Add Classes And Some Changes
 	listItem.classList.add("list-item");
-	if (Number(storage.get(CURRENT_LIST_ID)) === Number(list.settings.id)) {
+	if (isSame(list.settings.id, storage.get(CURRENT_LIST_ID))) {
 		listItem.classList.add("active");
 		elements.listTitle.textContent = list.settings.title;
 	}
@@ -643,8 +651,9 @@ function buildList(list, container) {
 	// Appending
 	iconContainer.append(svg);
 	listItem.append(iconContainer, text);
-	container.append(listItem);
 
+	fragement.append(listItem);
+	container.append(fragement);
 	return listItem;
 }
 
@@ -677,7 +686,6 @@ function renderAllTasks() {
 		tasks = list.tasks;
 	}
 	tasks.forEach((task) => {
-		let show = false;
 		if (list.settings.id === SMART_LISTS_IDS[0]) {
 			if (handleTaskDate(task) === "Today") {
 				task.show = true;
@@ -741,7 +749,7 @@ async function addNewTask(taskTitle, priority) {
 	};
 	// Saving Task In The List
 	const list = findListById(storage.get(CURRENT_LIST_ID));
-	if (Number(list.settings.id) === SMART_LISTS_IDS[1]) {
+	if (isSame(list.settings.id, SMART_LISTS_IDS[1])) {
 		parentListId = 5;
 		let tasksList = findListById(parentListId);
 		task.parentList = parentListId;
@@ -768,7 +776,7 @@ async function addNewTask(taskTitle, priority) {
 	});
 	// Save Data
 	userData.lists = lists;
-	console.log(await user.save(userToken, userData));
+	await user.save(userToken, userData);
 }
 async function completeTask(id, taskItem) {
 	const list = findListById(taskItem.getAttribute("parent-id"));
@@ -795,9 +803,11 @@ async function completeTask(id, taskItem) {
 		renderAllTasks();
 	}, 300);
 	userData.lists = lists;
-	console.log(await user.save(userToken, userData));
+	await user.save(userToken, userData);
 }
 function buildTaskUi(task) {
+	const fragment = document.createDocumentFragment();
+
 	// Creating Elements
 	const li = document.createElement("li");
 	const icon = document.createElement("div");
@@ -810,7 +820,6 @@ function buildTaskUi(task) {
 	li.setAttribute("parent-id", task.parentList);
 	date.classList.add("due-date");
 	li.classList.add("task-item");
-	li.style.position = "relative";
 	icon.classList.add("icon");
 	if (task.completed) {
 		li.classList.add("checked");
@@ -823,20 +832,17 @@ function buildTaskUi(task) {
 	// Appending Elements
 	icon.append(img);
 	li.append(icon, text, date);
-	let container;
-	if (task.completed === true) {
-		container = elements.completedList;
-	} else if (task.priority === "high") {
-		container = elements.highList;
-	} else if (task.priority === "medium") {
-		container = elements.mediumList;
-	} else if (task.priority === "low") {
-		container = elements.lowList;
-	} else if (task.priority === "no") {
-		container = elements.noList;
-	}
-	container.prepend(li);
-	// Remove the animation class after it completes
+	const priorityContainers = {
+		high: elements.highList,
+		medium: elements.mediumList,
+		low: elements.lowList,
+		no: elements.noList,
+	};
+	const container = task.completed
+		? elements.completedList
+		: priorityContainers[task.priority];
+	fragment.prepend(li);
+	container.prepend(fragment);
 	return [li, icon, text];
 }
 function handleTaskClick(taskItem) {
@@ -845,7 +851,7 @@ function handleTaskClick(taskItem) {
 	elements.editTaskInput.value = taskItem.childNodes[1].textContent;
 	const list = findListById(taskItem.getAttribute("parent-id"));
 	list.tasks.forEach((task) => {
-		if (Number(task.id) === Number(taskItem.id)) {
+		if (isSame(taskItem.id, task.id)) {
 			elements.noteTextArea.value = task.note;
 			if (task.priority === "high") {
 				elements.choosePriority.style.color = "red";
@@ -877,30 +883,18 @@ async function deleteTask(taskItem) {
 	renderAllTasks();
 	closeTaskDetails();
 	userData.lists = lists;
-	console.log(await user.save(userToken, userData));
+	await user.save(userToken, userData);
 }
 async function renameTask(taskItem, newTitle) {
 	const list = findListById(taskItem.getAttribute("parent-id"));
 	list.tasks.forEach((task) => {
-		if (Number(task.id) === Number(taskItem.id)) {
+		if (isSame(taskItem.id, task.id)) {
 			task.title = newTitle;
 			elements.editTaskInput.value = newTitle;
 		}
 	});
 	userData.lists = lists;
-	console.log(await user.save(userToken, userData));
-}
-function scheduleMidnightAction() {
-	const now = new Date();
-	const nextMidnight = new Date(now);
-	nextMidnight.setDate(now.getDate() + 1);
-	nextMidnight.setHours(0, 0, 0, 0);
-	const timeUntilMidnight = nextMidnight - now;
-	setTimeout(() => {
-		renderAllLists();
-		renderAllTasks();
-		scheduleMidnightAction();
-	}, timeUntilMidnight);
+	await user.save(userToken, userData);
 }
 function handleTaskDate(task) {
 	const months = [
@@ -930,8 +924,13 @@ function handleTaskDate(task) {
 		formattedDate = "Yesterday";
 		elements.taskDate.textContent = `Created ${formattedDate.toLowerCase()}`;
 	} else {
-		formattedDate = `${months[date.getMonth()]}
-		 ${date.getDate()} ${date.getFullYear()}`;
+		if (new Date().getFullYear() !== date.getFullYear()) {
+			formattedDate = `${
+				months[date.getMonth()]
+			} ${date.getDate()} ${date.getFullYear()}`;
+		} else {
+			formattedDate = `${months[date.getMonth()]} ${date.getDate()}`;
+		}
 		elements.taskDate.textContent = `Created at ${formattedDate}`;
 	}
 	return formattedDate;
@@ -939,34 +938,42 @@ function handleTaskDate(task) {
 async function addNote(taskItem) {
 	const list = findListById(taskItem.getAttribute("parent-id"));
 	list.tasks.forEach((task) => {
-		if (Number(task.id) === Number(taskItem.id)) {
+		if (isSame(taskItem.id, task.id)) {
 			task.note = elements.noteTextArea.value;
 		}
 	});
+	// Save
 	userData.lists = lists;
-	console.log(await user.save(userToken, userData));
+	await user.save(userToken, userData);
 }
 
-// For User
+// User Functions
 async function initialUserData() {
 	if (userToken === null) return window.location.assign("/pages/login.html");
 	const data = await user.get(userToken);
-	if (data.message) {
+
+	if (data.message === "User Not Found") {
 		window.location.assign("/pages/login.html");
 		return;
 	}
+
+	// Assigning User Data To A Global Variable So It can be used Later Outside This Function
 	userData = data.userData;
+
+	// If (lists is empty) then add to it the main initial smart lists (ex: completed & all)
 	userData.lists.length === 0
 		? (userData.lists = lists)
 		: (lists = userData.lists);
-
 	// userData.lists[0].tasks = [];
 	console.log(await user.save(userToken, userData));
+	// Initial Functions After Getting User Data
 	renderAllLists();
+	renderAllTasks();
 	handleUI();
 	handleSettings();
 	handleThemes();
-	renderAllTasks();
+
+	// Show a welcome messege and hide preloader
 	setTimeout(() => {
 		elements.loader.classList.add("hide");
 		if (storage.get("welcomed") === null) {
@@ -983,7 +990,6 @@ async function initialUserData() {
 	// CLEAR
 	// clearData();
 }
-
 async function clearData() {
 	await user.clear(userToken, userData);
 }
@@ -991,9 +997,5 @@ async function clearData() {
 // Initial
 initialUserData();
 displayComponent();
-scheduleMidnightAction();
-
-/*
-userData.lists = lists
-console.log(await user.save(userToken, userData));
-*/
+renderTasksEveryMidNight();
+trackUsageTime();

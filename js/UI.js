@@ -2,6 +2,18 @@ import { elements } from "./modules/elements.js";
 import { storage } from "./modules/storage.js";
 const SMART_LISTS_IDS = [1, 2, 3, 4, 5, 6];
 
+function showTasksOverview() {
+	elements.tasksOverview.style.display = "grid";
+	setTimeout(() => {
+		elements.tasksOverview.classList.add("show");
+	});
+}
+function hideTasksOverview() {
+	elements.tasksOverview.classList.remove("show");
+	setTimeout(() => {
+		elements.tasksOverview.style.display = "none";
+	}, 300);
+}
 function initialLink() {
 	elements.links.forEach((link) => {
 		if (
@@ -128,6 +140,8 @@ export function handleUI() {
 	});
 	elements.mainOverlay.addEventListener("click", closeTaskDetails);
 	elements.closeTaskDetails.addEventListener("click", closeTaskDetails);
-
+	elements.tasksOverviewCloseBtn.addEventListener("click", hideTasksOverview);
+	elements.nextWeek.addEventListener("click", showTasksOverview);
+	elements.barChartBtn.addEventListener("click", showTasksOverview);
 	initialLink();
 }

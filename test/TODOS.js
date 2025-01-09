@@ -1,4 +1,4 @@
-// What is Missing The To Do List ?
+// What is Missing The To Do Section ?
 
 // 1. Display Average Completion Of Tasks Per Day
 // 2. Add A Btn to the New List input Like The Add a task input
@@ -20,3 +20,7 @@
 // 18. Add Pomodoro and Stop Watch
 // 19. Add Focusing On Specific Task
 // 20. Add Stats Of Focusing
+
+// Habits:
+
+// Don't forget to let the user set a daily goal for habits

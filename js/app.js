@@ -981,7 +981,11 @@ async function initialUserData() {
 	}, 100);
 	elements.greeting.textContent = `Hi ${data.firstName} ${data.lastName}`;
 	// CLEAR
-	// await user.clear(userToken, userData);
+	// clearData();
+}
+
+async function clearData() {
+	await user.clear(userToken, userData);
 }
 
 // Initial

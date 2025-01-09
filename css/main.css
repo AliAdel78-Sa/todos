@@ -1059,6 +1059,7 @@ footer .link {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-wrap: nowrap;
 }
 .underDev.show * {
   font-size: 40px;
@@ -1074,7 +1075,7 @@ footer .link {
   transform: translateY(100%);
   pointer-events: none;
   transition: 0.4s ease transform;
-  display: grid;
+  display: none;
   grid-template-rows: auto 1fr;
   overflow: auto;
   padding: 20px;
@@ -1212,6 +1213,23 @@ footer .link {
   font-size: 14px;
   left: 100%;
   transform: translate(-100%);
+}
+.stats .stats-container .stats_container .bar::before {
+  content: attr(per);
+  font-size: 14px;
+  position: absolute;
+  top: -40px;
+  border-radius: 5px;
+  transform: translate(-5px, 10px);
+  background-color: #fff;
+  padding: var(--padding);
+  color: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: 0.3s ease all;
+}
+.stats .stats-container .stats_container .bar:hover::before {
+  opacity: 1;
+  transform: translate(-5px, 0);
 }
 
 @keyframes goHigh {

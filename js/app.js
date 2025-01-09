@@ -305,7 +305,7 @@ elements.nextWeek.addEventListener("click", () => {
 elements.tasksOverviewCloseBtn.addEventListener("click", hideTasksOverview);
 
 function showTasksOverview() {
-	elements.tasksOverview.style.display = "block";
+	elements.tasksOverview.style.display = "grid";
 	setTimeout(() => {
 		elements.tasksOverview.classList.add("show");
 	});
@@ -327,6 +327,130 @@ function findTaskById(tasks, id) {
 function signOut() {
 	localStorage.removeItem("token");
 	window.location.reload();
+}
+function adjustWeekDays() {
+	weekDays = [];
+	for (let i = 0; i < 7; i++) {
+		const day = {
+			name: days[i],
+			date: new Date(
+				new Date().setDate(firstDayOfWeek + i)
+			).toLocaleDateString(),
+			week:
+				new Date(new Date().setDate(firstDayOfWeek + i)).getMonth() +
+				1 +
+				"/" +
+				new Date(new Date().setDate(firstDayOfWeek + i)).getDate(),
+			completedTasks: 0,
+			totalTasks: 0,
+		};
+		weekDays.push(day);
+	}
+}
+function updateWeekDaysStats(dailyList) {
+	const weekDaysMap = new Map();
+	weekDays.forEach((day) => {
+		weekDaysMap.set(day.date, day);
+	});
+	dailyList.tasks.forEach((task) => {
+		const taskDate = new Date(task.id).toLocaleDateString();
+		const matchingDay = weekDaysMap.get(taskDate);
+		if (matchingDay) {
+			if (task.completed) {
+				matchingDay.completedTasks++;
+			}
+			matchingDay.totalTasks++;
+		}
+	});
+	weekDays = Object.values(Object.fromEntries(weekDaysMap.entries()));
+}
+function updateTasksOverview(dailyList) {
+	let completedTasks = 0;
+	let totalTasks = 0;
+	let average = 0;
+	adjustWeekDays();
+	updateWeekDaysStats(dailyList);
+	weekDays.forEach((day) => {
+		completedTasks += day.completedTasks;
+		totalTasks += day.totalTasks;
+	});
+	average = Math.round(completedTasks / 7);
+	let percentageOfCompleted = "0%";
+	if (totalTasks !== 0) {
+		percentageOfCompleted =
+			Math.round((completedTasks / totalTasks) * 100) + "%";
+	}
+	firstDayOfWeek -= 7;
+	let prevcompletedTasks = 0;
+	let prevtotalTasks = 0;
+	adjustWeekDays();
+	updateWeekDaysStats(dailyList);
+	weekDays.forEach((day) => {
+		prevcompletedTasks += day.completedTasks;
+		prevtotalTasks += day.totalTasks;
+	});
+	let progress = "N/A";
+	if (prevcompletedTasks !== 0) {
+		progress =
+			Math.round(
+				((completedTasks - prevcompletedTasks) / prevcompletedTasks) *
+					100
+			) + "%";
+	}
+	firstDayOfWeek += 7;
+	adjustWeekDays();
+	updateWeekDaysStats(dailyList);
+	return {
+		percentageOfCompleted: percentageOfCompleted,
+		undone: totalTasks - completedTasks,
+		completed: completedTasks,
+		progress: progress,
+		average: average,
+	};
+}
+function updateUi(stats, weekDays) {
+	console.log(stats);
+	console.log(weekDays);
+	elements.undoneTasks.textContent = stats.undone;
+	elements.completedTasks.textContent = stats.completed;
+	const bars = document.querySelectorAll(".bar");
+	bars.forEach((bar, index) => {
+		bar.style.animationName = "";
+		let percentage;
+		if (weekDays[index].totalTasks !== 0) {
+			percentage =
+				Math.round(
+					(weekDays[index].completedTasks /
+						weekDays[index].totalTasks) *
+						100
+				) + "%";
+		} else {
+			percentage = "0%";
+		}
+		setTimeout(() => {
+			bar.style.setProperty("--height", percentage);
+			if (percentage !== "0%") {
+				bar.setAttribute("per", percentage);
+				bar.style.setProperty("--padding", "5px");
+			}
+			bar.style.animationName = "goHigh";
+		}, 300);
+	});
+	elements.growthDecrease.textContent = stats.progress;
+	if (stats.progress === "N/A") {
+		elements.growthDecreaseMessege.textContent =
+			"No Data For The Progress From Last Week";
+	} else if (stats.progress[0] === "-") {
+		elements.growthDecreaseMessege.textContent = "From Last Week";
+	}
+	elements.percentageText.textContent = stats.percentageOfCompleted;
+	elements.percentageCircle.style.setProperty("--gradient-angle", "0%");
+	setTimeout(() => {
+		elements.percentageCircle.style.setProperty(
+			"--gradient-angle",
+			stats.percentageOfCompleted
+		);
+	}, 300);
 }
 
 // Lists
@@ -556,10 +680,12 @@ function renderAllTasks() {
 		let show = false;
 		if (list.settings.id === SMART_LISTS_IDS[0]) {
 			if (handleTaskDate(task) === "Today") {
-				show = true;
+				task.show = true;
+			} else {
+				task.show = false;
 			}
 		}
-		if (show) {
+		if (task.show) {
 			const [taskItem, checkBox, text] = buildTaskUi(task);
 			checkBox.addEventListener("click", () => {
 				completeTask(taskItem.id, taskItem);
@@ -834,6 +960,7 @@ async function initialUserData() {
 		? (userData.lists = lists)
 		: (lists = userData.lists);
 
+	// userData.lists[0].tasks = [];
 	console.log(await user.save(userToken, userData));
 	renderAllLists();
 	handleUI();
@@ -855,127 +982,6 @@ async function initialUserData() {
 	elements.greeting.textContent = `Hi ${data.firstName} ${data.lastName}`;
 	// CLEAR
 	// await user.clear(userToken, userData);
-}
-
-function adjustWeekDays() {
-	weekDays = [];
-	for (let i = 0; i < 7; i++) {
-		const day = {
-			name: days[i],
-			date: new Date(
-				new Date().setDate(firstDayOfWeek + i)
-			).toLocaleDateString(),
-			week:
-				new Date(new Date().setDate(firstDayOfWeek + i)).getMonth() +
-				1 +
-				"/" +
-				new Date(new Date().setDate(firstDayOfWeek + i)).getDate(),
-			completedTasks: 0,
-			totalTasks: 0,
-		};
-		weekDays.push(day);
-	}
-}
-function updateWeekDaysStats(dailyList) {
-	const weekDaysMap = new Map();
-	weekDays.forEach((day) => {
-		weekDaysMap.set(day.date, day);
-	});
-	dailyList.tasks.forEach((task) => {
-		const taskDate = new Date(task.id).toLocaleDateString();
-		const matchingDay = weekDaysMap.get(taskDate);
-		if (matchingDay) {
-			if (task.completed) {
-				matchingDay.completedTasks++;
-			}
-			matchingDay.totalTasks++;
-		}
-	});
-	weekDays = Object.values(Object.fromEntries(weekDaysMap.entries()));
-}
-function updateTasksOverview(dailyList) {
-	let completedTasks = 0;
-	let totalTasks = 0;
-	let average = 0;
-	adjustWeekDays();
-	updateWeekDaysStats(dailyList);
-	weekDays.forEach((day) => {
-		completedTasks += day.completedTasks;
-		totalTasks += day.totalTasks;
-	});
-	average = completedTasks / 7;
-	let percentageOfCompleted = "0%";
-	if (totalTasks !== 0) {
-		percentageOfCompleted =
-			Math.round((completedTasks / totalTasks) * 100) + "%";
-	}
-	firstDayOfWeek -= 7;
-	let prevcompletedTasks = 0;
-	let prevtotalTasks = 0;
-	adjustWeekDays();
-	updateWeekDaysStats(dailyList);
-	weekDays.forEach((day) => {
-		prevcompletedTasks += day.completedTasks;
-		prevtotalTasks += day.totalTasks;
-	});
-	let progress = "N/A";
-	if (prevcompletedTasks !== 0) {
-		progress =
-			Math.round(
-				((completedTasks - prevcompletedTasks) / prevcompletedTasks) *
-					100
-			) + "%";
-	}
-	firstDayOfWeek += 7;
-	adjustWeekDays();
-	updateWeekDaysStats(dailyList);
-	return {
-		percentageOfCompleted: percentageOfCompleted,
-		undone: totalTasks - completedTasks,
-		completed: completedTasks,
-		progress: progress,
-		average: average,
-	};
-}
-function updateUi(stats, weekDays) {
-	console.log(stats);
-	console.log(weekDays);
-	elements.undoneTasks.textContent = stats.undone;
-	elements.completedTasks.textContent = stats.completed;
-	const bars = document.querySelectorAll(".bar");
-	bars.forEach((bar, index) => {
-		bar.style.animationName = "";
-		let percentage;
-		if (weekDays[index].totalTasks !== 0) {
-			percentage =
-				Math.round(
-					(weekDays[index].completedTasks /
-						weekDays[index].totalTasks) *
-						100
-				) + "%";
-		} else {
-			percentage = "0%";
-		}
-		setTimeout(() => {
-			bar.style.setProperty("--height", percentage);
-			bar.style.animationName = "goHigh";
-		}, 300);
-	});
-	elements.growthDecrease.textContent = stats.progress;
-	if (stats.progress === "N/A") {
-		elements.growthDecreaseMessege.textContent =
-			"No Data For The Progress From Last Week";
-	} else if (stats.progress[0] === "-") {
-		elements.growthDecreaseMessege.textContent = "From Last Week";
-	}
-	elements.percentageText.textContent = stats.percentageOfCompleted;
-	elements.percentageCircle.style.setProperty("--gradient-angle", "0%");
-	setTimeout(() => {
-		elements.percentageCircle.style.setProperty(
-			"--gradient-angle",
-			stats.percentageOfCompleted
-		);
-	}, 300);
 }
 
 // Initial

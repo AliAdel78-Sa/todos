@@ -7,7 +7,7 @@
 	transform: translateY(100%);
 	pointer-events: none;
 	transition: 0.4s ease transform;
-	display: grid;
+	display: none;
 	grid-template-rows: auto 1fr;
 	overflow: auto;
 	padding: 20px;
@@ -124,6 +124,7 @@
 			.bar {
 				width: 25px;
 				// height: var(--height);
+
 				background-color: #3c73eb;
 				border-top-left-radius: 4px;
 				border-top-right-radius: 4px;
@@ -142,6 +143,23 @@
 					font-size: 14px;
 					left: 100%;
 					transform: translate(-100%);
+				}
+				&::before {
+					content: attr(per);
+					font-size: 14px;
+					position: absolute;
+					top: -40px;
+					border-radius: 5px;
+					transform: translate(-5px, 10px);
+					background-color: #fff;
+					padding: var(--padding);
+					color: rgba($color: #000, $alpha: 0.8);
+					opacity: 0;
+					transition: 0.3s ease all;
+				}
+				&:hover::before {
+					opacity: 1;
+					transform: translate(-5px, 0);
 				}
 			}
 		}

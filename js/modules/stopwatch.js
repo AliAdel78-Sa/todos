@@ -85,25 +85,10 @@ function addZero(n) {
 function updateUI(status) {
 	switch (status) {
 		case "stop":
-			elements.startButton.style.display = "flex";
-			elements.startButton.innerHTML = "Resume";
-			elements.resetButton.style.display = "flex";
-			elements.stopButton.style.display = "none";
-			elements.resetButton.classList.remove("bg-disabled");
 			break;
 		case "start":
-			elements.stopButton.style.display = "flex";
-			elements.startButton.innerHTML = "Resume";
-			elements.resetButton.style.display = "flex";
-			elements.startButton.style.display = "none";
-			elements.resetButton.classList.remove("bg-disabled");
 			break;
 		case "reset":
-			elements.startButton.style.display = "flex";
-			elements.startButton.innerHTML = "Start";
-			elements.resetButton.style.display = "flex";
-			elements.stopButton.style.display = "none";
-			elements.resetButton.classList.add("bg-disabled");
 			break;
 	}
 }

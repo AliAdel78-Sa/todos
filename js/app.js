@@ -217,6 +217,7 @@ elements.editTaskInput.addEventListener("keydown", (e) => {
 });
 elements.editTaskInput.addEventListener("blur", () => {
 	if (elements.editTaskInput.value.trim().length === 0) {
+		notify("Data Updated Successfully", "", "success", 2);
 		renameTask(gTaskItem, "Untitled Task");
 		elements.editTaskInput.blur();
 	} else if (elements.editTaskInput.value.trim().length >= 30) {
@@ -224,6 +225,7 @@ elements.editTaskInput.addEventListener("blur", () => {
 			elements.addTaskInput.focus();
 		});
 	} else {
+		notify("Data Updated Successfully", "", "success", 2);
 		renameTask(gTaskItem, elements.editTaskInput.value.trim());
 		elements.editTaskInput.blur();
 	}
@@ -239,6 +241,7 @@ elements.completeTaskBtn.addEventListener("click", () => {
 	});
 });
 elements.noteTextArea.addEventListener("blur", () => {
+	notify("Data Updated Successfully", "", "success", 2);
 	addNote(gTaskItem);
 	renderAllTasks();
 });
@@ -285,6 +288,8 @@ elements.nextWeek.addEventListener("click", () => {
 		weekDays[weekDays.length - 1].week
 	}`;
 });
+
+// Functions
 function generateUUID() {
 	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
 		/[xy]/g,
@@ -295,7 +300,66 @@ function generateUUID() {
 		}
 	);
 }
-// Functions
+function applyHover() {
+	const hoverableElements = document.querySelectorAll(".hoverable");
+
+	hoverableElements.forEach((element) => {
+		element.addEventListener("touchstart", (e) => {
+			if (e.target === element) {
+				element.classList.add("hover-effect");
+			}
+		});
+
+		element.addEventListener("touchend", () => {
+			element.classList.remove("hover-effect");
+		});
+	});
+}
+function checkEmptyness() {
+	const isListEmpty =
+		elements.highList.children.length === 0 &&
+		elements.lowList.children.length === 0 &&
+		elements.mediumList.children.length === 0 &&
+		elements.noList.children.length === 0 &&
+		elements.completedList.children.length === 0;
+
+	isListEmpty
+		? (elements.emptyMessage.style.display = "flex")
+		: (elements.emptyMessage.style.display = "none");
+	displayMessage(Number(storage.get(CURRENT_LIST_ID)));
+}
+function displayMessage(id) {
+	const messages = {
+		1: {
+			title: "Daily Tasks",
+			description: `In Daily Tasks List, Tasks Disappears After Every Midnight`,
+		},
+		2: {
+			title: "All List",
+			description: "A List That Contains All Tasks Of All Lists",
+		},
+		3: {
+			title: "Completed List",
+			description: "You Can See All Your Completed Tasks here",
+		},
+		4: {
+			title: "Planned List",
+			description: "You Can Add here Tasks You Plan To Do In The Future",
+		},
+		5: {
+			title: "Tasks List",
+			description: "A List That Contains All Unorganized Tasks",
+		},
+	};
+	if (messages[id]) {
+		elements.emptyTitle.textContent = messages[id].title;
+		elements.emptyDescription.textContent = messages[id].description;
+	} else {
+		elements.emptyTitle.textContent = "Empty List";
+		elements.emptyDescription.textContent =
+			"Your list is currently empty. Consider adding some tasks.";
+	}
+}
 function trackUsageTime() {
 	let start = Date.now();
 	setTimeout(() => {
@@ -405,13 +469,14 @@ function updateTasksOverview(dailyList) {
 	adjustWeekDays();
 	updateWeekDaysStats(dailyList);
 	return {
-		percentageOfCompleted: percentageOfCompleted,
+		percentageOfCompleted,
 		undone: totalTasks - completedTasks,
 		completed: completedTasks,
-		progress: progress,
-		average: average,
+		progress,
+		average,
 	};
 }
+
 function updateTasksOverviewUI(stats, weekDays) {
 	console.log(stats);
 	console.log(weekDays);
@@ -965,7 +1030,7 @@ async function initialUserData() {
 	if (userToken === null) return window.location.assign("/pages/login.html");
 	const data = await user.get(userToken);
 
-	if (data.message) {
+	if (data.message === "User Not Found") {
 		window.location.assign("/pages/login.html");
 		return;
 	}
@@ -1006,67 +1071,6 @@ async function initialUserData() {
 }
 async function clearData() {
 	await user.clear(userToken, userData);
-}
-
-function applyHover() {
-	const hoverableElements = document.querySelectorAll(".hoverable");
-
-	hoverableElements.forEach((element) => {
-		element.addEventListener("touchstart", (e) => {
-			if (e.target === element) {
-				element.classList.add("hover-effect");
-			}
-		});
-
-		element.addEventListener("touchend", () => {
-			element.classList.remove("hover-effect");
-		});
-	});
-}
-function checkEmptyness() {
-	const isListEmpty =
-		elements.highList.children.length === 0 &&
-		elements.lowList.children.length === 0 &&
-		elements.mediumList.children.length === 0 &&
-		elements.noList.children.length === 0 &&
-		elements.completedList.children.length === 0;
-
-	isListEmpty
-		? (elements.emptyMessage.style.display = "flex")
-		: (elements.emptyMessage.style.display = "none");
-	displayMessage(Number(storage.get(CURRENT_LIST_ID)));
-}
-function displayMessage(id) {
-	const messages = {
-		1: {
-			title: "Daily Tasks",
-			description: `In Daily Tasks List, Tasks Disappears After Every Midnight`,
-		},
-		2: {
-			title: "All List",
-			description: "A List That Contains All Tasks Of All Lists",
-		},
-		3: {
-			title: "Completed List",
-			description: "You Can See All Your Completed Tasks here",
-		},
-		4: {
-			title: "Planned List",
-			description: "You Can Add here Tasks You Plan To Do In The Future",
-		},
-		5: {
-			title: "Tasks List",
-			description: "A List That Contains All Unorganized Tasks",
-		},
-	};
-	if (messages[id]) {
-		elements.emptyTitle.textContent = messages[id].title;
-		elements.emptyDescription.textContent = messages[id].description;
-	} else {
-		elements.emptyTitle.textContent = "Empty List";
-		elements.emptyDescription.textContent =
-			"Your list is currently empty. Consider adding some tasks.";
-	}
 }
 
 // Initial

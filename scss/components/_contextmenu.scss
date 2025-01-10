@@ -39,9 +39,11 @@
 				color: #f02626;
 			}
 		}
-		&:hover {
+		&.hover-effect {
+			transition: 100ms ease all;
 			background-color: #32312f;
 		}
+		
 	}
 	&.show {
 		opacity: 1;

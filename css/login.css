@@ -38,6 +38,7 @@ body {
   -webkit-background-clip: text;
   -webkit-box-shadow: 0 0 0 30px #000 inset !important;
   border: 2px solid rgba(255, 255, 255, 0.2) !important;
+  font-family: "Josefin Sans", sans-serif !important;
 }
 .wrapper .input-box i {
   position: absolute;

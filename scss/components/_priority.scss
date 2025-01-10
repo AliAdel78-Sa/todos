@@ -1,7 +1,6 @@
 .priority-container {
 	background-color: #222;
 	border-radius: 5px;
-	padding: 0 10px;
 	width: 200px;
 	position: absolute;
 	top: calc(200px - 52px);
@@ -17,12 +16,16 @@
 		color: #fff;
 	}
 	li {
-		margin-block: 20px;
+		padding-block: 15px;
+		padding-inline: 10px;
 		display: flex;
 		align-items: center;
 		gap: 20px;
-		transition: 0.3s ease all;
+		transition: 0.3s ease transform;
 		transform: translate(0, 20px);
+		&.hover-effect {
+			background-color: #32312f;
+		}
 	}
 
 	&.show {
@@ -66,6 +69,9 @@
 		align-items: center;
 		gap: 20px;
 		padding: 10px 20px;
+		&.hover-effect {
+			background-color: #32312f;
+		}
 	}
 	&.show {
 		opacity: 1;

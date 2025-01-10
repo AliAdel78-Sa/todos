@@ -109,4 +109,7 @@ export const elements = {
 	week: $(".week"),
 	tasksOverviewCloseBtn: $(".tasksOverviewCloseBtn"),
 	greeting: $(".greeting"),
+	emptyMessage: $(".empty-message"),
+	emptyDescription: $(".empty-message__description"),
+	emptyTitle: $(".empty-message__title"),
 };

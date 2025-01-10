@@ -3,7 +3,7 @@ if ("serviceWorker" in navigator) {
 	navigator.serviceWorker
 		.register("sw.js")
 		.then((reg) => {
-			console.log("Registered Successfully");
+			console.log(reg);
 		})
 		.catch((e) => {
 			console.log(e);
@@ -44,6 +44,9 @@ let priority = "no";
 let firstDayOfWeek = new Date().getDate() - new Date().getDay();
 
 // Events
+window.addEventListener("contextmenu", (e) => {
+	e.preventDefault();
+});
 elements.deleteList.addEventListener("click", () => {
 	const settings = storage.get("settings", initialSettings);
 	if (settings.confirmBeforeDeletion) {
@@ -181,7 +184,6 @@ elements.transparentOverlay.addEventListener("click", () => {
 	elements.transparentOverlay.classList.remove("show");
 });
 elements.signOutBtn.addEventListener("click", signOut);
-
 elements.deleteTaskBtn.addEventListener("click", () => {
 	if (storage.get("settings", initialSettings).confirmBeforeDeletion) {
 		displayAModal(
@@ -196,9 +198,6 @@ elements.deleteTaskBtn.addEventListener("click", () => {
 	} else {
 		deleteTask(gTaskItem);
 	}
-});
-window.addEventListener("contextmenu", (e) => {
-	e.preventDefault();
 });
 elements.editTaskInput.addEventListener("keydown", (e) => {
 	if (e.key === "Enter") {
@@ -272,7 +271,6 @@ elements.barChartBtn.addEventListener("click", () => {
 	firstDayOfWeek = new Date().getDate() - new Date().getDay();
 	updateTasksOverviewUI(updateTasksOverview(findListById(1)), weekDays);
 });
-
 elements.prevWeek.addEventListener("click", () => {
 	firstDayOfWeek -= 7;
 	updateTasksOverviewUI(updateTasksOverview(findListById(1)), weekDays);
@@ -297,8 +295,6 @@ function generateUUID() {
 		}
 	);
 }
-console.log(generateUUID());
-
 // Functions
 function trackUsageTime() {
 	let start = Date.now();
@@ -311,7 +307,6 @@ function trackUsageTime() {
 		trackUsageTime();
 	}, 1000);
 }
-
 function renderTasksEveryMidNight() {
 	const now = new Date();
 	const nextMidnight = new Date(now);
@@ -465,6 +460,7 @@ function updateTasksOverviewUI(stats, weekDays) {
 // Lists
 function handleMovingTask() {
 	elements.moveTaskMenu.innerHTML = "<h1>Move Task To:</h1>";
+	const fragement = document.createDocumentFragment();
 	lists.forEach((list) => {
 		const isNotReadOnly =
 			list.settings.id !== SMART_LISTS_IDS[1] &&
@@ -474,7 +470,8 @@ function handleMovingTask() {
 			const li = document.createElement("li");
 			li.textContent = list.settings.title;
 			li.id = list.settings.id;
-			elements.moveTaskMenu.append(li);
+			li.classList.add("hoverable");
+			fragement.append(li);
 			li.addEventListener("click", async () => {
 				const list = findListById(gTaskItem.getAttribute("parent-id"));
 				const task = findTaskById(list.tasks, gTaskItem.id);
@@ -495,6 +492,8 @@ function handleMovingTask() {
 			});
 		}
 	});
+	elements.moveTaskMenu.append(fragement);
+	applyHover();
 }
 async function renameList(e) {
 	const value = elements.renameListInput.value.trim();
@@ -526,25 +525,20 @@ async function renameList(e) {
 async function deleteCurrentList() {
 	// Create A List Without The Current List And Saving It
 	lists = lists.filter((list) => {
-		return (
-			Number(list.settings.id) !== Number(storage.get(CURRENT_LIST_ID))
-		);
+		return !isSame(list.settings.id, storage.get(CURRENT_LIST_ID));
 	});
 	// Going To The Previous List and Removing The List Item From The DOM
 	const listItems = document.querySelectorAll(".list-item");
 	listItems.forEach((listItem, index) => {
-		if (
-			Number(listItem.getAttribute("id")) ===
-			Number(storage.get(CURRENT_LIST_ID))
-		) {
-			handleListClick(listItems[index - 1]);
+		if (isSame(listItem.getAttribute("id"), storage.get(CURRENT_LIST_ID))) {
+			onListClick(listItems[index - 1]);
 			listItem.remove();
 		}
 	});
 	userData.lists = lists;
 	await user.save(userToken, userData);
 }
-function handleListClick(listItem) {
+function onListClick(listItem) {
 	// Change Id Of Page
 	storage.set(CURRENT_LIST_ID, Number(listItem.id));
 	// Hide Delete And Rename Options For Smart Lists
@@ -566,6 +560,8 @@ function handleListClick(listItem) {
 	closeNavBar();
 	// Display Tasks Of That List
 	renderAllTasks();
+	checkEmptyness();
+	applyHover();
 }
 async function addNewList(listTitle) {
 	// Create List
@@ -583,12 +579,13 @@ async function addNewList(listTitle) {
 	};
 
 	// Build The List UI
+	const fragement = document.createDocumentFragment();
 	lists.push(list);
-	const listItem = buildList(list, elements.listsContainer);
-	handleListClick(listItem); //  Trigger A Click On That List
+	const listItem = buildList(list, elements.listsContainer, fragement);
+	onListClick(listItem); //  Trigger A Click On That List
 
 	listItem.addEventListener("click", () => {
-		handleListClick(listItem);
+		onListClick(listItem);
 	});
 
 	// Saving List In The Storage
@@ -596,17 +593,18 @@ async function addNewList(listTitle) {
 	await user.save(userToken, userData);
 }
 function renderAllLists() {
+	console.time("Lists");
 	// Emptying The Lists Containers
 	elements.mainListsContainer.innerHTML = "";
 	elements.listsContainer.innerHTML = "";
-
+	const fragement = document.createDocumentFragment();
 	lists.forEach((list) => {
 		// Building List And Then Appending It In Its Suitable Container
 		let listItem;
 		if (list.settings.isMain) {
-			listItem = buildList(list, elements.mainListsContainer);
+			listItem = buildList(list, elements.mainListsContainer, fragement);
 		} else {
-			listItem = buildList(list, elements.listsContainer);
+			listItem = buildList(list, elements.listsContainer, fragement);
 		}
 
 		// Hiding The Delete And Rename Options If The List Is Smart
@@ -618,20 +616,21 @@ function renderAllLists() {
 			elements.renameList.style.display = "flex";
 		}
 
-		// Trigger A handleListClick On The Current List
+		// Trigger A onListClick On The Current List
 		if (isSame(listItem.id, storage.get(CURRENT_LIST_ID, 1))) {
-			handleListClick(listItem);
+			onListClick(listItem);
 		}
 
 		// Click Event For The List
 		listItem.addEventListener("click", () => {
-			handleListClick(listItem);
+			onListClick(listItem);
 		});
 	});
+	applyHover();
+	checkEmptyness();
+	console.timeEnd("Lists");
 }
-function buildList(list, container) {
-	const fragement = document.createDocumentFragment();
-
+function buildList(list, container, fragement) {
 	// Create
 	const listItem = document.createElement("li");
 	const iconContainer = document.createElement("div");
@@ -647,6 +646,8 @@ function buildList(list, container) {
 	text.classList.add("text");
 	listItem.id = list.settings.id;
 	svg.src = `${list.settings.icon}`;
+	svg.width = "24";
+	svg.height = "24";
 	text.textContent = list.settings.title;
 	// Appending
 	iconContainer.append(svg);
@@ -659,6 +660,7 @@ function buildList(list, container) {
 
 // Tasks
 function renderAllTasks() {
+	console.time("Tasks");
 	let tasks;
 	elements.tasksContainers.forEach((cont) => {
 		cont.innerHTML = "";
@@ -671,20 +673,24 @@ function renderAllTasks() {
 	}
 	if (list.settings.id === SMART_LISTS_IDS[2]) {
 		tasks = calcCompletedTasks();
-		elements.tasksInputContainer.style.display = "none";
+		elements.tasksInputContainer.style.opacity = "0";
+		elements.tasksInputContainer.style.pointerEvents = "none";
 		elements.cornerBtn.style.display = "none";
 		elements.animationcircle.style.display = "none";
 	} else if (list.settings.id === SMART_LISTS_IDS[1]) {
 		tasks = calcAllTasks();
 		elements.animationcircle.style.display = "flex";
 		elements.cornerBtn.style.display = "flex";
-		elements.tasksInputContainer.style.display = "flex";
+		elements.tasksInputContainer.style.opacity = "1";
+		elements.tasksInputContainer.style.pointerEvents = "all";
 	} else {
 		elements.cornerBtn.style.display = "flex";
 		elements.animationcircle.style.display = "flex";
-		elements.tasksInputContainer.style.display = "flex";
+		elements.tasksInputContainer.style.opacity = "1";
+		elements.tasksInputContainer.style.pointerEvents = "all";
 		tasks = list.tasks;
 	}
+	const fragement = document.createDocumentFragment();
 	tasks.forEach((task) => {
 		if (list.settings.id === SMART_LISTS_IDS[0]) {
 			if (handleTaskDate(task) === "Today") {
@@ -694,7 +700,7 @@ function renderAllTasks() {
 			}
 		}
 		if (task.show) {
-			const [taskItem, checkBox, text] = buildTaskUi(task);
+			const [taskItem, checkBox, text] = buildTaskUi(task, fragement);
 			checkBox.addEventListener("click", () => {
 				completeTask(taskItem.id, taskItem);
 			});
@@ -710,6 +716,9 @@ function renderAllTasks() {
 	});
 	updateCount();
 	updateDisplay();
+	applyHover();
+	checkEmptyness();
+	console.timeEnd("Tasks");
 }
 function calcCompletedTasks() {
 	let tasks = [];
@@ -762,7 +771,8 @@ async function addNewTask(taskTitle, priority) {
 		list.tasks.push(task);
 	}
 	// build Task
-	const [taskItem, checkBox, text] = buildTaskUi(task);
+	const fragement = document.createDocumentFragment();
+	const [taskItem, checkBox, text] = buildTaskUi(task, fragement);
 	checkBox.addEventListener("click", () => {
 		completeTask(taskItem.id, taskItem);
 	});
@@ -774,6 +784,7 @@ async function addNewTask(taskTitle, priority) {
 			handleTaskClick(taskItem);
 		}
 	});
+	checkEmptyness();
 	// Save Data
 	userData.lists = lists;
 	await user.save(userToken, userData);
@@ -805,9 +816,7 @@ async function completeTask(id, taskItem) {
 	userData.lists = lists;
 	await user.save(userToken, userData);
 }
-function buildTaskUi(task) {
-	const fragment = document.createDocumentFragment();
-
+function buildTaskUi(task, fragement) {
 	// Creating Elements
 	const li = document.createElement("li");
 	const icon = document.createElement("div");
@@ -819,7 +828,7 @@ function buildTaskUi(task) {
 	li.id = task.id;
 	li.setAttribute("parent-id", task.parentList);
 	date.classList.add("due-date");
-	li.classList.add("task-item");
+	li.classList.add("task-item", "hoverable");
 	icon.classList.add("icon");
 	if (task.completed) {
 		li.classList.add("checked");
@@ -827,7 +836,9 @@ function buildTaskUi(task) {
 	text.classList.add("text");
 	date.textContent = handleTaskDate(task);
 	img.src = "assets/svgs/check.svg";
-	text.textContent = task.title;
+	img.width = "15";
+	img.height = "15";
+	text.innerHTML = task.title;
 
 	// Appending Elements
 	icon.append(img);
@@ -841,8 +852,8 @@ function buildTaskUi(task) {
 	const container = task.completed
 		? elements.completedList
 		: priorityContainers[task.priority];
-	fragment.prepend(li);
-	container.prepend(fragment);
+	fragement.prepend(li);
+	container.prepend(fragement);
 	return [li, icon, text];
 }
 function handleTaskClick(taskItem) {
@@ -872,6 +883,7 @@ function handleTaskClick(taskItem) {
 	} else {
 		elements.taskDetailsItem.classList.remove("checked");
 	}
+	checkEmptyness();
 	handleTaskDate(gTaskItem);
 	openTaskDetails();
 }
@@ -881,6 +893,7 @@ async function deleteTask(taskItem) {
 		(task) => Number(taskItem.id) !== Number(task.id)
 	);
 	renderAllTasks();
+	checkEmptyness();
 	closeTaskDetails();
 	userData.lists = lists;
 	await user.save(userToken, userData);
@@ -952,7 +965,7 @@ async function initialUserData() {
 	if (userToken === null) return window.location.assign("/pages/login.html");
 	const data = await user.get(userToken);
 
-	if (data.message === "User Not Found") {
+	if (data.message) {
 		window.location.assign("/pages/login.html");
 		return;
 	}
@@ -968,10 +981,11 @@ async function initialUserData() {
 	console.log(await user.save(userToken, userData));
 	// Initial Functions After Getting User Data
 	renderAllLists();
-	renderAllTasks();
 	handleUI();
 	handleSettings();
 	handleThemes();
+	applyHover();
+	checkEmptyness();
 
 	// Show a welcome messege and hide preloader
 	setTimeout(() => {
@@ -992,6 +1006,67 @@ async function initialUserData() {
 }
 async function clearData() {
 	await user.clear(userToken, userData);
+}
+
+function applyHover() {
+	const hoverableElements = document.querySelectorAll(".hoverable");
+
+	hoverableElements.forEach((element) => {
+		element.addEventListener("touchstart", (e) => {
+			if (e.target === element) {
+				element.classList.add("hover-effect");
+			}
+		});
+
+		element.addEventListener("touchend", () => {
+			element.classList.remove("hover-effect");
+		});
+	});
+}
+function checkEmptyness() {
+	const isListEmpty =
+		elements.highList.children.length === 0 &&
+		elements.lowList.children.length === 0 &&
+		elements.mediumList.children.length === 0 &&
+		elements.noList.children.length === 0 &&
+		elements.completedList.children.length === 0;
+
+	isListEmpty
+		? (elements.emptyMessage.style.display = "flex")
+		: (elements.emptyMessage.style.display = "none");
+	displayMessage(Number(storage.get(CURRENT_LIST_ID)));
+}
+function displayMessage(id) {
+	const messages = {
+		1: {
+			title: "Daily Tasks",
+			description: `In Daily Tasks List, Tasks Disappears After Every Midnight`,
+		},
+		2: {
+			title: "All List",
+			description: "A List That Contains All Tasks Of All Lists",
+		},
+		3: {
+			title: "Completed List",
+			description: "You Can See All Your Completed Tasks here",
+		},
+		4: {
+			title: "Planned List",
+			description: "You Can Add here Tasks You Plan To Do In The Future",
+		},
+		5: {
+			title: "Tasks List",
+			description: "A List That Contains All Unorganized Tasks",
+		},
+	};
+	if (messages[id]) {
+		elements.emptyTitle.textContent = messages[id].title;
+		elements.emptyDescription.textContent = messages[id].description;
+	} else {
+		elements.emptyTitle.textContent = "Empty List";
+		elements.emptyDescription.textContent =
+			"Your list is currently empty. Consider adding some tasks.";
+	}
 }
 
 // Initial

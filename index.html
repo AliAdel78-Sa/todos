@@ -36,7 +36,12 @@
 		<nav>
 			<header>
 				<div class="icon" id="close-nav">
-					<img src="assets/svgs/add-small.svg" alt="" />
+					<img
+						src="assets/svgs/add-small.svg"
+						width="35"
+						height="35"
+						alt=""
+					/>
 				</div>
 				<div class="add-list-container">
 					<div class="add-list-input">
@@ -71,7 +76,7 @@
 					autocomplete="off"
 					spellcheck="false"
 				/>
-				<div class="icon" id="list-options-menu">
+				<div class="icon hoverable" id="list-options-menu">
 					<i class="bx bx-dots-horizontal-rounded bx-sm"></i>
 				</div>
 				<span class="material-symbols-outlined bar_chart">
@@ -94,7 +99,12 @@
 					<i class="bx bxs-send"></i>
 				</div>
 			</div>
-			<div id="tasks-list">
+			<div id="tasks-list" style="position: relative">
+				<div class="empty-message">
+					<h1 class="empty-message__title"></h1>
+					<p class="empty-message__description"></p>
+				</div>
+
 				<header class="list-header">
 					<h2>HIGH PRIORITY</h2>
 					<span>1</span>
@@ -174,7 +184,6 @@
 		</div>
 
 		<!-- SUBCOMPONENTS -->
-
 		<div class="tasksOverview">
 			<div class="profile">
 				<img
@@ -191,6 +200,8 @@
 					class="tasksOverviewCloseBtn"
 					src="assets/svgs/close.svg"
 					style="margin-left: auto; border: none !important"
+					height="24"
+					width="24"
 					alt=""
 				/>
 			</div>
@@ -382,7 +393,12 @@
 			<header>
 				<h1>Settings</h1>
 				<div class="icon close-btn-settings">
-					<img src="assets/svgs/close.svg" alt="" />
+					<img
+						src="assets/svgs/close.svg"
+						width="24"
+						height="24"
+						alt=""
+					/>
 				</div>
 			</header>
 
@@ -543,7 +559,12 @@
 							id="completeTaskBtn"
 							style="--list-color: gray"
 						>
-							<img src="assets/svgs/check.svg" alt="" />
+							<img
+								src="assets/svgs/check.svg"
+								width="15"
+								height="15"
+								alt=""
+							/>
 						</div>
 						<input
 							type="text"
@@ -616,7 +637,7 @@
 		</div>
 		<ul class="priority-container">
 			<li
-				class="priority-item"
+				class="priority-item hoverable"
 				data="high"
 				color="red"
 				style="color: #fff"
@@ -624,7 +645,7 @@
 				<i class="bx bxs-flag-alt" style="color: red"></i>High Priority
 			</li>
 			<li
-				class="priority-item"
+				class="priority-item hoverable"
 				data="medium"
 				color="orange"
 				style="color: #fff"
@@ -633,7 +654,7 @@
 				Priority
 			</li>
 			<li
-				class="priority-item"
+				class="priority-item hoverable"
 				data="low"
 				color="blue"
 				style="color: #fff"
@@ -641,7 +662,7 @@
 				<i class="bx bxs-flag-alt" style="color: blue"></i>Low Priority
 			</li>
 			<li
-				class="priority-item"
+				class="priority-item hoverable"
 				data="no"
 				color="gray"
 				style="color: #fff"
@@ -656,7 +677,7 @@
 		<!-- CORNERBTN -->
 		<div class="animation-circle"></div>
 		<div class="add-task-btn">
-			<img src="assets/svgs/add.svg" alt="" />
+			<img src="assets/svgs/add.svg" width="50" height="50" alt="" />
 		</div>
 
 		<!-- MENUS -->
@@ -665,29 +686,46 @@
 				<h1 class="title">Options</h1>
 			</header>
 			<section>
-				<div class="option" id="rename-list">
+				<div class="option hoverable" id="rename-list">
 					<div class="icon">
-						<img src="assets/svgs/rename.svg" alt="" />
+						<img
+							src="assets/svgs/rename.svg"
+							width="20"
+							height="20"
+							alt=""
+						/>
 					</div>
 					<div class="text">Rename list</div>
 				</div>
-				<div class="option" id="change-theme">
+				<div class="option hoverable" id="change-theme">
 					<div class="icon">
 						<img
+							width="20"
+							height="20"
 							src="assets/svgs/color-palette-outline.svg"
 							alt=""
 						/>
 					</div>
 					<div class="text">Change theme</div>
 					<div class="submenu-icon">
-						<img src="assets/svgs/arrow-right.svg" alt="" />
+						<img
+							src="assets/svgs/arrow-right.svg"
+							width="24"
+							height="24"
+							alt=""
+						/>
 					</div>
 				</div>
 			</section>
 			<footer>
-				<div class="option red" id="delete-list">
+				<div class="option hoverable red" id="delete-list">
 					<div class="icon">
-						<img src="assets/svgs/trash-outline.svg" alt="" />
+						<img
+							src="assets/svgs/trash-outline.svg"
+							width="24"
+							height="24"
+							alt=""
+						/>
 					</div>
 					<div class="text">Delete list</div>
 				</div>
@@ -699,42 +737,78 @@
 				data-settings="red"
 				style="--color: #e56b68; --light-color: #f5c4c3"
 			>
-				<img src="assets/svgs/check.svg" alt="" class="checked" />
+				<img
+					src="assets/svgs/check.svg"
+					width="15"
+					height="15"
+					alt=""
+					class="checked"
+				/>
 			</div>
 			<div
 				class="theme"
 				data-settings="pink"
 				style="--color: #e46d8d; --light-color: #f4c5d1"
 			>
-				<img src="assets/svgs/check.svg" alt="" class="checked" />
+				<img
+					src="assets/svgs/check.svg"
+					width="15"
+					height="15"
+					alt=""
+					class="checked"
+				/>
 			</div>
 			<div
 				class="theme"
 				data-settings="blue"
 				style="--color: #78b9fd; --light-color: #aed5ff"
 			>
-				<img src="assets/svgs/check.svg" alt="" class="checked" />
+				<img
+					src="assets/svgs/check.svg"
+					width="15"
+					height="15"
+					alt=""
+					class="checked"
+				/>
 			</div>
 			<div
 				class="theme"
 				data-settings="ocean"
 				style="--color: #097bb9; --light-color: #a5d1e6"
 			>
-				<img src="assets/svgs/check.svg" alt="" class="checked" />
+				<img
+					src="assets/svgs/check.svg"
+					width="15"
+					height="15"
+					alt=""
+					class="checked"
+				/>
 			</div>
 			<div
 				class="theme"
 				data-settings="green"
 				style="--color: #21c784; --light-color: #a6e9ce"
 			>
-				<img src="assets/svgs/check.svg" alt="" class="checked" />
+				<img
+					src="assets/svgs/check.svg"
+					width="15"
+					height="15"
+					alt=""
+					class="checked"
+				/>
 			</div>
 			<div
 				class="theme"
 				data-settings="green-hyphe"
 				style="--color: #479e98; --light-color: #b5d8d6"
 			>
-				<img src="assets/svgs/check.svg" alt="" class="checked" />
+				<img
+					src="assets/svgs/check.svg"
+					width="15"
+					height="15"
+					alt=""
+					class="checked"
+				/>
 			</div>
 		</div>
 

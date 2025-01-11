@@ -36,6 +36,20 @@ const SMART_LISTS_IDS = [1, 2, 3, 4, 5];
 const userToken = storage.get("token");
 const CURRENT_LIST_ID = "currentListId";
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const months = [
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec",
+];
 let lists = initialLists;
 let userData = {};
 let weekDays = [];
@@ -393,7 +407,7 @@ function isSame(elementId, id) {
 	return Number(elementId) === Number(id);
 }
 function signOut() {
-	localStorage.removeItem("token");
+	storage.remove("token");
 	window.location.reload();
 }
 function adjustWeekDays() {
@@ -975,20 +989,6 @@ async function renameTask(taskItem, newTitle) {
 	await user.save(userToken, userData);
 }
 function handleTaskDate(task) {
-	const months = [
-		"Jan",
-		"Feb",
-		"Mar",
-		"Apr",
-		"May",
-		"Jun",
-		"Jul",
-		"Aug",
-		"Sep",
-		"Oct",
-		"Nov",
-		"Dec",
-	];
 	let formattedDate = null;
 	const today = new Date().getDate();
 	const yesterDay = new Date(

@@ -24,7 +24,6 @@ export {
 	weekDays,
 	firstDayOfWeek,
 };
-
 // Variables
 let userData = {};
 let weekDays = [];
@@ -34,7 +33,6 @@ const userToken = storage.get("token");
 const setLists = (newData) => (lists = newData);
 const setFirstDayOfWeek = (newData) => (firstDayOfWeek = newData);
 const setWeekDays = (newData) => (weekDays = newData);
-
 //  Functions
 function initializeEvents() {
 	listsEvents();
@@ -100,12 +98,9 @@ function welcomeUser(data) {
 	}, 100);
 	elements.greeting.textContent = `Hi ${data.firstName} ${data.lastName}`;
 }
-
 // Initial
 initialUserData();
 displayComponent();
 renderTasksEveryMidNight();
 initializeEvents();
-if ("serviceWorker" in navigator) {
-	navigator.serviceWorker.register("sw.js");
-}
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");

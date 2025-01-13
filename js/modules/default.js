@@ -1,4 +1,4 @@
-export const initialLists = [
+export let initialLists = [
 	{
 		settings: {
 			id: "1",

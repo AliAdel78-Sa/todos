@@ -68,17 +68,7 @@ export function closeNavBar() {
 	elements.mainOverlay.classList.remove("show");
 	elements.newListInput.value = "";
 }
-export function updateDisplay() {
-	elements.tasksContainers.forEach((cont) => {
-		if (cont.childElementCount === 0) {
-			cont.parentElement.style.display = "none";
-			cont.parentElement.previousElementSibling.style.display = "none";
-		} else {
-			cont.parentElement.previousElementSibling.style.display = "flex";
-			cont.parentElement.style.display = "grid";
-		}
-	});
-}
+
 function countTasks() {
 	let counts = [];
 	elements.tasksContainers.forEach((cont) => {
@@ -94,9 +84,20 @@ export function openTaskDetails() {
 	elements.mainOverlay.classList.add("show");
 	elements.taskDetails.classList.add("show");
 }
-export function updateCount() {
+export function syncCounts() {
 	countTasks().forEach((n, i) => {
 		elements.headers[i].childNodes[3].innerHTML = n;
+	});
+}
+export function toggleTasksVisibility() {
+	elements.tasksContainers.forEach((cont) => {
+		if (cont.childElementCount === 0) {
+			cont.parentElement.style.display = "none";
+			cont.parentElement.previousElementSibling.style.display = "none";
+		} else {
+			cont.parentElement.previousElementSibling.style.display = "flex";
+			cont.parentElement.style.display = "grid";
+		}
 	});
 }
 export function handleUI() {

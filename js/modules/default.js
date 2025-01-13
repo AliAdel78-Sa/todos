@@ -66,7 +66,6 @@ export const initialSettings = {
 	light: false,
 	showAll: true,
 	showCompleted: true,
-	showPlanned: true,
 	playSound: true,
 	theme: "blue",
 };

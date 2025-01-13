@@ -31,8 +31,11 @@ let weekDays = [];
 let lists = initialLists;
 let firstDayOfWeek = new Date().getDate() - new Date().getDay();
 const userToken = storage.get("token");
+const setLists = (newData) => (lists = newData);
+const setFirstDayOfWeek = (newData) => (firstDayOfWeek = newData);
+const setWeekDays = (newData) => (weekDays = newData);
 
-// Events
+//  Functions
 function initializeEvents() {
 	listsEvents();
 	tasksEvents();
@@ -54,13 +57,6 @@ function otherEvents() {
 		elements.transparentOverlay.classList.remove("show");
 	});
 }
-
-// Utilities
-const setLists = (newData) => (lists = newData);
-const setFirstDayOfWeek = (newData) => (firstDayOfWeek = newData);
-const setWeekDays = (newData) => (weekDays = newData);
-
-// User Functions
 async function initialUserData() {
 	if (userToken === null) return window.location.assign("/pages/login.html");
 	const data = await user.get(userToken);
@@ -104,6 +100,7 @@ function welcomeUser(data) {
 	}, 100);
 	elements.greeting.textContent = `Hi ${data.firstName} ${data.lastName}`;
 }
+
 // Initial
 initialUserData();
 displayComponent();

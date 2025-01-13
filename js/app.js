@@ -1,14 +1,3 @@
-// Installing App
-if ("serviceWorker" in navigator) {
-	navigator.serviceWorker
-		.register("sw.js")
-		.then((reg) => {
-			console.log(reg);
-		})
-		.catch((e) => {
-			console.log(e);
-		});
-}
 // Modules
 import { handleUI } from "./UI.js";
 import { renderTasksEveryMidNight } from "./utils/renderTasks.js";
@@ -120,3 +109,6 @@ initialUserData();
 displayComponent();
 renderTasksEveryMidNight();
 initializeEvents();
+if ("serviceWorker" in navigator) {
+	navigator.serviceWorker.register("sw.js");
+}

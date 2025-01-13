@@ -42,13 +42,13 @@ let clickedTaskItem = null;
 let priority = "no";
 let firstDayOfWeek = new Date().getDate() - new Date().getDay();
 
+// Events
 function initializeEvents() {
 	listsEvents();
 	tasksEvents();
 	otherEvents();
 	statsEvents();
 }
-
 function listsEvents() {
 	elements.deleteList.addEventListener("click", () => {
 		const settings = storage.get("settings", initialSettings);
@@ -128,7 +128,6 @@ function listsEvents() {
 		}
 	});
 }
-
 function tasksEvents() {
 	elements.addTaskInput.addEventListener("input", () => {
 		if (elements.addTaskInput.value.trim().length > 0) {
@@ -258,9 +257,6 @@ function tasksEvents() {
 		notify("Data Updated Successfully", "", "success", 2);
 		const list = findListById(clickedTaskItem.getAttribute("parent-id"));
 		const task = findTaskById(list.tasks, clickedTaskItem.id);
-		console.log(clickedTaskItem);
-		console.log(task);
-
 		addNote(clickedTaskItem);
 		renderAllTasks();
 	});
@@ -288,7 +284,6 @@ function tasksEvents() {
 		});
 	});
 }
-
 function otherEvents() {
 	window.addEventListener("contextmenu", (e) => {
 		e.preventDefault();
@@ -303,7 +298,6 @@ function otherEvents() {
 		elements.transparentOverlay.classList.remove("show");
 	});
 }
-
 function statsEvents() {
 	elements.barChartBtn.addEventListener("click", () => {
 		firstDayOfWeek = new Date().getDate() - new Date().getDay();
@@ -330,14 +324,11 @@ function statsEvents() {
 
 // Utilities
 function generateId() {
-	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-		/[xy]/g,
-		function (c) {
-			const r = (Math.random() * 16) | 0;
-			const v = c === "x" ? r : (r & 0x3) | 0x8;
-			return v.toString(16);
-		}
-	);
+	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+		const r = (Math.random() * 16) | 0;
+		const v = c === "x" ? r : (r & 0x3) | 0x8;
+		return v.toString(16);
+	});
 }
 function applyHover() {
 	const hoverableElements = document.querySelectorAll(".hoverable");
@@ -542,14 +533,11 @@ function formatDate(timeStamp) {
 	if (isYesterday) return "Yesterday";
 	const formattedDate = `${months[date.getMonth()]} ${date.getDate()}`;
 
-	console.log(isTheSameYear);
 	return isTheSameYear
 		? formattedDate
 		: `${formattedDate} ${date.getFullYear()}`;
 }
 function updateTasksOverviewUI(stats, weekDays) {
-	console.log(stats);
-	console.log(weekDays);
 	elements.undoneTasks.textContent = stats.undone;
 	elements.completedTasks.textContent = stats.completed;
 	const bars = document.querySelectorAll(".bar");
@@ -1091,6 +1079,7 @@ async function initialUserData() {
 	// clearData();
 }
 async function clearData() {
+	storage.clear();
 	await user.clear(userToken, userData);
 }
 async function initializeLists(data) {
@@ -1102,7 +1091,6 @@ async function initializeLists(data) {
 	userData.lists.length === 0
 		? (userData.lists = lists)
 		: (lists = userData.lists);
-	// userData.lists[0].tasks = [];
 	console.log(await user.save(userToken, userData));
 }
 function welcomeUser(data) {

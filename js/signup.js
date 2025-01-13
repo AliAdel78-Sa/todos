@@ -1,5 +1,5 @@
 import { notify } from "./modules/notify.js";
-
+import { storage } from "./modules/storage.js";
 const signupBtn = document.getElementById("signup-btn");
 const email = document.getElementById("email-input");
 const password = document.getElementById("password-input");
@@ -70,6 +70,7 @@ signupBtn.addEventListener("click", () => {
 			);
 		})
 		.catch((e) => {
+			console.log(e);
 			loading.classList.add("hide");
 			const title = e.split(",")[0];
 			const body = e.split(",")[1];

@@ -3,6 +3,8 @@ import { elements } from "../modules/elements.js";
 import { storage } from "../modules/storage.js";
 import { user } from "../modules/userData.js";
 import { closeNavBar } from "../UI.js";
+import { notify } from "../modules/notify.js";
+
 import {
 	applyHover,
 	CURRENT_LIST_ID,
@@ -143,4 +145,92 @@ function buildList(list, container, fragment) {
 	return listItem;
 }
 
-export { buildList, onListClick, addNewList, deleteCurrentList, renameList };
+// Events
+function listsEvents() {
+	elements.deleteList.addEventListener("click", () => {
+		const settings = storage.get("settings", initialSettings);
+		if (settings.confirmBeforeDeletion) {
+			displayAModal(
+				"Delete List",
+				`Are You Sure You Want To Delete "${elements.listTitle.textContent}`,
+				(action) => {
+					if (action === "execute") {
+						deleteCurrentList();
+						hideListOptions();
+					}
+				}
+			);
+		} else {
+			deleteCurrentList();
+		}
+	});
+	elements.newListInput.addEventListener("keydown", (e) => {
+		if (e.key === "Enter") {
+			let val = elements.newListInput.value.trim().length;
+			if (val === 0) {
+				notify(
+					"Invalid Value",
+					"Please Enter A Value",
+					"danger",
+					2
+				).then(() => {
+					elements.newListInput.focus();
+				});
+			} else if (val >= 20) {
+				notify(
+					"Invalid Value",
+					"Value Must Be 20 Characters Or Less",
+					"danger",
+					2
+				).then(() => {
+					elements.newListInput.focus();
+				});
+			} else {
+				addNewList(elements.newListInput.value.trim());
+				syncCounts();
+				toggleTasksVisibility();
+				elements.newListInput.value = "";
+				elements.newListInput.blur();
+			}
+		}
+	});
+	elements.renameListInput.addEventListener("keydown", (e) => {
+		if (e.key === "Enter") {
+			if (elements.renameListInput.value.trim().length >= 20) {
+				notify(
+					"Invalid Value",
+					"Value Must Be 20 Characters Or Less",
+					"danger",
+					2
+				).then(() => {
+					elements.newListInput.focus();
+				});
+			} else {
+				renameList(e);
+			}
+		}
+	});
+	elements.renameListInput.addEventListener("blur", (e) => {
+		if (elements.renameListInput.value.trim().length >= 20) {
+			notify(
+				"Invalid Value",
+				"Value Must Be 20 Characters Or Less",
+				"danger",
+				2
+			).then(() => {
+				elements.newListInput.focus();
+			});
+		} else {
+			renameList(e);
+		}
+	});
+}
+
+export {
+	buildList,
+	onListClick,
+	addNewList,
+	deleteCurrentList,
+	renameList,
+	listsEvents,
+};

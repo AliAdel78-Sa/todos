@@ -133,10 +133,34 @@ function updateTasksOverviewUI(stats, weekDays) {
 		);
 	}, 300);
 }
-
+// Events
+function statsEvents() {
+	elements.barChartBtn.addEventListener("click", () => {
+		firstDayOfWeek = new Date().getDate() - new Date().getDay();
+		updateTasksOverviewUI(updateTasksOverview(findListById("1")), weekDays);
+		elements.week.textContent = `${weekDays[0].week}-${
+			weekDays[weekDays.length - 1].week
+		}`;
+	});
+	elements.prevWeek.addEventListener("click", () => {
+		firstDayOfWeek -= 7;
+		updateTasksOverviewUI(updateTasksOverview(findListById("1")), weekDays);
+		elements.week.textContent = `${weekDays[0].week}-${
+			weekDays[weekDays.length - 1].week
+		}`;
+	});
+	elements.nextWeek.addEventListener("click", () => {
+		firstDayOfWeek += 7;
+		updateTasksOverviewUI(updateTasksOverview(findListById("1")), weekDays);
+		elements.week.textContent = `${weekDays[0].week}-${
+			weekDays[weekDays.length - 1].week
+		}`;
+	});
+}
 export {
 	adjustWeekDays,
 	updateTasksOverview,
 	updateTasksOverviewUI,
 	updateWeekDaysStats,
+	statsEvents,
 };

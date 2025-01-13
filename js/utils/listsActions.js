@@ -1,10 +1,9 @@
-import { lists, userData, userToken, setLists } from "../app.js";
-import { elements } from "../modules/elements.js";
-import { storage } from "../modules/storage.js";
-import { user } from "../modules/userData.js";
-import { closeNavBar } from "../UI.js";
-import { notify } from "../modules/notify.js";
-
+import {
+	closeNavBar,
+	hideListOptions,
+	syncCounts,
+	toggleTasksVisibility,
+} from "../UI.js";
 import {
 	applyHover,
 	CURRENT_LIST_ID,
@@ -14,7 +13,14 @@ import {
 	SMART_LISTS_IDS,
 	toggleEmptyMessage,
 } from "./helpers.js";
+import { notify } from "../modules/notify.js";
+import { lists, userData, userToken, setLists } from "../app.js";
+import { elements } from "../modules/elements.js";
+import { storage } from "../modules/storage.js";
+import { user } from "../modules/userData.js";
 import { renderAllTasks } from "./renderTasks.js";
+import { initialSettings } from "../modules/default.js";
+import { displayAModal } from "../modules/modal.js";
 async function renameList(e) {
 	const value = elements.renameListInput.value.trim();
 	let changedValue = "";
@@ -49,8 +55,6 @@ async function deleteCurrentList() {
 			return !isSame(list.settings.id, storage.get(CURRENT_LIST_ID));
 		})
 	);
-	console.log(lists);
-
 	// Going To The Previous List and Removing The List Item From The DOM
 	const listItems = document.querySelectorAll(".list-item");
 	listItems.forEach((listItem, index) => {

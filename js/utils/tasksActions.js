@@ -1,10 +1,9 @@
-import { lists, userData, userToken } from "../app.js";
-import { initialSettings } from "../modules/default.js";
-import { elements } from "../modules/elements.js";
-import { storage } from "../modules/storage.js";
-import { user } from "../modules/userData.js";
-import { notify } from "../modules/notify.js";
-import { closeTaskDetails, openTaskDetails } from "../UI.js";
+import {
+	closeTaskDetails,
+	openTaskDetails,
+	syncCounts,
+	toggleTasksVisibility,
+} from "../UI.js";
 import {
 	findListById,
 	isSame,
@@ -16,7 +15,14 @@ import {
 	SMART_LISTS_IDS,
 	applyHover,
 } from "./helpers.js";
+import { lists, userData, userToken } from "../app.js";
+import { initialSettings } from "../modules/default.js";
+import { elements } from "../modules/elements.js";
+import { storage } from "../modules/storage.js";
+import { user } from "../modules/userData.js";
+import { notify } from "../modules/notify.js";
 import { renderAllTasks } from "./renderTasks.js";
+import { displayAModal } from "../modules/modal.js";
 let clickedTaskItem = null;
 // Task
 async function addNewTask(taskTitle, priority) {

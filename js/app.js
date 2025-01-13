@@ -28,32 +28,17 @@ import { handleThemes } from "./modules/themes.js";
 import { user } from "./modules/userData.js";
 import { notify } from "./modules/notify.js";
 import { displayAModal } from "./modules/modal.js";
-import "./modules/managingComponents.js";
 import { displayComponent } from "./modules/managingComponents.js";
 
 // Global Variables
-const SMART_LISTS_IDS = [1, 2, 3, 4, 5];
+const SMART_LISTS_IDS = ["1", "2", "3", "4", "5"];
 const userToken = storage.get("token");
 const CURRENT_LIST_ID = "currentListId";
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const months = [
-	"Jan",
-	"Feb",
-	"Mar",
-	"Apr",
-	"May",
-	"Jun",
-	"Jul",
-	"Aug",
-	"Sep",
-	"Oct",
-	"Nov",
-	"Dec",
-];
 let lists = initialLists;
 let userData = {};
 let weekDays = [];
-let gTaskItem = null;
+let clickedTaskItem = null;
 let priority = "no";
 let firstDayOfWeek = new Date().getDate() - new Date().getDay();
 
@@ -167,7 +152,6 @@ elements.addTaskInput.addEventListener("keydown", (e) => {
 });
 elements.validateIcon.addEventListener("click", () => {
 	elements.addTaskInput.focus();
-
 	let val = elements.addTaskInput.value.trim().length;
 	if (val === 0) {
 		elements.validateIcon.style.display = "none";
@@ -202,28 +186,28 @@ elements.deleteTaskBtn.addEventListener("click", () => {
 	if (storage.get("settings", initialSettings).confirmBeforeDeletion) {
 		displayAModal(
 			"Delete Task",
-			`Are You Sure You Want To Delete "${gTaskItem.childNodes[1].textContent}"`,
+			`Are You Sure You Want To Delete "${clickedTaskItem.childNodes[1].textContent}"`,
 			(action) => {
 				if (action === "execute") {
-					deleteTask(gTaskItem);
+					deleteTask(clickedTaskItem);
 				}
 			}
 		);
 	} else {
-		deleteTask(gTaskItem);
+		deleteTask(clickedTaskItem);
 	}
 });
 elements.editTaskInput.addEventListener("keydown", (e) => {
 	if (e.key === "Enter") {
 		if (elements.editTaskInput.value.trim().length === 0) {
-			renameTask(gTaskItem, "Untitled Task");
+			renameTask(clickedTaskItem, "Untitled Task");
 			elements.editTaskInput.blur();
 		} else if (elements.editTaskInput.value.trim().length >= 30) {
 			notify("Invalid Value", "Value Too Big", "danger", 2).then(() => {
 				elements.addTaskInput.focus();
 			});
 		} else {
-			renameTask(gTaskItem, elements.editTaskInput.value.trim());
+			renameTask(clickedTaskItem, elements.editTaskInput.value.trim());
 			elements.editTaskInput.blur();
 		}
 		renderAllTasks();
@@ -232,7 +216,7 @@ elements.editTaskInput.addEventListener("keydown", (e) => {
 elements.editTaskInput.addEventListener("blur", () => {
 	if (elements.editTaskInput.value.trim().length === 0) {
 		notify("Data Updated Successfully", "", "success", 2);
-		renameTask(gTaskItem, "Untitled Task");
+		renameTask(clickedTaskItem, "Untitled Task");
 		elements.editTaskInput.blur();
 	} else if (elements.editTaskInput.value.trim().length >= 30) {
 		notify("Invalid Value", "Value Too Big", "danger", 2).then(() => {
@@ -240,7 +224,7 @@ elements.editTaskInput.addEventListener("blur", () => {
 		});
 	} else {
 		notify("Data Updated Successfully", "", "success", 2);
-		renameTask(gTaskItem, elements.editTaskInput.value.trim());
+		renameTask(clickedTaskItem, elements.editTaskInput.value.trim());
 		elements.editTaskInput.blur();
 	}
 	renderAllTasks();
@@ -249,14 +233,20 @@ elements.completeTaskBtn.addEventListener("click", () => {
 	elements.taskDetailsItem.classList.toggle("checked");
 	const taskItems = document.querySelectorAll(".task-item");
 	taskItems.forEach((taskItem) => {
-		if (taskItem.id === gTaskItem.id) {
-			completeTask(gTaskItem.id, taskItem);
+		if (taskItem.id === clickedTaskItem.id) {
+			completeTask(clickedTaskItem.id, taskItem);
 		}
 	});
 });
 elements.noteTextArea.addEventListener("blur", () => {
+	if (elements.noteTextArea.value.trim().length === 0) return;
 	notify("Data Updated Successfully", "", "success", 2);
-	addNote(gTaskItem);
+	const list = findListById(clickedTaskItem.getAttribute("parent-id"));
+	const task = findTaskById(list.tasks, clickedTaskItem.id);
+	console.log(clickedTaskItem);
+	console.log(task);
+
+	addNote(clickedTaskItem);
 	renderAllTasks();
 });
 elements.choosePriority.addEventListener("click", () => {
@@ -273,9 +263,9 @@ elements.priorityItems.forEach((item) => {
 		elements.choosePriority.style.color = item.getAttribute("color");
 		elements.priorityContainer.classList.remove("show");
 		elements.transparentOverlay.classList.remove("show");
-		const list = findListById(gTaskItem.getAttribute("parent-id"));
+		const list = findListById(clickedTaskItem.getAttribute("parent-id"));
 		list.tasks.forEach((task) => {
-			if (isSame(gTaskItem.id, task.id)) {
+			if (isSame(clickedTaskItem.id, task.id)) {
 				task.priority = priority;
 			}
 		});
@@ -286,25 +276,28 @@ elements.priorityItems.forEach((item) => {
 });
 elements.barChartBtn.addEventListener("click", () => {
 	firstDayOfWeek = new Date().getDate() - new Date().getDay();
-	updateTasksOverviewUI(updateTasksOverview(findListById(1)), weekDays);
+	updateTasksOverviewUI(updateTasksOverview(findListById("1")), weekDays);
+	elements.week.textContent = `${weekDays[0].week}-${
+		weekDays[weekDays.length - 1].week
+	}`;
 });
 elements.prevWeek.addEventListener("click", () => {
 	firstDayOfWeek -= 7;
-	updateTasksOverviewUI(updateTasksOverview(findListById(1)), weekDays);
+	updateTasksOverviewUI(updateTasksOverview(findListById("1")), weekDays);
 	elements.week.textContent = `${weekDays[0].week}-${
 		weekDays[weekDays.length - 1].week
 	}`;
 });
 elements.nextWeek.addEventListener("click", () => {
 	firstDayOfWeek += 7;
-	updateTasksOverviewUI(updateTasksOverview(findListById(1)), weekDays);
+	updateTasksOverviewUI(updateTasksOverview(findListById("1")), weekDays);
 	elements.week.textContent = `${weekDays[0].week}-${
 		weekDays[weekDays.length - 1].week
 	}`;
 });
 
-// Functions
-function generateUUID() {
+// Utilities
+function generateId() {
 	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
 		/[xy]/g,
 		function (c) {
@@ -340,7 +333,7 @@ function checkEmptyness() {
 	isListEmpty
 		? (elements.emptyMessage.style.display = "flex")
 		: (elements.emptyMessage.style.display = "none");
-	displayMessage(Number(storage.get(CURRENT_LIST_ID)));
+	displayMessage(storage.get(CURRENT_LIST_ID));
 }
 function displayMessage(id) {
 	const messages = {
@@ -374,17 +367,6 @@ function displayMessage(id) {
 			"Your list is currently empty. Consider adding some tasks.";
 	}
 }
-function trackUsageTime() {
-	let start = Date.now();
-	setTimeout(() => {
-		let timeSpent = Number(storage.get("timeSpent", 0));
-		let elapsed = Date.now() - start;
-		timeSpent += elapsed;
-		storage.set("timeSpent", timeSpent);
-		start = Date.now();
-		trackUsageTime();
-	}, 1000);
-}
 function renderTasksEveryMidNight() {
 	const now = new Date();
 	const nextMidnight = new Date(now);
@@ -398,13 +380,13 @@ function renderTasksEveryMidNight() {
 	}, timeUntilMidnight);
 }
 function findListById(id) {
-	return lists.find((list) => Number(list.settings.id) === Number(id));
+	return lists.find((list) => list.settings.id === id);
 }
 function findTaskById(tasks, id) {
-	return tasks.find((task) => Number(task.id) === Number(id));
+	return tasks.find((task) => task.id === id);
 }
 function isSame(elementId, id) {
-	return Number(elementId) === Number(id);
+	return elementId === id;
 }
 function signOut() {
 	storage.remove("token");
@@ -435,7 +417,7 @@ function updateWeekDaysStats(dailyList) {
 		weekDaysMap.set(day.date, day);
 	});
 	dailyList.tasks.forEach((task) => {
-		const taskDate = new Date(task.id).toLocaleDateString();
+		const taskDate = new Date(task.date).toLocaleDateString();
 		const matchingDay = weekDaysMap.get(taskDate);
 		if (matchingDay) {
 			if (task.completed) {
@@ -490,7 +472,47 @@ function updateTasksOverview(dailyList) {
 		average,
 	};
 }
+function formatDate(timeStamp) {
+	timeStamp = Number(timeStamp);
+	if (isNaN(timeStamp)) {
+		console.warn("Invalid Date");
+		return "Invalid Date";
+	}
+	const months = [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"May",
+		"June",
+		"July",
+		"Aug",
+		"Sep",
+		"Oct",
+		"Nov",
+		"Dec",
+	];
+	const date = new Date(timeStamp);
+	const today = new Date();
+	const yesterday = new Date();
+	yesterday.setDate(today.getDate() - 1);
+	const isToday =
+		date.getFullYear() === today.getFullYear() &&
+		date.getMonth() === today.getMonth() &&
+		date.getDate() === today.getDate();
+	const isYesterday =
+		date.getFullYear() === yesterday.getFullYear() &&
+		date.getMonth() === yesterday.getMonth() &&
+		date.getDate() === yesterday.getDate();
 
+	const isTheSameYear = date.getFullYear() === today.getFullYear();
+	if (isToday) return "Today";
+	if (isYesterday) return "Yesterday";
+	const formattedDate = `${months[date.getMonth()]} ${date.getDate()}`;
+	return isTheSameYear
+		? formattedDate
+		: `${formattedDate} ${date.getFullYear()}`;
+}
 function updateTasksOverviewUI(stats, weekDays) {
 	console.log(stats);
 	console.log(weekDays);
@@ -525,6 +547,8 @@ function updateTasksOverviewUI(stats, weekDays) {
 			"No Data For The Progress From Last Week";
 	} else if (stats.progress[0] === "-") {
 		elements.growthDecreaseMessege.textContent = "From Last Week";
+	} else {
+		elements.growthDecreaseMessege.textContent = "Growth From Last Week";
 	}
 	elements.percentageText.textContent = stats.percentageOfCompleted;
 	elements.percentageCircle.style.setProperty("--gradient-angle", "0%");
@@ -552,8 +576,10 @@ function handleMovingTask() {
 			li.classList.add("hoverable");
 			fragement.append(li);
 			li.addEventListener("click", async () => {
-				const list = findListById(gTaskItem.getAttribute("parent-id"));
-				const task = findTaskById(list.tasks, gTaskItem.id);
+				const list = findListById(
+					clickedTaskItem.getAttribute("parent-id")
+				);
+				const task = findTaskById(list.tasks, clickedTaskItem.id);
 				list.tasks = list.tasks.filter(
 					(taskItem) => taskItem.id !== task.id
 				);
@@ -619,9 +645,9 @@ async function deleteCurrentList() {
 }
 function onListClick(listItem) {
 	// Change Id Of Page
-	storage.set(CURRENT_LIST_ID, Number(listItem.id));
+	storage.set(CURRENT_LIST_ID, listItem.id);
 	// Hide Delete And Rename Options For Smart Lists
-	if (SMART_LISTS_IDS.includes(Number(storage.get(CURRENT_LIST_ID)))) {
+	if (SMART_LISTS_IDS.includes(storage.get(CURRENT_LIST_ID))) {
 		elements.deleteList.style.display = "none";
 		elements.renameList.style.display = "none";
 	} else {
@@ -646,7 +672,8 @@ async function addNewList(listTitle) {
 	// Create List
 	const list = {
 		settings: {
-			id: Date.now(),
+			id: generateId(),
+			date: Date.now(),
 			title: listTitle,
 			isMain: false,
 			theme: null,
@@ -672,7 +699,6 @@ async function addNewList(listTitle) {
 	await user.save(userToken, userData);
 }
 function renderAllLists() {
-	console.time("Lists");
 	// Emptying The Lists Containers
 	elements.mainListsContainer.innerHTML = "";
 	elements.listsContainer.innerHTML = "";
@@ -687,7 +713,7 @@ function renderAllLists() {
 		}
 
 		// Hiding The Delete And Rename Options If The List Is Smart
-		if (SMART_LISTS_IDS.includes(Number(storage.get(CURRENT_LIST_ID, 1)))) {
+		if (SMART_LISTS_IDS.includes(storage.get(CURRENT_LIST_ID, "1"))) {
 			elements.deleteList.style.display = "none";
 			elements.renameList.style.display = "none";
 		} else {
@@ -696,7 +722,7 @@ function renderAllLists() {
 		}
 
 		// Trigger A onListClick On The Current List
-		if (isSame(listItem.id, storage.get(CURRENT_LIST_ID, 1))) {
+		if (isSame(listItem.id, storage.get(CURRENT_LIST_ID, "1"))) {
 			onListClick(listItem);
 		}
 
@@ -707,7 +733,6 @@ function renderAllLists() {
 	});
 	applyHover();
 	checkEmptyness();
-	console.timeEnd("Lists");
 }
 function buildList(list, container, fragement) {
 	// Create
@@ -739,13 +764,12 @@ function buildList(list, container, fragement) {
 
 // Tasks
 function renderAllTasks() {
-	console.time("Tasks");
 	let tasks;
 	elements.tasksContainers.forEach((cont) => {
 		cont.innerHTML = "";
 	});
 	const list = findListById(storage.get(CURRENT_LIST_ID));
-	if (list.settings.id === 1) {
+	if (list.settings.id === "1") {
 		elements.barChartBtn.style.display = "block";
 	} else {
 		elements.barChartBtn.style.display = "none";
@@ -772,7 +796,7 @@ function renderAllTasks() {
 	const fragement = document.createDocumentFragment();
 	tasks.forEach((task) => {
 		if (list.settings.id === SMART_LISTS_IDS[0]) {
-			if (handleTaskDate(task) === "Today") {
+			if (formatDate(task.date) === "Today") {
 				task.show = true;
 			} else {
 				task.show = false;
@@ -797,7 +821,6 @@ function renderAllTasks() {
 	updateDisplay();
 	applyHover();
 	checkEmptyness();
-	console.timeEnd("Tasks");
 }
 function calcCompletedTasks() {
 	let tasks = [];
@@ -825,7 +848,8 @@ async function addNewTask(taskTitle, priority) {
 	if (taskTitle.length === 0) return;
 	let parentListId;
 	const task = {
-		id: Date.now(),
+		id: generateId(),
+		date: Date.now(),
 		title: taskTitle,
 		completed: false,
 		priority: priority,
@@ -838,7 +862,7 @@ async function addNewTask(taskTitle, priority) {
 	// Saving Task In The List
 	const list = findListById(storage.get(CURRENT_LIST_ID));
 	if (isSame(list.settings.id, SMART_LISTS_IDS[1])) {
-		parentListId = 5;
+		parentListId = "5";
 		let tasksList = findListById(parentListId);
 		task.parentList = parentListId;
 		task.parentListTitle = tasksList.settings.title;
@@ -872,7 +896,7 @@ async function completeTask(id, taskItem) {
 	const list = findListById(taskItem.getAttribute("parent-id"));
 	const task = findTaskById(list.tasks, id);
 	task.completed = !task.completed;
-	if (list.settings.id === 1) {
+	if (list.settings.id === "1") {
 		if (task.completed) {
 			list.completedTasks++;
 		} else {
@@ -905,6 +929,7 @@ function buildTaskUi(task, fragement) {
 
 	// Editing Elements
 	li.id = task.id;
+	li.date = task.date;
 	li.setAttribute("parent-id", task.parentList);
 	date.classList.add("due-date");
 	li.classList.add("task-item", "hoverable");
@@ -913,12 +938,17 @@ function buildTaskUi(task, fragement) {
 		li.classList.add("checked");
 	}
 	text.classList.add("text");
-	date.textContent = handleTaskDate(task);
+	date.textContent = formatDate(task.date);
+
 	img.src = "assets/svgs/check.svg";
 	img.width = "15";
 	img.height = "15";
 	text.innerHTML = task.title;
-
+	if (clickedTaskItem) {
+		elements.taskDate.textContent = `Created at ${formatDate(
+			clickedTaskItem.date
+		)}`;
+	}
 	// Appending Elements
 	icon.append(img);
 	li.append(icon, text, date);
@@ -937,7 +967,7 @@ function buildTaskUi(task, fragement) {
 }
 function handleTaskClick(taskItem) {
 	taskItem.getAttribute("parent-id");
-	gTaskItem = taskItem;
+	clickedTaskItem = taskItem;
 	elements.editTaskInput.value = taskItem.childNodes[1].textContent;
 	const list = findListById(taskItem.getAttribute("parent-id"));
 	list.tasks.forEach((task) => {
@@ -962,15 +992,15 @@ function handleTaskClick(taskItem) {
 	} else {
 		elements.taskDetailsItem.classList.remove("checked");
 	}
+	elements.taskDate.textContent = `Created at ${formatDate(
+		clickedTaskItem.date
+	)}`;
 	checkEmptyness();
-	handleTaskDate(gTaskItem);
 	openTaskDetails();
 }
 async function deleteTask(taskItem) {
 	const list = findListById(taskItem.getAttribute("parent-id"));
-	list.tasks = list.tasks.filter(
-		(task) => Number(taskItem.id) !== Number(task.id)
-	);
+	list.tasks = list.tasks.filter((task) => taskItem.id !== task.id);
 	renderAllTasks();
 	checkEmptyness();
 	closeTaskDetails();
@@ -988,30 +1018,16 @@ async function renameTask(taskItem, newTitle) {
 	userData.lists = lists;
 	await user.save(userToken, userData);
 }
-function handleTaskDate(task) {
-	let formattedDate = null;
-	const today = new Date().getDate();
-	const yesterDay = new Date(
-		new Date().setDate(new Date().getDate() - 1)
-	).getDate();
-	const date = new Date(Number(task.id));
-	if (date.getDate() === today) {
-		formattedDate = "Today";
-		elements.taskDate.textContent = `Created ${formattedDate.toLowerCase()}`;
-	} else if (date.getDate() === yesterDay) {
-		formattedDate = "Yesterday";
-		elements.taskDate.textContent = `Created ${formattedDate.toLowerCase()}`;
-	} else {
-		if (new Date().getFullYear() !== date.getFullYear()) {
-			formattedDate = `${
-				months[date.getMonth()]
-			} ${date.getDate()} ${date.getFullYear()}`;
-		} else {
-			formattedDate = `${months[date.getMonth()]} ${date.getDate()}`;
-		}
-		elements.taskDate.textContent = `Created at ${formattedDate}`;
-	}
-	return formattedDate;
+async function addSubTask(task, subTaskTitle) {
+	const subTask = {
+		title: subTaskTitle,
+		id: Date.now(),
+		completed: false,
+		parentTask: task.id,
+	};
+	task?.subtasks.push(subTask);
+	userData.lists = lists;
+	await user.save(userToken, userData);
 }
 async function addNote(taskItem) {
 	const list = findListById(taskItem.getAttribute("parent-id"));
@@ -1029,30 +1045,33 @@ async function addNote(taskItem) {
 async function initialUserData() {
 	if (userToken === null) return window.location.assign("/pages/login.html");
 	const data = await user.get(userToken);
-
-	if (data.message === "User Not Found") {
-		window.location.assign("/pages/login.html");
-		return;
-	}
-
-	// Assigning User Data To A Global Variable So It can be used Later Outside This Function
-	userData = data.userData;
-
-	// If (lists is empty) then add to it the main initial smart lists (ex: completed & all)
-	userData.lists.length === 0
-		? (userData.lists = lists)
-		: (lists = userData.lists);
-	// userData.lists[0].tasks = [];
-	console.log(await user.save(userToken, userData));
-	// Initial Functions After Getting User Data
+	initializeLists(data);
 	renderAllLists();
 	handleUI();
 	handleSettings();
 	handleThemes();
 	applyHover();
 	checkEmptyness();
-
-	// Show a welcome messege and hide preloader
+	welcomeUser(data);
+	// CLEAR
+	// clearData();
+}
+async function clearData() {
+	await user.clear(userToken, userData);
+}
+async function initializeLists(data) {
+	if (data.message === "User Not Found") {
+		window.location.assign("/pages/login.html");
+		return;
+	}
+	userData = data.userData;
+	userData.lists.length === 0
+		? (userData.lists = lists)
+		: (lists = userData.lists);
+	// userData.lists[0].tasks = [];
+	console.log(await user.save(userToken, userData));
+}
+function welcomeUser(data) {
 	setTimeout(() => {
 		elements.loader.classList.add("hide");
 		if (storage.get("welcomed") === null) {
@@ -1066,15 +1085,9 @@ async function initialUserData() {
 		}
 	}, 100);
 	elements.greeting.textContent = `Hi ${data.firstName} ${data.lastName}`;
-	// CLEAR
-	// clearData();
-}
-async function clearData() {
-	await user.clear(userToken, userData);
 }
 
 // Initial
 initialUserData();
 displayComponent();
 renderTasksEveryMidNight();
-trackUsageTime();

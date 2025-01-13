@@ -1,0 +1,341 @@
+{
+	"userData": {
+		"lists": [
+			{
+				"settings": {
+					"id": "1",
+					"date": 1736770331536,
+					"title": "Daily Tasks",
+					"isMain": true,
+					"pinned": false,
+					"theme": null,
+					"icon": "assets/svgs/sun.svg"
+				},
+				"tasks": [],
+				"completedTasks": 0
+			},
+			{
+				"settings": {
+					"id": "2",
+					"date": 1736770331536,
+					"title": "All",
+					"isMain": true,
+					"pinned": false,
+					"theme": null,
+					"icon": "assets/svgs/all.svg"
+				},
+				"tasks": []
+			},
+			{
+				"settings": {
+					"id": "3",
+					"date": 1736770331536,
+					"title": "Completed",
+					"isMain": true,
+					"pinned": false,
+					"theme": null,
+					"icon": "assets/svgs/checked.svg"
+				},
+				"tasks": []
+			},
+			{
+				"settings": {
+					"id": "4",
+					"date": 1736770331536,
+					"title": "Planned",
+					"isMain": true,
+					"pinned": false,
+					"theme": null,
+					"icon": "assets/svgs/calendar.svg"
+				},
+				"tasks": []
+			},
+			{
+				"settings": {
+					"id": "5",
+					"date": 1736770331536,
+					"title": "Tasks",
+					"isMain": true,
+					"pinned": false,
+					"theme": null,
+					"icon": "assets/svgs/list.svg"
+				},
+				"tasks": []
+			},
+			{
+				"settings": {
+					"id": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+					"date": 1736770504583,
+					"title": "To Do App",
+					"isMain": false,
+					"theme": null,
+					"icon": "assets/svgs/list.svg"
+				},
+				"tasks": [
+					{
+						"id": "4ea0dea8-6dda-4fe5-974f-db4ac6a41922",
+						"date": 1736770968847,
+						"title": "Average Completion Per Day",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "f7a432b3-1f96-4584-9459-54811510f5e4",
+						"date": 1736770975110,
+						"title": "Btn To The New List Input",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "288c756d-a26e-4925-9e61-20f1450b5eaa",
+						"date": 1736770982239,
+						"title": "Duplicate List",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "ae160f13-d310-4eae-b560-15d130da95b4",
+						"date": 1736770984934,
+						"title": "Duplicate Task",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "dc04bc4f-d877-48fe-809e-d4232ef88adf",
+						"date": 1736770993207,
+						"title": "Subtasks",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "75dfef1e-7c72-40d6-a343-74a0f4bf3d8a",
+						"date": 1736771000102,
+						"title": "Pin A List",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "1838ab96-e7d9-4a20-8f5f-85e7b42a72d0",
+						"date": 1736771003966,
+						"title": "Pin A Task",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "97832d94-64d6-42a4-9009-7669aaa965ed",
+						"date": 1736771007702,
+						"title": "Add Due Date",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "a416676e-6685-40d4-9b2d-b7e034f755d3",
+						"date": 1736771022615,
+						"title": "Note Icons",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "8538031f-44b6-4ce2-93bc-6429fd7c7465",
+						"date": 1736771030702,
+						"title": "Copy Task To A List",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "88dee884-2853-421a-9cd5-4d81bc2904ec",
+						"date": 1736771039806,
+						"title": "Pomo & Stop Watch",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "2570c9f5-e36a-4954-9e90-026a5f56c56d",
+						"date": 1736771053119,
+						"title": "Add Stats For Opening App",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "e5aadd51-bc27-45b3-8d9f-acc08d4b0640",
+						"date": 1736771064174,
+						"title": "Focus On Specific Tasks",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "fed318ec-6336-4c88-9f59-a4f5e92886ee",
+						"date": 1736771073078,
+						"title": "Stats For Focusing",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "91599777-c83e-4ed5-9ed7-480b08cac01c",
+						"date": 1736771082439,
+						"title": "Add Guidance Messeges To User",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "7b434559-b799-4a08-8899-c915b7b26011",
+						"date": 1736771093262,
+						"title": "Fix Settings UI",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "8cb7c848-e86e-4871-98f8-43a0e1f703ec",
+						"date": 1736771098046,
+						"title": "Add Utilities",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "28ddcd6e-5ce3-490a-962f-be2a1a21ad81",
+						"date": 1736771108166,
+						"title": "Add Search For Tasks",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "8a2b573f-c165-4a6e-a689-1c12558b662c",
+						"date": 1736771114790,
+						"title": "Nice Hover Effects",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "704edcbb-0a2b-4849-82ca-8d70e29f29cf",
+						"date": 1736771123614,
+						"title": "Fix The Size Of The Note",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					},
+					{
+						"id": "4ee93be2-2f77-4f0d-8428-8c48df6ee769",
+						"date": 1736771217095,
+						"title": "Priority Option Before Adding",
+						"completed": false,
+						"priority": "no",
+						"parentList": "73fabdab-cee6-4217-9aea-f5b39fc56fda",
+						"parentListTitle": "To Do App",
+						"subTasks": [],
+						"note": "",
+						"show": true
+					}
+				],
+				"completedTasks": [],
+				"importantTasks": []
+			}
+		]
+	},
+	"_id": "677836258c2ff5af7889f694",
+	"email": "alya70934@gmail.com",
+	"password": "$2b$10$Ympd8ooHwutj1gbNe9cld.JXqqhewVMHLscI5qBMtcMAJpXDF0tbC",
+	"firstName": "Ali",
+	"lastName": "Adel",
+	"verified": true,
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzgzNjI1OGMyZmY1YWY3ODg5ZjY5NCIsImlhdCI6MTczNjc3MDQ4Nn0.zwGmHrXr4kKANuQxsUThAU2gRTsik2CvoBVXFXDNgE4",
+	"__v": 0
+}

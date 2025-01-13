@@ -1,4 +1,5 @@
 import { elements } from "./elements.js";
+
 /**
  *
  * @param {string} title The Title Of The Notification

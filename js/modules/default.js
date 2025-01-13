@@ -1,7 +1,8 @@
 export const initialLists = [
 	{
 		settings: {
-			id: 1,
+			id: "1",
+			date: Date.now(),
 			title: "Daily Tasks",
 			isMain: true,
 			pinned: false,
@@ -13,7 +14,8 @@ export const initialLists = [
 	},
 	{
 		settings: {
-			id: 2,
+			id: "2",
+			date: Date.now(),
 			title: "All",
 			isMain: true,
 			pinned: false,
@@ -24,7 +26,8 @@ export const initialLists = [
 	},
 	{
 		settings: {
-			id: 3,
+			id: "3",
+			date: Date.now(),
 			title: "Completed",
 			isMain: true,
 			pinned: false,
@@ -35,7 +38,8 @@ export const initialLists = [
 	},
 	{
 		settings: {
-			id: 4,
+			id: "4",
+			date: Date.now(),
 			title: "Planned",
 			isMain: true,
 			pinned: false,
@@ -46,7 +50,8 @@ export const initialLists = [
 	},
 	{
 		settings: {
-			id: 5,
+			id: "5",
+			date: Date.now(),
 			title: "Tasks",
 			isMain: true,
 			pinned: false,

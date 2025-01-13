@@ -8,34 +8,61 @@
  */
 export const storage = {
 	set: (itemName, itemToSet) => {
-		window.localStorage.setItem(itemName, JSON.stringify(itemToSet));
+		try {
+			window.localStorage.setItem(itemName, JSON.stringify(itemToSet));
+		} catch (e) {
+			storage.clear();
+			window.alert("Storage Is Full");
+			console.log(e);
+		}
 	},
 	get: (itemToGet, alternateItem = null) => {
-		return (
-			JSON.parse(window.localStorage.getItem(itemToGet)) || alternateItem
-		);
+		try {
+			return (
+				JSON.parse(window.localStorage.getItem(itemToGet)) ||
+				alternateItem
+			);
+		} catch (e) {
+			console.log(e);
+		}
 	},
 	clear: () => {
-		window.localStorage.clear();
+		try {
+			window.localStorage.clear();
+		} catch (e) {
+			console.log(e);
+		}
 	},
 	remove: (itemToRemove) => {
-		window.localStorage.removeItem(itemToRemove);
+		try {
+			window.localStorage.removeItem(itemToRemove);
+		} catch (e) {
+			console.log(e);
+		}
 	},
 	size: () => {
-		return {
-			Used:
-				Math.round(new Blob(Object.values(localStorage)).size / 1024) +
-				" KB",
-			Remained:
-				5000 -
-				Math.round(new Blob(Object.values(localStorage)).size / 1024) +
-				" KB",
-			Percentage:
-				Math.round(
+		try {
+			const sizeObject = {
+				Used:
 					Math.round(
 						new Blob(Object.values(localStorage)).size / 1024
-					) / 5000
-				) + "%",
-		};
+					) + " KB",
+				Remained:
+					5000 -
+					Math.round(
+						new Blob(Object.values(localStorage)).size / 1024
+					) +
+					" KB",
+				Percentage:
+					Math.round(
+						Math.round(
+							new Blob(Object.values(localStorage)).size / 1024
+						) / 5000
+					) + "%",
+			};
+			return sizeObject;
+		} catch (e) {
+			console.log(e);
+		}
 	},
 };

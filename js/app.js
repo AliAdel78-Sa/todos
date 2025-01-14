@@ -33,6 +33,7 @@ const userToken = storage.get("token");
 const setLists = (newData) => (lists = newData);
 const setFirstDayOfWeek = (newData) => (firstDayOfWeek = newData);
 const setWeekDays = (newData) => (weekDays = newData);
+
 //  Functions
 function initializeEvents() {
 	listsEvents();

@@ -3,6 +3,7 @@ import { elements } from "../modules/elements.js";
 import { storage } from "../modules/storage.js";
 const SMART_LISTS_IDS = ["1", "2", "3", "4"];
 const CURRENT_LIST_ID = "currentListId";
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 // Utilities
 function generateId() {
@@ -133,4 +134,5 @@ export {
 	generateId,
 	CURRENT_LIST_ID,
 	SMART_LISTS_IDS,
+	days,
 };

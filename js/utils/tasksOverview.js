@@ -5,8 +5,7 @@ import {
 	weekDays,
 } from "../app.js";
 import { elements } from "../modules/elements.js";
-import { findListById } from "./helpers.js";
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+import { findListById, days } from "./helpers.js";
 function adjustWeekDays() {
 	setWeekDays([]);
 

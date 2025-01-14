@@ -24,6 +24,7 @@ import { notify } from "../modules/notify.js";
 import { renderAllTasks } from "./renderTasks.js";
 import { displayAModal } from "../modules/modal.js";
 let clickedTaskItem = null;
+
 // Task
 async function addNewTask(taskTitle, priority) {
 	if (taskTitle.length === 0) return;
@@ -404,5 +405,4 @@ export {
 	buildTaskUi,
 	handleMovingTask,
 	tasksEvents,
-	clickedTaskItem,
 };

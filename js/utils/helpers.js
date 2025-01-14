@@ -1,19 +1,26 @@
-import { lists } from "../app.js";
+import { initialLists } from "../modules/default.js";
 import { elements } from "../modules/elements.js";
 import { storage } from "../modules/storage.js";
-const SMART_LISTS_IDS = ["1", "2", "3", "4"];
-const CURRENT_LIST_ID = "currentListId";
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-// Utilities
-function generateId() {
+export const SMART_LISTS_IDS = ["1", "2", "3", "4"];
+export const CURRENT_LIST_ID = "currentListId";
+export const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+export let userData = {};
+export let weekDays = [];
+export let lists = initialLists;
+export let firstDayOfWeek = new Date().getDate() - new Date().getDay();
+export const userToken = storage.get("token");
+export const setLists = (newData) => (lists = newData);
+export const setFirstDayOfWeek = (newData) => (firstDayOfWeek = newData);
+export const setWeekDays = (newData) => (weekDays = newData);
+export const setUserData = (newData) => (userData = newData);
+export function generateId() {
 	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
 		const r = (Math.random() * 16) | 0;
 		const v = c === "x" ? r : (r & 0x3) | 0x8;
 		return v.toString(16);
 	});
 }
-function applyHover() {
+export function applyHover() {
 	const hoverableElements = document.querySelectorAll(".hoverable");
 
 	hoverableElements.forEach((element) => {
@@ -28,7 +35,7 @@ function applyHover() {
 		});
 	});
 }
-function toggleEmptyMessage() {
+export function toggleEmptyMessage() {
 	const isListEmpty =
 		elements.highList.children.length === 0 &&
 		elements.lowList.children.length === 0 &&
@@ -40,7 +47,7 @@ function toggleEmptyMessage() {
 		: (elements.emptyMessage.style.display = "none");
 	displayMessage(storage.get(CURRENT_LIST_ID));
 }
-function displayMessage(id) {
+export function displayMessage(id) {
 	const messages = {
 		1: {
 			title: "Daily Tasks",
@@ -72,16 +79,16 @@ function displayMessage(id) {
 			"Your list is currently empty. Consider adding some tasks.";
 	}
 }
-function findListById(id) {
+export function findListById(id) {
 	return lists.find((list) => list.settings.id === id);
 }
-function findTaskById(tasks, id) {
+export function findTaskById(tasks, id) {
 	return tasks.find((task) => task.id === id);
 }
-function isSame(elementId, id) {
+export function isSame(elementId, id) {
 	return elementId === id;
 }
-function formatDate(timeStamp) {
+export function formatDate(timeStamp) {
 	timeStamp = Number(timeStamp);
 	if (isNaN(timeStamp)) {
 		console.warn("Invalid Date");
@@ -123,16 +130,3 @@ function formatDate(timeStamp) {
 		? formattedDate
 		: `${formattedDate} ${date.getFullYear()}`;
 }
-
-export {
-	findTaskById,
-	applyHover,
-	toggleEmptyMessage,
-	findListById,
-	isSame,
-	formatDate,
-	generateId,
-	CURRENT_LIST_ID,
-	SMART_LISTS_IDS,
-	days,
-};

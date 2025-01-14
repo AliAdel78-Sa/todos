@@ -1,9 +1,4 @@
-import {
-	setFirstDayOfWeek,
-	firstDayOfWeek,
-	setWeekDays,
-	weekDays,
-} from "../app.js";
+
 import { elements } from "../modules/elements.js";
 import { findListById, days } from "./helpers.js";
 function adjustWeekDays() {

@@ -10,17 +10,21 @@ import {
 	findListById,
 	generateId,
 	isSame,
+	lists,
+	setLists,
 	SMART_LISTS_IDS,
 	toggleEmptyMessage,
+	userData,
+	userToken,
 } from "./helpers.js";
 import { notify } from "../modules/notify.js";
-import { lists, userData, userToken, setLists } from "../app.js";
 import { elements } from "../modules/elements.js";
 import { storage } from "../modules/storage.js";
 import { user } from "../modules/userData.js";
 import { renderAllTasks } from "./renderTasks.js";
 import { initialSettings } from "../modules/default.js";
 import { displayAModal } from "../modules/modal.js";
+
 async function renameList(e) {
 	const value = elements.renameListInput.value.trim();
 	let changedValue = "";
@@ -148,8 +152,6 @@ function buildList(list, container, fragment) {
 	container.append(fragment);
 	return listItem;
 }
-
-// Events
 function listsEvents() {
 	elements.deleteList.addEventListener("click", () => {
 		const settings = storage.get("settings", initialSettings);
@@ -229,12 +231,4 @@ function listsEvents() {
 		}
 	});
 }
-
-export {
-	buildList,
-	onListClick,
-	addNewList,
-	deleteCurrentList,
-	renameList,
-	listsEvents,
-};
+export { buildList, onListClick, listsEvents };

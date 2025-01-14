@@ -1,15 +1,14 @@
-import { lists } from "../app.js";
 import { elements } from "../modules/elements.js";
 import { storage } from "../modules/storage.js";
 import {
 	applyHover,
 	CURRENT_LIST_ID,
 	isSame,
+	lists,
 	SMART_LISTS_IDS,
 	toggleEmptyMessage,
 } from "./helpers.js";
 import { buildList, onListClick } from "./listsActions.js";
-
 function renderAllLists() {
 	// Emptying The Lists Containers
 	elements.mainListsContainer.innerHTML = "";
@@ -45,5 +44,4 @@ function renderAllLists() {
 	applyHover();
 	toggleEmptyMessage();
 }
-
 export { renderAllLists };

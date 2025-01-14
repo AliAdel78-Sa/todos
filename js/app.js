@@ -3,36 +3,24 @@ import { handleUI } from "./UI.js";
 import { renderTasksEveryMidNight } from "./utils/renderTasks.js";
 import { tasksEvents } from "./utils/tasksActions.js";
 import { listsEvents } from "./utils/listsActions.js";
-import { applyHover, toggleEmptyMessage } from "./utils/helpers.js";
+import {
+	applyHover,
+	lists,
+	setLists,
+	setUserData,
+	toggleEmptyMessage,
+	userData,
+	userToken,
+} from "./utils/helpers.js";
 import { handleSettings } from "./modules/settings.js";
 import { storage } from "./modules/storage.js";
 import { elements } from "./modules/elements.js";
-import { initialLists } from "./modules/default.js";
 import { handleThemes } from "./modules/themes.js";
 import { user } from "./modules/userData.js";
 import { notify } from "./modules/notify.js";
 import { displayComponent } from "./modules/managingComponents.js";
 import { renderAllLists } from "./utils/renderLists.js";
 import { statsEvents } from "./utils/tasksOverview.js";
-export {
-	userToken,
-	setLists,
-	setFirstDayOfWeek,
-	setWeekDays,
-	userData,
-	lists,
-	weekDays,
-	firstDayOfWeek,
-};
-// Variables
-let userData = {};
-let weekDays = [];
-let lists = initialLists;
-let firstDayOfWeek = new Date().getDate() - new Date().getDay();
-const userToken = storage.get("token");
-const setLists = (newData) => (lists = newData);
-const setFirstDayOfWeek = (newData) => (firstDayOfWeek = newData);
-const setWeekDays = (newData) => (weekDays = newData);
 
 //  Functions
 function initializeEvents() {
@@ -78,10 +66,11 @@ async function initializeLists(data) {
 		window.location.assign("/pages/login.html");
 		return;
 	}
-	userData = data.userData;
+	setUserData(data.userData);
 	userData.lists.length === 0
 		? (userData.lists = lists)
-		: (lists = userData.lists);
+		: setLists(userData.lists);
+
 	console.log(await user.save(userToken, userData));
 }
 function welcomeUser(data) {

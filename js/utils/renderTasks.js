@@ -1,4 +1,3 @@
-import { lists } from "../app.js";
 import { buildTaskUi, completeTask, handleTaskClick } from "./tasksActions.js";
 import {
 	applyHover,
@@ -11,7 +10,6 @@ import {
 import { elements } from "../modules/elements.js";
 import { storage } from "../modules/storage.js";
 import { syncCounts, toggleTasksVisibility } from "../UI.js";
-
 function hideTaskInput() {
 	elements.tasksInputContainer.style.opacity = "0";
 	elements.tasksInputContainer.style.pointerEvents = "none";

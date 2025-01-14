@@ -36,21 +36,10 @@ export let initialLists = [
 		},
 		tasks: [],
 	},
+
 	{
 		settings: {
 			id: "4",
-			date: Date.now(),
-			title: "Planned",
-			isMain: true,
-			pinned: false,
-			theme: null,
-			icon: "assets/svgs/calendar.svg",
-		},
-		tasks: [],
-	},
-	{
-		settings: {
-			id: "5",
 			date: Date.now(),
 			title: "Tasks",
 			isMain: true,

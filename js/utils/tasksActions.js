@@ -14,8 +14,10 @@ import {
 	generateId,
 	SMART_LISTS_IDS,
 	applyHover,
+	userData,
+	userToken,
+	lists,
 } from "./helpers.js";
-import { lists, userData, userToken } from "../app.js";
 import { initialSettings } from "../modules/default.js";
 import { elements } from "../modules/elements.js";
 import { storage } from "../modules/storage.js";
@@ -24,7 +26,6 @@ import { notify } from "../modules/notify.js";
 import { renderAllTasks } from "./renderTasks.js";
 import { displayAModal } from "../modules/modal.js";
 let clickedTaskItem = null;
-
 // Task
 async function addNewTask(taskTitle, priority) {
 	if (taskTitle.length === 0) return;
@@ -208,6 +209,7 @@ function handleMovingTask() {
 		const isNotReadOnly =
 			list.settings.id !== SMART_LISTS_IDS[1] &&
 			list.settings.id !== SMART_LISTS_IDS[2];
+		console.log(list);
 
 		if (isNotReadOnly) {
 			const li = document.createElement("li");
@@ -393,16 +395,4 @@ function tasksEvents() {
 		});
 	});
 }
-
-export {
-	addNewTask,
-	addNote,
-	addSubTask,
-	renameTask,
-	deleteTask,
-	handleTaskClick,
-	completeTask,
-	buildTaskUi,
-	handleMovingTask,
-	tasksEvents,
-};
+export { handleTaskClick, completeTask, buildTaskUi, tasksEvents };
